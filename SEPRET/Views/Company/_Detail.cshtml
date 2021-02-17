@@ -1,0 +1,181 @@
+﻿@model SEPRET.Models.Custom.CompanyVM
+
+<div class="wizard-container modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-labelledby="AddEditModal" aria-hidden="true" style="margin-top: -50px">
+    <div class="card card-wizard modal-dialog modal-lg" role="document" data-color="rose" id="wizardProfile">
+        <div class="modal-content">
+            <div class="card-header text-center">
+                <h3 class="card-title">
+                    Información de la empresa
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h3>
+                <h5 class="card-description">Detalles de la empresa</h5>
+            </div>
+            <form id="Form">
+                <div class="wizard-navigation">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#image" data-toggle="tab" role="tab">
+                                Información básica
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#voucher" data-toggle="tab" role="tab">
+                                Lema y misión
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#method" data-toggle="tab" role="tab">
+                                Valores
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+
+                        <dliv class="tab-pane active" id="image">
+                            @Html.HiddenFor(x => x.Id)
+
+                            <div class="row justify-content-center">
+                                <h5 class="info-text mt-lg-4 mt-sm-0 mb-0">Sector de la empresa</h5>
+                                <div class="col-lg-8 col-md-12 col-sm-12 text-center">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(x => x.Id_Sector, ViewBag.SectorList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona el sector de la empresa", @required = "" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Nombre</label>
+                                        @Html.TextBoxFor(x => x.Nombre, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">RFC</label>
+                                        @Html.TextBoxFor(x => x.RFC, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Calle y número</label>
+                                        @Html.TextBoxFor(x => x.Calle, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Colonia</label>
+                                        @Html.TextBoxFor(x => x.Colonia, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Código postal</label>
+                                        @Html.TextBoxFor(x => x.CP, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Ciudad</label>
+                                        @Html.TextBoxFor(x => x.Ciudad, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Estado</label>
+                                        @Html.TextBoxFor(x => x.Estado, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Teléfono</label>
+                                        @Html.TextBoxFor(x => x.Telefono, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </dliv>
+                        <div class="tab-pane" id="voucher">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Lema</label>
+                                        @Html.TextAreaFor(x => x.Lema, new { @required = "", @class = "form-control", @rows = "5" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Misión</label>
+                                        @Html.TextAreaFor(x => x.Mision, new { @required = "", @class = "form-control", @rows = "5" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="method">
+
+                            <div class="bootstrap-tagsinput info-badge">
+                                <div class="form-group">
+                                    <label>Valores</label>
+                                    @Html.TextBoxFor(x => x.Valores, new { @required = "", @class = "form-control", @data_role = "tagsinput", @placeholder = "Escribe un valor aquí" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card-footer">
+                <div class="mr-auto">
+                    <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="Anterior">
+                </div>
+                <div class="ml-auto">
+                    <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Siguiente">
+                    <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" onclick="Close();" name="finish" value="Cerrar" style="display: none;">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery.tagsinput.js"></script>
+<script src="~/Scripts/bootstrap-tagsinput.js"></script>
+
+<script>
+    setTimeout(function () {
+        $('.card.card-wizard').addClass('active');
+    }, 600);
+
+    $('.moving-tab').hide();
+
+    $('#AddEditModal').on('shown.bs.modal', function () {
+        Site.initWizardForms();
+        $('.moving-tab').show();
+        $('.btn-next').removeClass('disabled');
+        $('.bootstrap-tagsinput').find('input').eq(0).css('width', 'auto');
+    })
+
+    $('select').selectpicker();
+
+    Close = () => $('#AddEditModal').modal('hide');
+
+</script>

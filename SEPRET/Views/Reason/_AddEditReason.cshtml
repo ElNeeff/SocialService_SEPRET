@@ -1,0 +1,29 @@
+﻿
+@model SEPRET.Models.Custom.ReasonVM
+
+<div class="card-body">
+    <form id="ReasonForm">
+
+        <div class="form-group bmd-form-group" style="display: none;">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">vpn_key</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Id</label>
+                @Html.TextBoxFor(x => x.Id, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">comment</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Descripción</label>
+                @Html.TextBoxFor(x => x.Description, new { @class = "form-control"})
+            </div>
+        </div>
+
+    </form>
+</div>
+

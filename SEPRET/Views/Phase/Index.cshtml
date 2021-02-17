@@ -1,0 +1,200 @@
+﻿
+@{
+    ViewBag.Title = "Lista de fases";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="card-icon">
+                    <i class="material-icons">timeline</i>
+                </div>
+                <h4 class="card-title">Lista de etapas para el proceso de validación de pago</h4>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="PhaseDT('Active');" style="cursor: pointer;">
+                                        Activas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="PhaseDT('Inactive');" style="cursor: pointer;">
+                                        Inactivas
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-12 text-right">
+                            <button class="btn btn-round btn-sm btn-outline-primary" onclick="AddEditPhase(0);">
+                                <i class="material-icons">add</i> Agregar etapa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="material-datatables" style="display: none;">
+                    <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="col-sm-12">
+                            <table id="PhaseDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Creado el</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Creado el</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<div class="modal fade" id="AddEditPhaseModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+
+                        <h4 class="card-title">Nombre de la fase</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-primary btn-round" onclick="SavePhase();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            PhaseDT('Active');
+        });
+
+        SavePhase = () => {
+            let PhaseForm = document.getElementById('PhaseForm');
+            let PhaseData = new FormData(PhaseForm);
+
+            fetch('@Url.Action("Index", "Phase")', {
+                method: 'POST',
+                body: PhaseData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Table.draw();
+                        $('#AddEditPhaseModal').modal('hide');
+                        md.showNotification('bottom', 'right', 'success', 'La fase se guardó correctamente');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEditPhase = Id => {
+            fetch('@Url.Action("AddEditPhase", "Phase")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('.modal-body').html(data);
+                    $('#AddEditPhaseModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        UpdatePhaseStatus = Id => {
+            fetch("@Url.Action("UpdatePhaseStatus", "Phase")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        md.showNotification('bottom', 'right', 'success', 'La etapa ha sido actualizada');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+        }
+
+        PhaseDT = Filter => {
+            Table = $('#PhaseDT').DataTable({
+                destroy: true,
+                responsive: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '@Url.Action("PhaseDT", "Phase")',
+                    data: data => {
+                        data.Filter = Filter;
+                    }
+                },
+                columns: [
+                    { data: 'Name' },
+                    { data: 'TimeCreatedFormatted' },
+                    {
+                        render: (data, type, row) => {
+                            if (row['Active']) {
+                                return '<div class="togglebutton"><label><input type="checkbox" checked="" onClick="UpdatePhaseStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            } else {
+                                return '<div class="togglebutton"><label><input type="checkbox" onClick="UpdatePhaseStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        render: (Id, type, full, meta) => '<button class="btn btn-round btn-outline-primary btn-fab btn-fab-mini" onClick="AddEditPhase(' + Id + ');"><i class="material-icons">edit</i></button>'
+                    }
+                ],
+                columnDefs: [
+                    { className: 'text-center', targets: [2, 3] }
+                ],
+                language: {
+                    url: '/Assets/json/SpanishDT.json'
+                },
+                initComplete: () => {
+                    $('select').selectpicker();
+                    Site.StyleDropdownDT();
+                    $('.material-datatables').show();
+                }
+            });
+        }
+    </script>
+}

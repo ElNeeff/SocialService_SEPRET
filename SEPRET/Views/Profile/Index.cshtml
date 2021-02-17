@@ -1,0 +1,81 @@
+﻿@model SEPRET.Models.Custom.PersonVM
+
+@{
+    ViewBag.Title = "Mi perfil";
+}
+
+<div class="col-md-4 mx-auto">
+    <div class="card card-profile">
+        <form id="ProfileForm">
+            <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                <div class="fileinput-new img-raised card-avatar">
+                    <img src="@Model.Photo" style="height: 130px;">
+                </div>
+                <div class="fileinput-preview fileinput-exists img-raised card-avatar"></div>
+                <div>
+                    <span class="btn btn-round btn-outline-primary btn-file btn-fab">
+                        <i class="material-icons fileinput-new btn-rose">add_photo_alternate</i>
+                        <i class="material-icons fileinput-exists">edit</i>
+                        @Html.TextBoxFor(x => x.File, new { @type = "file", @accept = "image/*" })
+                    </span>
+                    @*<a href="javascript:;" class="btn btn-outline-danger btn-round btn-fab fileinput-exists" data-dismiss="fileinput">
+                            <i class="material-icons">close</i>
+                        </a>*@
+                </div>
+            </div>
+
+            <div class="card-body">
+                @Html.HiddenFor(x => x.Id)
+                <h6 class="card-category text-gray">@Model.Enrollment</h6>
+                <h4 class="card-title">@Model.UserFullName</h4>
+
+                <div class="col-md-12 col-sm-12 mx-auto">
+                 @Html.DropDownListFor(x => x.CareerId, ViewBag.listaCarreras as SelectList, new { @class = "selectpicker col-12", @data_style = "btn btn-outline-primary btn-round", @title = "Seleccionar carrera" })
+                </div>
+
+                <div class="col-md-9 col-sm-12 mx-auto">
+                    <div class="form-group bmd-form-group text-left">
+                        <label class="bmd-label-floating text-left">Teléfono</label>
+                        @Html.TextBoxFor(x => x.Phone, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-9 col-sm-12 mx-auto">
+                    <div class="form-group bmd-form-group text-left">
+                        <label class="bmd-label-floating text-left">Email</label>
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-round">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        $(() => {
+            document.getElementById("ProfileForm").addEventListener('submit', e => {
+                e.preventDefault();
+
+                let ProfileForm = document.getElementById("ProfileForm");
+                let ProfileData = new FormData(ProfileForm);
+
+            fetch("@Url.Action("Index", "Profile")", {
+                method: 'POST',
+                body: ProfileData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        md.showNotification('bottom', 'right', 'success', 'Información actualizada exitosamente');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+                .catch(error => console.error(error))
+            })
+        })
+    </script>
+}

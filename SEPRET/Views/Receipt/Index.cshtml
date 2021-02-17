@@ -1,0 +1,299 @@
+﻿
+@{
+    ViewBag.Title = "Pagos";
+}
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="alert alert-rose alert-with-icon mt-3 col-7 mx-auto" data-notify="container">
+            <i class="material-icons" data-notify="icon">notifications</i>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <i class="material-icons">close</i>
+            </button>
+            <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+            <span data-notify="message">
+                Si tu carrera es incorrecta, por favor actualizala dando @Html.ActionLink("click aquí", "Index", "Profile", null, new { @class = "text-black", @style = "text-decoration: underline;" }). Después vuelve a generar tu vocuher.
+            </span>
+        </div>
+
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="col-xl-9 col-sm-12">
+                    <div class="card-icon">
+                        <i class="material-icons">receipt</i>
+                    </div>
+                    <h4 class="card-title">Lista de pagos disponibles</h4>
+                </div>
+
+                <div class="col-xl-3 col-sm-12">
+
+                    <div class="form-group bmd-form-group mt-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">search</i></div>
+                            </div>
+                            <label class="bmd-label-floating prepend-label-margin">Buscar un pago...</label>
+                            <input type="text" class="form-control" id="SearchPayment">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link disabled text-rose" data-toggle="tab" role="tablist">
+                                        Ir a:
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="PaymentList" class="filter nav-link active" data-toggle="tab" role="tablist" onclick="PaymentList('PaymentList', '');" style="cursor: pointer;">
+                                        Realizar un pago
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="MyPayment" class="filter nav-link" data-toggle="tab" role="tablist" onclick="ReceiptList();" style="cursor: pointer;">
+                                        Pagos realizados
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+        <div class="alert alert-primary alert-with-icon" data-notify="container">
+            <i class="material-icons" data-notify="icon">notifications</i>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <i class="material-icons">close</i>
+            </button>
+            <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+            <span data-notify="message">
+                Se recomienda no doblar el ticket que recibes al momento de ralizar el pago en el banco, ya que se puede perder información del mismo.
+            </span>
+        </div>
+
+        <div class="row text-center" id="PaymentContainer">
+            @if (ViewBag.PaymentList != null)
+            {
+                foreach (var item in ViewBag.PaymentList)
+                {
+                    <div class="col-md-4 col-lg-4 col-xl-3 d-flex align-items-stretch">
+                        <div class="card card-pricing">
+                            <div class="card-body ">
+                                <div class="card-icon">
+                                    <i class="material-icons">receipt_long</i>
+                                </div>
+                                <h3 class="card-title">@item.PriceFormatted</h3>
+                                <h6 class="card-title">@item.Name</h6>
+                                @*<p class="card-description">
+                                        Número de cuenta: @item.Account
+                                    </p>*@
+                                <button id="Voucher-@item.Id" onclick="Voucher(@item.Id, '@item.Name');" class="btn btn-outline-primary btn-round">Generar voucher</button>
+                                <button onclick="AddEditReceipt(@item.Id, 0);" class="btn btn-primary btn-round">Subir comprobante</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="row mt-5" id="ReceiptContainer" style="display:none;">
+        </div>
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+
+<div id="ModalContainer" style="margin-top: -50px">
+
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            $('#SearchPayment').keyup(function () {
+                var filter = $('a.filter.nav-link.active').attr('id');
+                var keyword = $(this).val();
+                if (filter == 'PaymentList') {
+                    PaymentList(filter, keyword);
+                } else {
+                    ReceiptList(keyword);
+                }
+            });
+        })
+
+        Voucher = (PaymentId, Name) => {
+            $('#Voucher-'+PaymentId).removeClass('btn-outline-primary').addClass('btn-outline-info').html('Procesando...');
+            fetch("@Url.Action("Voucher", "Receipt")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ PaymentId: PaymentId })
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    $('#Voucher-' + PaymentId).removeClass('btn-outline-info').addClass('btn-outline-success').html('Generado exitosamente');
+                    // It is necessary to create a new blob object with mime-type explicitly set
+                    // otherwise only Chrome works like it should
+                    var newBlob = new Blob([blob], { type: "application/pdf" });
+
+                    // IE doesn't allow using a blob object directly as link href
+                    // instead it is necessary to use msSaveOrOpenBlob
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(newBlob);
+                        return;
+                    }
+
+                    // For other browsers:
+                    // Create a link pointing to the ObjectURL containing the blob.
+                    const data = window.URL.createObjectURL(newBlob);
+                    var link = document.createElement('a');
+                    link.href = data;
+                    //link.setAttribute('target', '_blank');
+                    link.download = 'Voucher - ' + Name + '.pdf';
+                    link.click();
+                    setTimeout(function () {
+                        // For Firefox it is necessary to delay revoking the ObjectURL
+                        window.URL.revokeObjectURL(data);
+                    }, 100);
+                })
+                .catch(error => console.error(error))
+        }
+
+        //// DESCARGA DIRECTA
+        //showFile = blob => {
+        //    // It is necessary to create a new blob object with mime-type explicitly set
+        //    // otherwise only Chrome works like it should
+        //    var newBlob = new Blob([blob], { type: "application/pdf" });
+
+        //    // IE doesn't allow using a blob object directly as link href
+        //    // instead it is necessary to use msSaveOrOpenBlob
+        //    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        //        window.navigator.msSaveOrOpenBlob(newBlob);
+        //        return;
+        //    }
+
+        //    // For other browsers:
+        //    // Create a link pointing to the ObjectURL containing the blob.
+        //    const data = window.URL.createObjectURL(newBlob);
+        //    var link = document.createElement('a');
+        //    link.href = data;
+        //    link.download = "file.pdf";
+        //    link.click();
+        //    setTimeout(function () {
+        //        // For Firefox it is necessary to delay revoking the ObjectURL
+        //        window.URL.revokeObjectURL(data);
+        //    }, 100);
+        //}
+
+        SaveReceipt = () => {
+            let ReceiptForm = document.getElementById('ReceiptForm');
+            let ReceiptData = new FormData(ReceiptForm);
+
+            fetch("@Url.Action("Index", "Receipt")", {
+                method: 'POST',
+                body: ReceiptData
+            })
+                .then(response => response.json())
+                .then(receiptExists => {
+                    if (receiptExists == "emptyImage") {
+                        $('[href="#image"]').addClass('active show');
+                        $('[href="#image"]').attr('aria-selected', 'active');
+                        $('.moving-tab').css({
+                            'transform': 'translate3d(' + -8 + 'px, ' + 0 + 'px, 0)',
+                            'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
+                        });
+                        $('#method,#voucher,[href="#method"],[href="#voucher]"').removeClass('active show');
+                        $('#image').addClass('active show');
+                        md.showNotification('bottom', 'right', 'danger', 'Debes seleccionar una imagen para poder continuar.');
+                    } else {
+                        if (!receiptExists) {
+                            $('#PaymentList').removeClass('active show');
+                            $('#MyPayment').addClass('active');
+                            ReceiptList('');
+                            $('#AddEditReceiptModal').modal('hide');
+                            md.showNotification('bottom', 'right', 'success', 'El comprobante de pago se envió correctamente. En espera de autorización');
+                        } else {
+                            md.showNotification('bottom', 'right', 'danger', 'Ya has enviado un pago y está en proceso de autorización, da click en "PAGOS REALIZADOS" para mayor información.');
+                        }
+                    }
+                })
+                .catch(errror => console.error(error))
+        }
+
+        AddEditReceipt = (PaymentId, ReceiptId)  => {
+            fetch("@Url.Action("AddEditReceipt", "Receipt")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ PaymentId: PaymentId, ReceiptId: ReceiptId })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ModalContainer').html(data);
+
+                    $('.moving-tab').hide();
+                    $('#AddEditReceiptModal').on('shown.bs.modal', function () {
+                        Site.initMaterialWizard();
+                        $('.moving-tab').show();
+                        $('.btn-next').removeClass('disabled');
+                    });
+                    $('#AddEditReceiptModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        Zoom = (imageURL, Voucher) => {
+            $('#Navbar').hide();
+            const viewer = new ImageViewer.FullScreenViewer({ zoomValue: 110 });
+            viewer.show(imageURL, imageURL);
+            $('.iv-image-view').append('<div style="z-index: 100; position: relative; margin: auto; width: 80%; padding: 10px; text-align: center;"><h1 style="font-weight: bold; color: white; text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; ">Referencia: ' + Voucher + '</h1>');
+            $('.iv-fullscreen-close').on('click', function () {
+                $('#Navbar').show();
+            })
+        }
+
+        ReceiptList = Keyword => {
+            fetch('@Url.Action("ReceiptList", "Receipt")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Keyword: Keyword })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#PaymentContainer').hide();
+                    $('#ReceiptContainer').show().html(data);
+                })
+                .catch(error => console.error(error))
+        }
+
+        PaymentList = (Filter, Keyword) => {
+            fetch("@Url.Action("PaymentList", "Receipt")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Filter: Filter, Keyword: Keyword })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ReceiptContainer').hide();
+                    $('#PaymentContainer').show().html(data);
+                })
+                .catch(error => console.error(error))
+        }
+    </script>
+}

@@ -1,0 +1,333 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.UnitVM>
+
+@{
+    ViewBag.Title = "Instrumentación";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="card-icon">
+                    <i class="material-icons">style</i>
+                </div>
+                <h4 class="card-title">Instrumentación de <b>@ViewBag.NombreAsignatura</b></h4>
+            </div>
+            <div class="card-body">
+                <div class="toolbar d-flex justify-content-end">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <a href="@Url.Action("Index", "Subject")" class="btn btn-round btn-sm btn-outline-warning">
+                        <i class="material-icons">arrow_back</i> Regresar
+                    </a>
+                    <button class="btn btn-round btn-sm btn-outline-primary" onclick="AddEdit(0)">
+                        <i class="material-icons">add</i> Agregar instrumentación
+                    </button>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+
+<div class="row" id="Container">
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div id="card-@item.Id" class="card card-nav-tabs col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <div class="card-header card-header-primary">
+                    <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs d-flex justify-content-around" data-tabs="tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#competencia-@item.Id" data-toggle="tab">Competencia</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#temas-@item.Id" data-toggle="tab">Temas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#aprendizaje-@item.Id" data-toggle="tab">Aprendizaje</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#enseñanza-@item.Id" data-toggle="tab">Enseñanza</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#competencias-@item.Id" data-toggle="tab">Competencias genéricas</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active text-center" id="competencia-@item.Id">
+                            <h4 class="card-title">Unidad @item.Indice: @item.Competencia</h4>
+                            @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>*@
+                            <p class="card-text">@item.Descripcion</p>
+                            <a href="javscript:;" onclick="Confirm(@item.Id);" class="card-link text-danger" rel="tooltip" data-toggle="tooltip" data-placement="top" title="Eliminar unidad"><i class="material-icons">delete</i></a>
+                        </div>
+                        <div class="tab-pane" id="temas-@item.Id">
+                            <ul>
+                                @if (item.Topics.Any())
+                                {
+                                    foreach (var topic in item.Topics)
+                                    {
+                                        <li>@string.Concat(topic.Indice, " ", topic.Descripcion)</li>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <li class="text-muted">Sin elementos para mostrar</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="aprendizaje-@item.Id">
+                            <ul>
+                                @if (item.Topics.Any())
+                                {
+                                    foreach (var topic in item.LearningActivities)
+                                    {
+                                        <li>@topic.Descripcion</li>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <li class="text-muted">Sin elementos para mostrar</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="enseñanza-@item.Id">
+                            <ul>
+                                @if (item.Topics.Any())
+                                {
+                                    foreach (var topic in item.TeachingActivities)
+                                    {
+                                        <li>@topic.Descripcion</li>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <li class="text-muted">Sin elementos para mostrar</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="competencias-@item.Id">
+                            <ul>
+                                @if (item.Topics.Any())
+                                {
+                                    foreach (var topic in item.Proeficiencies)
+                                    {
+                                        <li>@topic.Descripcion</li>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <li class="text-muted">Sin elementos para mostrar</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <i class="material-icons">notifications</i>
+            </div>
+            <h4 class="info-title">Sin instrumentaciones</h4>
+            <p>No se encontraron instrumentaciones para esta asignatura</p>
+        </div>
+    }
+</div>
+
+
+<div id="ModalContainer" style="margin-top: -50px">
+</div>
+
+<div class="modal fade modal-mini modal-primary" id="Confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-small">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Seguro que deseas eliminar este elemento?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-link" data-dismiss="modal">No</button>
+                <button id="ConfirmButton" onclick="DeleteUnit();" type="button" class="btn btn-success btn-link">Si</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            //DT('Active');
+            $('[rel="tooltip"]').tooltip();
+        })
+
+        List = () => {
+            const IdSubject = @this.Request.Url.Segments[3];
+
+            fetch('@Url.Action("ListInstrumentacion", "Subject")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({ Id: IdSubject })
+            })
+                .then(response => response.text())
+                .then(data => $('#Container').html(data))
+                .catch(error => console.error(error))
+        }
+
+        DeleteUnit = () => {
+            let Id = $('#ConfirmButton').attr('rel');
+            fetch('@Url.Action("DeleteUnit", "Subject")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        $('#card-' + Id + ', div.tooltip').hide('slow', () => { $('#card-' + Id + ', div.tooltip').remove(); });
+                        Site.OkNotification('Se eliminó la unidad')
+                    }
+                    $('#Confirm').modal('hide');
+                })
+                .catch(error => Site.ErrorNotification())
+        }
+
+        Confirm = Id => {
+            $('#ConfirmButton').attr('rel', Id);
+            $('#Confirm').modal('show');
+        }
+
+        Save = button => {
+            jQuery(button).attr('disabled', true);
+            let formData = new FormData(document.getElementById('Form'));
+
+            fetch('@Url.Action("SaveInstrumentation", "Subject")', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(success => {
+                    if (success) {
+                        List();
+                        $('#AddEditModal').modal('hide');
+                        Site.OkNotification('La instrumentación se guardó exitosamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEdit = Id => {
+            var IdSubject = @this.Request.Url.Segments[3];
+
+            fetch('@Url.Action("AddEditInstrumentation", "Subject")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({ Id: Id, IdSubject: IdSubject })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ModalContainer').html(data);
+
+                    $('.moving-tab').hide();
+                    $('#AddEditModal').on('shown.bs.modal', function () {
+                        Site.initMaterialWizard();
+                        $('.moving-tab').show();
+                        $('.btn-next').removeClass('disabled');
+                    });
+                    $('#AddEditModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        UpdateStatus = Id => {
+            fetch("@Url.Action("UpdateStatus", "Subject")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Site.OkNotification('El estado del registro se actualizó correctamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        DT = Filter => {
+            Table = $('#DT').DataTable({
+                destroy: true,
+                responsive: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '@Url.Action("DT", "Subject")',
+                    data: data => {
+                        data.Filter = Filter
+                    }
+                },
+                columns: [
+                    { data: 'Nombre' },
+                    { data: 'Clave' },
+                    { data: 'TPC' },
+                    { data: 'TimeCreatedFormatted' },
+                    {
+                        render: (data, type, row) => {
+                            if (row['Active']) {
+                                return '<div class="togglebutton"><label><input type="checkbox" checked="" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                            else {
+                                return '<div class="togglebutton"><label><input type="checkbox" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        render: (Id, type, full, meta) => '<button class="btn btn-round btn-outline-primary btn-fab btn-fab-mini" onClick="AddEdit(' + Id + ');"><i class="material-icons">edit</i></button>'
+                    }
+                ],
+                columnDefs: [
+                    { className: 'text-center', targets: [4, 5] }
+                ],
+                language: {
+                    url: '/Assets/json/SpanishDT.json'
+                },
+                initComplete: () => {
+                    $('select').selectpicker();
+                    Site.StyleDropdownDT();
+                    $('.material-datatables').show();
+                }
+            })
+        }
+    </script>
+} 

@@ -1,0 +1,415 @@
+﻿
+@{
+    ViewBag.Title = "SEPRET";
+
+    @*@User.Identity.Name
+
+        @System.Web.Security.Roles.GetRolesForUser().Single()*@
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="col-xl-9 col-sm-12">
+                    <div class="card-icon">
+                        <i class="material-icons">receipt</i>
+                    </div>
+                    <h4 class="card-title">Bitácora de pagos</h4>
+                </div>
+
+                <div class="col-xl-3 col-sm-12">
+
+                    <div class="form-group bmd-form-group mt-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">search</i></div>
+                            </div>
+                            <label class="bmd-label-floating prepend-label-margin">Buscar un pago...</label>
+                            <input type="text" class="form-control" id="SearchReceipt">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link disabled text-rose" data-toggle="tab" role="tablist">
+                                        Filtrar por:
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="Pending" class="filter nav-link active" data-toggle="tab" role="tablist" onclick="ReceiptList('Pending', '', 0);" style="cursor: pointer;">
+                                        Pendientes
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="Accepted" class="filter nav-link" data-toggle="tab" role="tablist" onclick="ReceiptList('Accepted', '', 0);" style="cursor: pointer;">
+                                        Por facturar
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="Finished" class="filter nav-link" data-toggle="tab" role="tablist" onclick="ReceiptList('Finished', '', 0);" style="cursor: pointer;">
+                                        Finalizados
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="Rejected" class="filter nav-link" data-toggle="tab" role="tablist" onclick="ReceiptList('Rejected', '', 0);" style="cursor: pointer;">
+                                        Rechazados
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="Deleted" class="filter nav-link" data-toggle="tab" role="tablist" onclick="ReceiptList('Deleted', '', 0);" style="cursor: pointer;">
+                                        Eliminados
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<nav>
+    <ul class="pagination justify-content-end" id="Pages"></ul>
+</nav>
+
+<div class="row" id="ReceiptContainer">
+
+    @if (ViewBag.Binnacle != null)
+    {
+        foreach (var item in ViewBag.Binnacle)
+        {
+            <div class="col-md-4 col-sm-12 col-lg-3 col-xl-3 d-flex align-items-stretch" id="@item.Id">
+                <div class="card card-product" data-count="0">
+                    <div onclick="Zoom('@item.Image', '@item.Voucher');" class="card-header card-header-image" data-header-animation="true" style="cursor:pointer;">
+                        <img class="img" src="@item.Image">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-actions text-center">
+                            <button type="button" class="btn btn-danger btn-link fix-broken-card">
+                                <i class="material-icons">build</i>
+                                (╬☉д⊙)
+                            </button>
+                            <button id="aceptarpago-@item.Id" onclick="AcceptReceipt(@item.Id);" type="button" class="btn btn-success btn-link" rel="tooltip" data-placement="left" title="Aceptar">
+                                <i class="material-icons text-large">done</i>
+                            </button>
+                            <button onclick="ConfirReceiptReject(@item.Id);" type="button" class="btn btn-danger btn-link" rel="tooltip" data-placement="right" title="Rechazar">
+                                <i class="material-icons text-large">close</i>
+                            </button>
+                        </div>
+                        <h4 class="card-title">
+                            @item.PersonName
+                        </h4>
+                        <div class="card-description">
+                            <p class="mb-0">@item.Enrollment</p>
+                            <p class="mb-0">@item.Email</p>
+                            <p>@item.Career</p>
+                            <p class="text-center mb-0">@item.PaymentName</p>
+                            <p>Recibido el: <b>@item.TimeCreatedFormatted</b></p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <h4>@item.PriceFormatted</h4>
+                        </div>
+                        <div class="stats">
+                            <p class="card-category text-success"><i class="material-icons">receipt</i> @item.MethodName: <b>@item.Voucher</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <i class="material-icons">notifications</i>
+            </div>
+            <h4 class="info-title">¡Genial!</h4>
+            <p>No tienes pendientes.</p>
+        </div>
+    }
+
+</div>
+
+
+<div class="modal fade" id="ConfirmReceiptRejectModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+
+                        <h4 class="card-title">Rechazar pago</h4>
+                    </div>
+                </div>
+                <div id="ReceiptRejectModalBody" class="modal-body">
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-primary btn-round" onclick="RejectReceipt();">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AddInvoiceModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+
+                        <h4 class="card-title">Adjuntar factura</h4>
+                    </div>
+                </div>
+                <div id="AddInvoiceModalBody" class="modal-body">
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-primary btn-round" onclick="SaveInvoice();">Adjuntar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-mini modal-primary" id="ConfirmDeleteReceiptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-small">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Deseas eliminar este elemento?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-link" data-dismiss="modal">No</button>
+                <button id="DeleteReceipt" type="button" class="btn btn-success btn-link">
+                    Si, eliminar
+                    <div class="ripple-container"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            Paginate('Pending');
+            $('#SearchReceipt').keyup(function () {
+                var filter = $('a.filter.nav-link.active').attr('id');
+                var keyword = $(this).val();
+                ReceiptList(filter, keyword);
+            });
+            $('.filter').click(function () {
+                var filter = $(this).attr('id');
+                Paginate(filter);
+            })
+        });
+
+        Paginate = Filter => {
+            $('#Pages').show();
+            fetch("@Url.Action("Paginate", "Dashboard")", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({ Filter: Filter })
+            })
+                .then(response => response.text())
+                .then(data => $('#Pages').html(data))
+                .catch(error => console.error(error))
+        }
+
+        SendMail = (Id, Type, RequierePDF) => {
+            fetch('@Url.Action("SendMail", "Dashboard")', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({
+                    idtickt: Id,
+                    Type: Type,
+                    RequierePDF: RequierePDF
+                })
+            })
+                .then(respuesta => respuesta.json())
+                .then(saliobien => {
+                    console.log('send');
+                        if (saliobien) {
+                            md.showNotification("bottom", "right", "success", "Se a enviado el correo.");
+                        } else {
+                            md.showNotification("bottom", "right", "danger", "Error al enviar el correo.");
+                        }
+                })
+                .catch(error => console.error(error))
+        }
+
+        DeleteReceipt = Id => {
+            fetch('@Url.Action("DeleteReceipt", "Dashboard")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(success => {
+                    if (success) {
+                        $('#ConfirmDeleteReceiptModal').modal('hide');
+                        $('#' + Id + ', div.tooltip').hide('slow', () => { $('#' + Id + ', div.tooltip').remove(); });
+                        md.showNotification('bottom', 'right', 'info', 'El elemento se eliminó con éxito');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+        }
+
+        ConfirReceiptDelete = Id => {
+            $('#ConfirmDeleteReceiptModal').modal('show');
+            $('#DeleteReceipt').attr('onclick', 'DeleteReceipt(' + Id + ');');
+        }
+
+        SaveInvoice = () => {
+            let AddInvoiceForm = document.getElementById('AddInvoiceForm');
+            let InvoiceFormData = new FormData(AddInvoiceForm);
+            let ReceiptId = InvoiceFormData.get('Id');
+
+            fetch('@Url.Action("SaveInvoice", "Dashboard")', {
+                method: 'POST',
+                body: InvoiceFormData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        SendMail(ReceiptId, 'Invoiced', true);
+                        $('#AddInvoiceModal').modal('hide');
+                        $('#' + ReceiptId + ', div.tooltip').hide('slow', () => { $('#' + ReceiptId + ', div.tooltip').remove(); });
+                        md.showNotification('bottom', 'right', 'success', 'La factura se adjunto exitosamente');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddInvoice = ReceiptId => {
+            fetch('@Url.Action("AddInvoice", "Dashboard")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ ReceiptId: ReceiptId })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#AddInvoiceModalBody').html(data);
+                    $('#AddInvoiceModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        Zoom = (imageURL, Voucher) => {
+            $('#Navbar').hide();
+            const viewer = new ImageViewer.FullScreenViewer({ zoomValue: 110 });
+            viewer.show(imageURL, imageURL);
+            $('.iv-image-view').append('<div style="z-index: 100; position: relative; margin: auto; width: 80%; padding: 10px; text-align: center;"><h1 style="font-weight: bold; color: white; text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; ">Referencia: ' + Voucher + '</h1>');
+            $('.iv-fullscreen-close').on('click', function () {
+                $('#Navbar').show();
+            })
+        }
+
+        RejectReceipt = () => {
+            let ReceiptRejectForm = document.getElementById('ReceiptRejectForm');
+            let ReceiptRejectData = new FormData(ReceiptRejectForm);
+            let ReceiptId = ReceiptRejectData.get('ReceiptId');
+
+            fetch('@Url.Action("RejectReceipt", "Dashboard")', {
+                method: 'POST',
+                body: ReceiptRejectData
+            })
+                .then(response => response.json())
+                .then(success => {
+                    if (success) {
+                        SendMail(ReceiptId, 'Rejected', false);
+                        $('#ConfirmReceiptRejectModal').modal('hide');
+                        $('#' + ReceiptId + ', div.tooltip').hide('slow', () => { $('#' + ReceiptId + ', div.tooltip').remove(); });
+                        md.showNotification('bottom', 'right', 'info', 'El pago ha sido marcado como inválido');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        ConfirReceiptReject = Id => {
+            fetch('@Url.Action("ConfirmReceiptReject", "Dashboard")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ReceiptRejectModalBody').html(data);
+                    $('#ConfirmReceiptRejectModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        AcceptReceipt = ReceiptId => {
+            $('#aceptarpago-' + ReceiptId).prop('disabled', true);
+            fetch('@Url.Action("AcceptReceipt", "Dashboard")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ ReceiptId: ReceiptId })
+            })
+                .then(response => response.json())
+                .then(success => {
+                    if (success) {
+                        SendMail(ReceiptId, 'Accepted', false);
+                        $('#' + ReceiptId + ', div.tooltip').hide('slow', () => { $('#' + ReceiptId + ', div.tooltip').remove(); });
+                        md.showNotification('bottom', 'right', 'success', 'El pago ha sido marcado como valido');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        ReceiptList = (Filter, Keyword, Skip) => {
+            fetch('@Url.Action("ReceiptList", "Dashboard")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
+            })
+                .then(response => response.text())
+                .then(data => $('#ReceiptContainer').html(data))
+                .catch(error => console.error(error))
+        }
+    </script>
+
+} 

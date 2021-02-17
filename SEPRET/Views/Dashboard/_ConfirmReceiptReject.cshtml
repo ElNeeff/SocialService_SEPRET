@@ -1,0 +1,47 @@
+﻿@model SEPRET.Models.Custom.ConfirmReceiptRejectVM
+
+<div class="card-body">
+    <form id="ReceiptRejectForm">
+
+        <div class="form-group bmd-form-group" style="display: none;">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">vpn_key</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Id</label>
+                @Html.TextBoxFor(x => x.ReceiptId, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            @Html.DropDownListFor(x => x.ReasonId, ViewBag.ReasonList as SelectList, new { @id = "ReasonId", @class = "selectpicker col-12", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona un motivo" })
+        </div>
+
+        <div id="DescriptionContainer" class="form-group bmd-form-group" style="display: none;">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">comment</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Descripción</label>
+                @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @rows = "5", id = "Description" })
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    $('select').selectpicker();
+
+    $('#ReasonId').change(function () {
+        var Id = $(this).val();
+        var opcion = $(this).children("option:selected").text();
+        $('#Description').val('');
+
+        if (opcion.toLowerCase().indexOf('otro') != -1) {
+            $('#DescriptionContainer').removeClass('is-filled').show();
+        } else {
+            $('#DescriptionContainer').hide();
+        }
+    })
+</script>

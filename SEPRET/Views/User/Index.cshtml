@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="col-xl-9 col-sm-12">
+                    <div class="card-icon">
+                        <i class="material-icons">group</i>
+                    </div>
+                    <h4 class="card-title">Lista de usuarios</h4>
+                </div>
+
+                <div class="col-xl-3 col-sm-12">
+
+                    <div class="form-group bmd-form-group mt-4">
+                        <button class="btn btn-round btn-sm btn-outline-primary float-right" onclick="AddEditUser(0);">
+                            <i class="material-icons">person_add</i>Agregar usuario
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="UserDT('Active');" style="cursor: pointer;">
+                                        Activos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="UserDT('Inactive');" style="cursor: pointer;">
+                                        Inactivos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="UserDT('Student');" style="cursor: pointer;">
+                                        Alumnos
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="material-datatables" style="display: none;">
+                    <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="col-sm-12">
+                            <table id="UserDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>N° de control</th>
+                                        <th>Nombre</th>
+                                        <th>Carrera</th>
+                                        <th>Privilegio</th>
+                                        <th>Correo electrónico</th>
+                                        <th>Último inicio de sesión</th>
+                                        <th>Activo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>N° de control</th>
+                                        <th>Nombre</th>
+                                        <th>Carrera</th>
+                                        <th>Privilegio</th>
+                                        <th>Correo electrónico</th>
+                                        <th>Último inicio de sesión</th>
+                                        <th>Activo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<div class="modal fade" id="AddEditUserModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+
+                        <h4 class="card-title">Detalles del usuario</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-primary btn-round" onclick="SaveUser();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            UserDT("Active");
+        });
+
+        SaveUser = () => {
+            var UserData = $('#UserForm').serialize();
+
+            fetch('@Url.Action("Index", "User")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: UserData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Table.draw();
+                        $('#AddEditUserModal').modal('hide');
+                        md.showNotification('bottom', 'right', 'success', 'Usuario guardado exitosamente');
+                    }
+                    else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud.');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEditUser = Id => {
+            fetch('@Url.Action("AddEditUser", "User")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('.modal-body').empty().append(data);
+                    $('#AddEditUserModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        UpdateUserStatus = Id => {
+            fetch('@Url.Action("UpdateUserStatus", "User")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        md.showNotification('bottom', 'right', 'success', 'Usuario actualizado exitosamente.');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un errror al actualizar el usuario.');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        UserDT = Filter => {
+            $('.material-datatables').hide();
+            Table = $('#UserDT').DataTable({
+                'bDestroy': true,
+                responsive: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                "ajax": {
+                    type: 'POST',
+                    url: '@Url.Action("UserDT", "User")',
+                    data: data => {
+                        data.Filter = Filter;
+                    }
+                },
+                columns: [
+                    { 'data': 'Enrollment' },
+                    { 'data': 'UserFullName' },
+                    { 'data': 'CareerName' },
+                    { 'data': 'PermissionName' },
+                    { 'data': 'Email' },
+                    { 'data': 'LastLoginFormatted' },
+                    {
+                        'render': (data, type, row) => {
+                            if (row['Active']) {
+                                return '<div class="togglebutton"> <label> <input type="checkbox" checked="" onClick="UpdateUserStatus(' + row['Id'] + ');"> <span class="toggle"></span> </label> </div>';
+                            } else {
+                                return '<div class="togglebutton"> <label> <input type="checkbox" onClick="UpdateUserStatus(' + row['Id'] + ');"> <span class="toggle"></span> </label> </div>'
+                            }
+                        }
+                    },
+                    {
+                        'data': 'Id',
+                        'render': (Id, type, full, meta) => '<button class="btn btn-outline-primary btn-round btn-fab btn-fab-mini" onClick="AddEditUser(' + Id + ');"><i class="material-icons">edit</i></button>'
+                    }
+                ],
+                columnDefs: [
+                    { className: 'text-center', targets: [3, 4, 5] }
+                ],
+                language: {
+                    'url': '/Assets/json/SpanishDT.json'
+                },
+                initComplete: () => {
+                    $('select').selectpicker();
+                    Site.StyleDropdownDT();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('.material-datatables').show();
+                }
+            });
+        }
+    </script>
+}

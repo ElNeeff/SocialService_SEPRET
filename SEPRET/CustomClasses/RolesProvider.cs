@@ -1,0 +1,79 @@
+﻿using SEPRET.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Security;
+
+namespace SEPRET.CustomClasses
+{
+    public class RolesProvider : RoleProvider
+    {
+        public override string ApplicationName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public override void AddUsersToRoles(string[] usernames, string[] roleNames)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CreateRole(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string[] FindUsersInRole(string roleName, string usernameToMatch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string[] GetAllRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string[] GetRolesForUser(string email)
+        {
+            using (SEPRETEntities DBC = new SEPRETEntities())
+            {
+                var User = DBC.People.FirstOrDefault(x => x.Email.ToLower() == email);
+
+                if (User == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    string[] Roles = User.PersonPermissions.Select(x => x.Permission.Name).ToArray();
+
+                    return Roles;
+                }
+            }
+            throw new NotImplementedException();
+        }
+
+        public override string[] GetUsersInRole(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsUserInRole(string username, string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool RoleExists(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

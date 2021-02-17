@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+
+<style>
+    .outer {
+        align-items: stretch;
+        display: flex;
+        height: inherit;
+        justify-content: center;
+        align-content: stretch;
+    }
+
+    .inner {
+        align-items: center;
+        display: flex;
+        background-color: brown;
+        align-content: stretch;
+    }
+</style>
+
+@*<div class="outer">
+        <div class="inner col-12">
+            <div class="info text-center">
+                <div class="icon icon-primary">
+                    <img src="~/Assets/img/favicon.png" />
+                </div>
+                <h4 class="info-title">¡Bienvenido!</h4>
+                <p>En esta plataforma podrás realizar pagos para los distintos servicios del Instituto Tecnológico de Mathehuala</p>
+            </div>
+        </div>
+    </div>*@
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <img src="~/Assets/img/favicon.png" />
+            </div>
+            <h4 class="info-title">¡Bienvenido!</h4>
+            <p>En esta plataforma podrás realizar pagos para los distintos servicios del Instituto Tecnológico de Mathehuala</p>
+            <small class="text-muted text-success">En caso de tener algún problema con la plataforma puedes comunicarte al correo: <a href="mailto:comentarios@matehuala.tecnm.mx" rel="tooltip" data-toggle="tooltip" data-placement="top" title="Clic para enviar email">comentarios@matehuala.tecnm.mx</a></small>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(() => {
+            $('[rel="tooltip"]').tooltip();
+        })
+    </script>
+}

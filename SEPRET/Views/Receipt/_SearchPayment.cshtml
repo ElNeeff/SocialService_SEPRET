@@ -1,0 +1,35 @@
+﻿
+@model IEnumerable<SEPRET.Models.Custom.PaymentVM>
+
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="col-md-4 col-lg-4 col-xl-3 d-flex align-items-stretch">
+            <div class="card card-pricing">
+                <div class="card-body ">
+                    <div class="card-icon">
+                        <i class="material-icons">receipt_long</i>
+                    </div>
+                    <h3 class="card-title">@item.PriceFormatted</h3>
+                    <h6 class="card-title">@item.Name</h6>
+                    @*<p class="card-description">
+                            Número de cuenta: @item.Account
+                        </p>*@
+                    <button id="Voucher-@item.Id" onclick="Voucher(@item.Id, '@item.Name');" class="btn btn-outline-primary btn-round">Generar voucher</button>
+                    <button onclick="AddEditReceipt(@item.Id, 0);" class="btn btn-primary btn-round">Subir comprobante</button>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="info">
+        <div class="icon icon-primary">
+            <i class="material-icons">notification_important</i>
+        </div>
+        <h4 class="info-title">¡Oops!</h4>
+        <p>No se econtraron resultados con tu criterio de búsqueda.</p>
+    </div>
+}

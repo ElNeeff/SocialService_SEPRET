@@ -1,0 +1,71 @@
+﻿
+.prepend-label-margin {
+    margin-left: 55px !important;
+}
+
+.text-large {
+    font-size: 2.1rem !important;
+}
+
+.navbar .navbar-nav .nav-item.active .nav-link, .navbar .navbar-nav .nav-item.active .nav-link:hover, .navbar .navbar-nav .nav-item.active .nav-link:focus {
+    background-color: #1e88e5 !important;
+}
+
+.text-black {
+    color: #000000 !important;
+}
+
+.header-filter::before {
+    background: #ffffff00;
+}
+
+.off-canvas-sidebar .navbar .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
+    background: #c8c8c8;
+}
+
+.off-canvas-sidebar .navbar-collapse:after {
+    background-color: #f9f9f9;
+}
+
+.off-canvas-sidebar .navbar-toggler .navbar-toggler-icon {
+    background-color: #000000 !important;
+}
+
+.progress-bar-gray {
+    background: #848484;
+}
+
+@media (max-width: 767px) {
+    .mt-sm-5-custom {
+        margin-top: 18rem !important;
+    }
+}
+
+
+/* side panel pdf visor CSS */
+.panel-wrap {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 30em;
+    transform: translateX(100%);
+    transition: .3s ease-out;
+    z-index: 9999;
+    width: inherit;
+}
+
+.panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #eeeeee;
+    overflow: auto;
+    padding: 1em;
+}
+
+.activeVisor {
+    transform: translateX(0%);
+}

@@ -1,0 +1,124 @@
+﻿@model SEPRET.Models.Custom.ReceiptVM
+
+<div class="wizard-container modal fade" id="AddEditReceiptModal" tabindex="-1" role="dialog" aria-labelledby="AddEditReceiptModal" aria-hidden="true" style="margin-top: -50px">
+    <div class="card card-wizard modal-dialog modal-lg" role="document" data-color="rose" id="wizardProfile">
+        <div class="modal-content">
+            <form id="ReceiptForm">
+                <div class="card-header text-center">
+                    <h3 class="card-title">
+                        Registrar nuevo producto
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </h3>
+                    <h5 class="card-description">Detalles del producto</h5>
+                </div>
+                <div class="wizard-navigation">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#image" data-toggle="tab" role="tab">
+                                Imagen del ticket de pago
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#voucher" data-toggle="tab" role="tab">
+                                Número de comprobante
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#method" data-toggle="tab" role="tab">
+                                Tipo de pago
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+
+                        <div class="alert alert-primary alert-with-icon mt-0" data-notify="container">
+                            <i class="material-icons" data-notify="icon">notifications</i>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <i class="material-icons">close</i>
+                            </button>
+                            <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+                            <span data-notify="message">
+                                Asegurate que la información del ticket sea plenamente legible y visible, ya que si no se puede apreciar correctamente en la fotografía puede ser motivo de rechazo
+                            </span>
+                        </div>
+                        <div class="tab-pane active" id="image">
+                            @Html.HiddenFor(x => x.Id)
+                            @Html.HiddenFor(x => x.PaymentId)
+                            <div class="row justify-content-center mt-5">
+                                <div class="col-sm-4">
+                                    <div class="picture-container">
+                                        <div class="picture">
+                                            <img src="@ViewBag.RelativePath" class="picture-src" id="wizardPicturePreview" />
+                                            @Html.TextBoxFor(x => x.File, new { @type = "file", @id = "wizard-picture", @accept = "image/*" })
+                                        </div>
+                                        <h6 class="description">Sube una imagen</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="voucher">
+                            <div class="row justify-content-center mt-5">
+                                <div class="col-sm-6">
+                                    <div class="input-group form-control-lg">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">receipt</i>
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ProductName" class="bmd-label-floating">Número de comprobante</label>
+                                            @Html.TextBoxFor(x => x.Voucher, new { @required = "", @type = "text", @class = "form-control", @id = "voucher", @name = "voucher" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="method">
+                            <div class="row justify-content-center mt-5">
+                                <div class="col-12">
+                                    <h5 class="info-text"> ¿Cuál método de pago empleaste? </h5>
+                                </div>
+                                <div class="col-8 text-center">
+                                    <div class="form-group select-wizard">
+                                        @Html.DropDownListFor(x => x.MethodId, ViewBag.MethodList as SelectList, new { @class = "selectpicker col-12", @id = "method", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona el método de pago que empleaste" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="mr-auto">
+                        <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="Anterior">
+                    </div>
+                    <div class="ml-auto">
+                        <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Siguiente">
+                        <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" onclick="SaveReceipt();" name="finish" value="Finalizar" style="display: none;">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function () {
+        $('.card.card-wizard').addClass('active');
+    }, 600);
+
+    $('.moving-tab').hide();
+
+    $('#AddEditReceiptModal').on('shown.bs.modal', function () {
+        Site.initWizardForms();
+        $('.moving-tab').show();
+        $('.btn-next').removeClass('disabled');
+    })
+
+    $('select').selectpicker();
+
+</script>

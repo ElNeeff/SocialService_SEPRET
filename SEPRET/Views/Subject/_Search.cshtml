@@ -1,0 +1,124 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.UnitVM>
+
+
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div id="card-@item.Id" class="card card-nav-tabs col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="card-header card-header-primary">
+                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <ul class="nav nav-tabs d-flex justify-content-around" data-tabs="tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#competencia-@item.Id" data-toggle="tab">Competencia</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#temas-@item.Id" data-toggle="tab">Temas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#aprendizaje-@item.Id" data-toggle="tab">Aprendizaje</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#enseñanza-@item.Id" data-toggle="tab">Enseñanza</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#competencias-@item.Id" data-toggle="tab">Competencias genéricas</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active text-center" id="competencia-@item.Id">
+                        <h4 class="card-title">Unidad @item.Indice: @item.Competencia</h4>
+                        @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>*@
+                        <p class="card-text">@item.Descripcion</p>
+                        <a href="javscript:;" onclick="Confirm(@item.Id);" class="card-link text-danger" rel="tooltip" data-toggle="tooltip" data-placement="top" title="Eliminar unidad"><i class="material-icons">delete</i></a>
+                    </div>
+                    <div class="tab-pane" id="temas-@item.Id">
+                        <ul>
+                            @if (item.Topics.Any())
+                            {
+                                foreach (var topic in item.Topics)
+                                {
+                                    <li>@string.Concat(topic.Indice, " ", topic.Descripcion)</li>
+                                }
+
+                            }
+                            else
+                            {
+                                <li class="text-muted">Sin elementos para mostrar</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="aprendizaje-@item.Id">
+                        <ul>
+                            @if (item.Topics.Any())
+                            {
+                                foreach (var topic in item.LearningActivities)
+                                {
+                                    <li>@topic.Descripcion</li>
+                                }
+
+                            }
+                            else
+                            {
+                                <li class="text-muted">Sin elementos para mostrar</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="enseñanza-@item.Id">
+                        <ul>
+                            @if (item.Topics.Any())
+                            {
+                                foreach (var topic in item.TeachingActivities)
+                                {
+                                    <li>@topic.Descripcion</li>
+                                }
+
+                            }
+                            else
+                            {
+                                <li class="text-muted">Sin elementos para mostrar</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="competencias-@item.Id">
+                        <ul>
+                            @if (item.Topics.Any())
+                            {
+                                foreach (var topic in item.Proeficiencies)
+                                {
+                                    <li>@topic.Descripcion</li>
+                                }
+
+                            }
+                            else
+                            {
+                                <li class="text-muted">Sin elementos para mostrar</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="info text-center">
+        <div class="icon icon-primary">
+            <i class="material-icons">notifications</i>
+        </div>
+        <h4 class="info-title">Sin instrumentaciones</h4>
+        <p>No se encontraron instrumentaciones para esta asignatura</p>
+    </div>
+}
+
+<script>
+    $("time.timeago").timeago();
+    $('[rel="tooltip"]').tooltip();
+</script>

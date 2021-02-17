@@ -1,0 +1,198 @@
+﻿@model long?
+
+<div class="card card-signup card-plain">
+    <div class="modal-header">
+        <div class="card-header card-header-primary text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="material-icons">clear</i>
+            </button>
+            <h4 class="card-title">Seleccionar docente</h4>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="card-body">
+            <div class="toolbar">
+                <!--        Here you can write extra buttons/actions for the toolbar              -->
+                <div class="row">
+                    <ul id="filter" class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link disabled text-rose" data-toggle="tab" role="tablist">
+                                Filtrar por:
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript;:" rel="MyDepartment" class="nav-link active" data-toggle="tab" role="tablist" onclick="DT('MyDepartment');" style="cursor: pointer;">
+                                Departamental
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript;:" rel="Others" class="nav-link" data-toggle="tab" role="tablist" onclick="DT('Others');" style="cursor: pointer;">
+                                Todos
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="material-datatables" style="display: none;">
+                <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="col-sm-12">
+                        <table id="TeacherDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Asignaturas</th>
+                                    <th>Asignar</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Asignaturas</th>
+                                    <th>Asignar</th>
+                                </tr>
+                            </tfoot>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-footer text-center">
+    <button class="btn btn-primary btn-round" data-dismiss="modal">Cerrar</button>
+</div>
+
+
+<script>
+    $(() => {
+        DT('MyDepartment');
+        //$('#Modal').on('shown.bs.modal', function (e) {
+        //})
+    });
+
+    UpdateTeacher= Id_Person => {
+        fetch('@Url.Action("UpdateTeacher", "Subject")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;'
+            },
+            body: JSON.stringify({ Id_Person: Id_Person, Id_Subject: @Model })
+        })
+            .then(response => response.json())
+            .then(success => {
+                if (success) {
+                    Table.draw();
+                    @*$('#Modal').on('hidden.bs.modal', function (e) {
+                        $('#' + @Model + ', div.tooltip').hide('slow', () => { $('#' + @Model + ', div.tooltip').remove(); });
+                    })*@
+                    Site.OkNotification('La acción se procesó correctamente');
+                } else {
+                    Site.ErrorNotification();
+                }
+            })
+            .catch(error => console.error(error))
+    }
+
+    @*ListMember = (Id, Filter) => {
+        fetch('@Url.Action("ListMember", "Project")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;'
+            },
+            body: JSON.stringify({Id: Id, Filter: Filter})
+        })
+            .then(response => response.text())
+            .then(data => $('.persons').html(data))
+            .catch(error => console.error(error))
+    }
+
+    MemberDictum = (Id, Dictum, button) => {
+        jQuery(button).Modelttr('disabled', true);
+        fetch('@Url.Action("MemberDictum", "Project")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;'
+            },
+            body: JSON.stringify({Id: Id, Dictum: Dictum})
+        })
+            .then(response => {
+                if (response.ok) {
+                    $('#' + Id + ', div.tooltip').hide('slow', () => { $('#' + Id + ', div.tooltip').remove(); });
+                    Site.OkNotification('La acción se procesó correctamente');
+                } else {
+                    Site.ErrorNotification();
+                }
+            })
+            .catch(error => console.error(error))
+    }*@
+
+    DT = Filter => {
+        Id_Subject = @Model;
+        Table = $('#TeacherDT').DataTable({
+            destroy: true,
+            responsive: true,
+            autoWidth: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                type: 'POST',
+                url: '@Url.Action("TeacherDT", "Subject")',
+                data: data => {
+                    data.Filter = Filter;
+                    data.Id_Subject = Id_Subject;
+                }
+            },
+            columns: [
+                { data: 'UserFullName' },
+                {
+                    render: (data, type, row) => {
+                        //var IdCarreras = JSON.parse(row['Projects']);
+                        //console.log(IdCarreras);
+                        let subjects = '';
+                        row['Subjects'].forEach(({ Id, Nombre }) => {
+                            //subjects += '<p class=\'mb-0\'><a class=\'text-primary dropdown-item\' href=\'javascript:;\' rel=\'tooltip\' data-placement=\'right\' title=\'Clic para ver detalles\' onClick=\'Details(' + Id + ', true);\'>' + Nombre + '</a></p>';
+                            subjects += `<li> ${ Nombre } </li>`;
+                        });
+
+                        if (row['Subjects'].length == 0) {
+                            return '<small class="text-muted">Sin asignaturas</small>';
+                        } else if (row['Subjects'].length >= 1 && row['Subjects'].length <= 2) {
+                            return '<a href="javascript:;" class="badge badge-success" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="' + subjects + '">' + row['Subjects'].length + ' en curso</a>';
+                        } else if (row['Subjects'].length >= 3 && row['Subjects'].length <= 5) {
+                            return '<a href="javascript:;" class="btn btn-warning" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="' + subjects + '">' + row['Subjects'].length + ' en curso</a>';
+                        } else {
+                            return '<a href="javascript:;" class="btn btn-danger" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="' + subjects + '">' + row['Subjects'].length + 'en curso</a>';
+                        }
+                    }
+                },
+                {
+                    render: (data, type, row) => {
+                        if (row['Active']) {
+                            return '<div class="form-check form-check-inline mt-0"> <label class="form-check-label"> <input onClick="UpdateTeacher(' + row['Id'] + ', \'Revisor\');" checked="" class="form-check-input" type="checkbox" value=""> <span class="form-check-sign" style="margin-top: -5px;"> <span class="check"></span> </span> </label> </div>';
+                        }
+                        else {
+                            return '<div class="form-check form-check-inline mt-0"> <label class="form-check-label"> <input onClick="UpdateTeacher(' + row['Id'] + ', \'Revisor\');" class="form-check-input" type="checkbox" value=""> <span class="form-check-sign" style="margin-top: -5px;"> <span class="check"></span> </span> </label> </div>';
+                        }
+                    }
+                },
+            ],
+            columnDefs: [
+                { className: "text-center", targets: [1, 2] }
+            ],
+            language: {
+                url: '/Assets/json/SpanishDT.json'
+            },
+            initComplete: () => {
+                $('[data-toggle="popover"]').popover();
+                $('select').selectpicker();
+                Site.StyleDropdownDT();
+                $('.material-datatables').show();
+                $("[data-toggle='popover']").on('shown.bs.popover', function () {
+                    $('[rel="tooltip"]').tooltip();
+                });
+            }
+        })
+    }
+
+</script>

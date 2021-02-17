@@ -1,0 +1,56 @@
+﻿@model SEPRET.Models.Custom.PaymentVM
+
+<div class="card-body">
+    <form id="PaymentForm">
+
+        <div class="form-group bmd-form-group" style="display: none;">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">vpn_key</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Id</label>
+                @Html.TextBoxFor(x => x.Id, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">receipt</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Nombre</label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">attach_money</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Importe</label>
+                @Html.TextBoxFor(x => x.Price, new { @type = "text", @pattern = @"^\d*(\.\d{0,2})?$", @class = "form-control", @id = "Price" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">account_balance</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Cuenta/Lugar</label>
+                @Html.TextBoxFor(x => x.Account, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    $("#Price").blur(function () {
+        this.value = parseFloat(this.value).toFixed(2);
+    });
+    $('#AddEditPaymentModal').on('shown.bs.modal', function () {
+        $('#Price').val(parseFloat($('#Price').val()).toFixed(2));
+    });
+</script>

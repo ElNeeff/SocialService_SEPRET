@@ -1,0 +1,99 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.ProjectVM>
+
+
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
+            <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg') ">
+                <div class="card-body">
+                    <h6 class="card-category text-info">@item.Empresa</h6>
+                    <h3 class="card-title mb-0">@item.Titulo</h3>
+                    <small class="text-muted"><time class="timeago" datetime="@item.TimeCreated.ToString("O")" rel="tooltip" data-placement="bottom" title="@item.TimeCreated"></time></small>
+                    <div class="card-description">
+                        <p>@item.Carrera</p>
+                        @item.Comentarios
+
+                        <div class="progress" style="height: 20px;">
+                            @switch ((int)item.Id_ProjectPhase)
+                            {
+                                case 5:
+                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 2</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 3</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En proceso">Etapa 4</div>
+                                    break;
+                                case 6:
+                                    <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa<br><em>Motivo:</em><br><b>@item.CommentCC</b>">Etapa 1</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 2</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 3</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En proceso">Etapa 4</div>
+                                    break;
+                                case 7:
+                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 1</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 2</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 3</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En proceso">Etapa 4</div>
+                                    break;
+                                case 8:
+                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa<br><em>@item.Revisores:</em><br><b>@item.CommentRevisor</b>">Etapa 2</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 3</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En proceso">Etapa 4</div>
+                                    break;
+                                case 9:
+                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa por @item.Revisores">Etapa 2</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 3</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En proceso">Etapa 4</div>
+                                    break;
+                                case 10:
+                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Revisión de anteproyecto">Etapa 2</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 3</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En proceso">Etapa 4</div>
+                                    break;
+                                case 11:
+                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Revisión de anteproyecto">Etapa 2</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Asesores: @item.Asesores">Etapa 3</div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En proceso">Etapa 4</div>
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </div>
+                    </div>
+                    <a href="javascript:;" class="btn btn-link btn-info" onclick="AddEdit(@item.Id, true);">
+                        <i class="material-icons">subject</i> Ver detalles
+                    </a>
+                    <a href="javascript:;" class="btn btn-link btn-success" onclick="ManageMembers(@item.Id);">
+                        <i class="material-icons">group_add</i> Integrantes
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        $('#Pages').show();
+    </script>
+}
+else
+{
+    <div class="info text-center">
+        <div class="icon icon-primary">
+            <i class="material-icons">notification_important</i>
+        </div>
+        <h4 class="info-title">¡Oops!</h4>
+        <p>No se econtraron resultados con tu criterio de búsqueda.</p>
+    </div>
+    <script>
+        $('#Pages').hide();
+    </script>
+}
+
+<script>
+    $("time.timeago").timeago();
+    $('[rel="tooltip"]').tooltip();
+</script>

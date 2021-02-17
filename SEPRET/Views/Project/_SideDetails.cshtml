@@ -1,0 +1,207 @@
+﻿@model SEPRET.Models.Custom.ProjectVM
+
+<div class="wizard-container" id="AddEditModal">
+    <div class="card card-wizard active" data-color="rose" id="wizardProfile">
+        <div class="card-header text-center">
+            <h3 class="card-title">
+                Detalles del proyecto
+            </h3>
+            <h5 class="card-description">@Model.Titulo</h5>
+        </div>
+        <form id="Details">
+            <div class="wizard-navigation">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#image" data-toggle="tab" role="tab">
+                            Información básica
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#voucher" data-toggle="tab" role="tab">
+                            Jusitficación y actividades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#method" data-toggle="tab" role="tab">
+                            Comentarios
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+
+                    <dliv class="tab-pane active" id="image">
+                        @Html.HiddenFor(x => x.Id)
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 col-md-12 col-sm-12 text-center">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Título</label>
+                                    @Html.TextBoxFor(x => x.Titulo, new { @required = "", @type = "text", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="bootstrap-tagsinput primary-badge">
+                                    <div class="form-group">
+                                        <label>Objetivos específicos</label>
+                                        @Html.TextBoxFor(x => x.ObjetivosEspecificos, new { @required = "", @class = "form-control", @data_role = "tagsinput", @placeholder = "Escribe un objetivo específico aquí" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Objetivo general</label>
+                                    @Html.TextAreaFor(x => x.ObjetivoGeneral, new { @required = "", @class = "form-control", @rows = "5" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(x => x.Id_Kind, ViewBag.KindList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Tipo", @required = "" })
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(x => x.Id_Ambit, ViewBag.AmbitList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Ámbito", @required = "" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(x => x.Id_Nature, ViewBag.NatureList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Carácter", @required = "" })
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(x => x.Id_Carreras, ViewBag.CareerList as MultiSelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Carrera", @required = "", @multiple = "" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </dliv>
+                    <div class="tab-pane" id="voucher">
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Justificación</label>
+                                    @Html.TextAreaFor(x => x.Justificacion, new { @required = "", @class = "form-control", @rows = "5" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div class="bootstrap-tagsinput info-badge">
+                                    <div class="form-group">
+                                        <label>Actividades</label>
+                                        @Html.TextBoxFor(x => x.Actividades, new { @required = "", @class = "form-control", @data_role = "tagsinput", @placeholder = "Escribe una actividad aquí" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="method">
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Comentarios adicionales (visible para los alumnos)</label>
+                                @Html.TextAreaFor(x => x.Comentarios, new { @required = "", @class = "form-control", @rows = "3" })
+                            </div>
+                        </div>
+                        <h3 class="text-primary mb-0 text-center">Comentarios recibidos</h3>
+                        <ul class="timeline timeline-simple">
+                            @if (Model.Comments.Any())
+                            {
+                                foreach (var comentario in Model.Comments)
+                                {
+                                    <li class="timeline-inverted">
+                                        <div class="timeline-badge danger">
+                                            <i class="material-icons">comment</i>
+                                        </div>
+                                        <div class="timeline-panel">
+                                            <div class="timeline-heading">
+                                                <span class="badge badge-pill badge-primary">@comentario.Autor</span>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <p>@comentario.Mensaje</p>
+                                            </div>
+                                            <h6>
+                                                <small><i class="ti-time"></i><time class="timeago" datetime="@comentario.TimeCreated.ToString("o")" rel="tooltip" data-placement="top" title="@comentario.TimeCreated"></time></small>
+                                            </h6>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="timeline-inverted">
+                                    <div class="timeline-badge primary">
+                                        <i class="material-icons">comment</i>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <span class="badge badge-pill badge-primary">Mensaje del sistema</span>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>Cuando este proyecto tenga comentarios de rechazo aquí los podrás ver.</p>
+                                        </div>
+                                        <h6>
+                                            <small><i class="ti-time"></i><time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time></small>
+                                        </h6>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery.tagsinput.js"></script>
+<script src="~/Scripts/bootstrap-tagsinput.js"></script>
+
+<script>
+    setTimeout(function () {
+        $('.card.card-wizard').addClass('active');
+    }, 600);
+
+    $('.moving-tab').hide();
+
+    Site.initWizardForms();
+    $('.moving-tab').show();
+    $('.btn-next').removeClass('disabled');
+    $('.bootstrap-tagsinput').find('input').eq(0).css('width', 'auto');
+    var IdCarreras = @Html.Raw(Json.Encode(Model.Id_Carreras));
+    $('#Id_Carreras').selectpicker('val', IdCarreras);
+
+    $('select').selectpicker();
+
+    Close = () => $('#AddEditModal').modal('hide');
+
+    $("time.timeago").timeago();
+    $('[rel="tooltip"]').tooltip();
+
+    $('#Details :input').prop("disabled", true);
+
+</script>

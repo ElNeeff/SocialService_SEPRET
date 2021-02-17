@@ -1,0 +1,3060 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SEPRETModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Attempt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReceiptId" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Method">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="Account" Type="nvarchar(max)" />
+          <Property Name="Highlight" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Phase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Reason">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Preset" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="bigint" Nullable="false" />
+          <Property Name="PaymentId" Type="bigint" Nullable="false" />
+          <Property Name="MethodId" Type="bigint" Nullable="false" />
+          <Property Name="PhaseId" Type="bigint" Nullable="false" />
+          <Property Name="Voucher" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Invoice" Type="nvarchar(max)" />
+          <Property Name="InvoicedBy" Type="bigint" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Rejection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReceiptId" Type="bigint" Nullable="false" />
+          <Property Name="ReasonId" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Career">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Department" Type="bigint" Nullable="false" />
+          <Property Name="CareerId" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="OfficialKey" Type="nvarchar(max)" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CareerId" Type="bigint" Nullable="false" />
+          <Property Name="Enrollment" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Phone" Type="bigint" />
+          <Property Name="Photo" Type="nvarchar(max)" />
+          <Property Name="LastLogin" Type="datetime" Nullable="false" />
+          <Property Name="ResetPasswordCode" Type="nvarchar(max)" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PersonPermission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="bigint" Nullable="false" />
+          <Property Name="PermissionId" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Adviser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Project" Type="bigint" />
+          <Property Name="Id_Person" Type="bigint" />
+          <Property Name="Id_AdviserType" Type="bigint" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="AdviserType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Agreement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Company" Type="bigint" />
+          <Property Name="Inicio" Type="datetime" Nullable="false" />
+          <Property Name="Fin" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdaetd" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Ambit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Project" Type="bigint" />
+          <Property Name="Id_CommentType" Type="bigint" />
+          <Property Name="Id_Person" Type="bigint" />
+          <Property Name="Mensaje" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CommentType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Person" Type="bigint" />
+          <Property Name="Id_Dictum" Type="bigint" />
+          <Property Name="Id_Sector" Type="bigint" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RFC" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Lema" Type="text" Nullable="false" />
+          <Property Name="Mision" Type="text" Nullable="false" />
+          <Property Name="Valores" Type="text" Nullable="false" />
+          <Property Name="Calle" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Colonia" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CP" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Ciudad" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Estado" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Telefono" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Dictum">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FileType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Kind">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Nature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_ProjectType" Type="bigint" />
+          <Property Name="Id_Company" Type="bigint" />
+          <Property Name="Id_Nature" Type="bigint" />
+          <Property Name="Id_Ambit" Type="bigint" />
+          <Property Name="Id_Kind" Type="bigint" />
+          <Property Name="Id_ProjectPhase" Type="bigint" />
+          <Property Name="Titulo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ObjetivoGeneral" Type="text" Nullable="false" />
+          <Property Name="ObjetivosEspecificos" Type="text" Nullable="false" />
+          <Property Name="Justificacion" Type="text" Nullable="false" />
+          <Property Name="Actividades" Type="text" Nullable="false" />
+          <Property Name="Comentarios" Type="text" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProjectCareer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Career" Type="bigint" />
+          <Property Name="Id_Project" Type="bigint" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProjectCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Project" Type="bigint" />
+          <Property Name="Id_Company" Type="bigint" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProjectFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Project" Type="bigint" />
+          <Property Name="Id_FileType" Type="bigint" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Tipo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Ruta" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Proyecto" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProjectPerson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Project" Type="bigint" />
+          <Property Name="Id_Person" Type="bigint" />
+          <Property Name="Id_Dictum" Type="bigint" />
+          <Property Name="Owner" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProjectPhase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdaetd" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProjectType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Sector">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SpecificObjective">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Project" Type="bigint" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Instrumentation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Unit" Type="bigint" />
+          <Property Name="Id_InstrumentationType" Type="bigint" />
+          <Property Name="Indice" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Preset" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="InstrumentationType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PersonSubject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Person" Type="bigint" />
+          <Property Name="Id_Subject" Type="bigint" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Scope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Unit" Type="bigint" />
+          <Property Name="Indicador" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Valor" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Career" Type="bigint" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Clave" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HorasTeoricas" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HorasPracticas" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Creditos" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Competencia" Type="text" Nullable="false" />
+          <Property Name="Caracterizacion" Type="text" Nullable="false" />
+          <Property Name="IntencionDidactica" Type="text" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Subject" Type="bigint" />
+          <Property Name="Indice" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Competencia" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Adviser__Id_Advi__45BE5BA9">
+          <End Role="AdviserType" Type="Self.AdviserType" Multiplicity="0..1" />
+          <End Role="Adviser" Type="Self.Adviser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdviserType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Adviser">
+              <PropertyRef Name="Id_AdviserType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Adviser__Id_Pers__46B27FE2">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Adviser" Type="Self.Adviser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Adviser">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Adviser__Id_Proj__47A6A41B">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="Adviser" Type="Self.Adviser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Adviser">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Agreement__Id_Co__489AC854">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Agreement" Type="Self.Agreement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agreement">
+              <PropertyRef Name="Id_Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Attempt__Receipt__3B40CD36">
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="1" />
+          <End Role="Attempt" Type="Self.Attempt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attempt">
+              <PropertyRef Name="ReceiptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Career__Id_Depar__41EDCAC5">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Career" Type="Self.Career" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Career">
+              <PropertyRef Name="Id_Department" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Id_Comm__498EEC8D">
+          <End Role="CommentType" Type="Self.CommentType" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommentType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Id_CommentType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Id_Pers__4A8310C6">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Id_Proj__4B7734FF">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Id_Dict__4C6B5938">
+          <End Role="Dictum" Type="Self.Dictum" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="Id_Dictum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Id_Pers__4D5F7D71">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Id_Sect__4E53A1AA">
+          <End Role="Sector" Type="Self.Sector" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="Id_Sector" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Instrumen__Id_In__5E8A0973">
+          <End Role="InstrumentationType" Type="Self.InstrumentationType" Multiplicity="0..1" />
+          <End Role="Instrumentation" Type="Self.Instrumentation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InstrumentationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Instrumentation">
+              <PropertyRef Name="Id_InstrumentationType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Instrumen__Id_Un__5F7E2DAC">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="0..1" />
+          <End Role="Instrumentation" Type="Self.Instrumentation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Instrumentation">
+              <PropertyRef Name="Id_Unit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Person__CareerId__42E1EEFE">
+          <End Role="Career" Type="Self.Career" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Career">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="CareerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonPer__Permi__43D61337">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="PersonPermission" Type="Self.PersonPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonPermission">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonPer__Perso__44CA3770">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonPermission" Type="Self.PersonPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonPermission">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonSub__Id_Pe__607251E5">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="PersonSubject" Type="Self.PersonSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonSubject">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonSub__Id_Su__6166761E">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+          <End Role="PersonSubject" Type="Self.PersonSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonSubject">
+              <PropertyRef Name="Id_Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Ambi__4F47C5E3">
+          <End Role="Ambit" Type="Self.Ambit" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ambit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Ambit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Comp__503BEA1C">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Kind__51300E55">
+          <End Role="Kind" Type="Self.Kind" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kind">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Kind" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Natu__5224328E">
+          <End Role="Nature" Type="Self.Nature" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Nature" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Proj__531856C7">
+          <End Role="ProjectType" Type="Self.ProjectType" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_ProjectType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Proj__540C7B00">
+          <End Role="ProjectPhase" Type="Self.ProjectPhase" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectPhase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_ProjectPhase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCa__Id_Ca__55009F39">
+          <End Role="Career" Type="Self.Career" Multiplicity="0..1" />
+          <End Role="ProjectCareer" Type="Self.ProjectCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Career">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCareer">
+              <PropertyRef Name="Id_Career" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCa__Id_Pr__55F4C372">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectCareer" Type="Self.ProjectCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCareer">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCo__Id_Co__56E8E7AB">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="ProjectCompany" Type="Self.ProjectCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCompany">
+              <PropertyRef Name="Id_Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCo__Id_Pr__57DD0BE4">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectCompany" Type="Self.ProjectCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCompany">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectFi__Id_Fi__58D1301D">
+          <End Role="FileType" Type="Self.FileType" Multiplicity="0..1" />
+          <End Role="ProjectFile" Type="Self.ProjectFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectFile">
+              <PropertyRef Name="Id_FileType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectFi__Id_Pr__59C55456">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectFile" Type="Self.ProjectFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectFile">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectPe__Id_Di__5AB9788F">
+          <End Role="Dictum" Type="Self.Dictum" Multiplicity="0..1" />
+          <End Role="ProjectPerson" Type="Self.ProjectPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectPerson">
+              <PropertyRef Name="Id_Dictum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectPe__Id_Pe__5BAD9CC8">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="ProjectPerson" Type="Self.ProjectPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectPerson">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectPe__Id_Pr__5CA1C101">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectPerson" Type="Self.ProjectPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectPerson">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__MethodI__3C34F16F">
+          <End Role="Method" Type="Self.Method" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Method">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="MethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__Payment__3D2915A8">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__PersonI__3E1D39E1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__PhaseId__3F115E1A">
+          <End Role="Phase" Type="Self.Phase" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Phase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PhaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rejection__Reaso__40058253">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="Rejection" Type="Self.Rejection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rejection">
+              <PropertyRef Name="ReasonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rejection__Recei__40F9A68C">
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="1" />
+          <End Role="Rejection" Type="Self.Rejection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rejection">
+              <PropertyRef Name="ReceiptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Scope__Id_Unit__625A9A57">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="0..1" />
+          <End Role="Scope" Type="Self.Scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scope">
+              <PropertyRef Name="Id_Unit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SpecificO__Id_Pr__5D95E53A">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="SpecificObjective" Type="Self.SpecificObjective" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpecificObjective">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Subject__Id_Care__634EBE90">
+          <End Role="Career" Type="Self.Career" Multiplicity="0..1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Career">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="Id_Career" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Unit__Id_Subject__6442E2C9">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="Id_Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SEPRETModelStoreContainer">
+          <EntitySet Name="Attempt" EntityType="Self.Attempt" Schema="Payment" store:Type="Tables" />
+          <EntitySet Name="Method" EntityType="Self.Method" Schema="Payment" store:Type="Tables" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" Schema="Payment" store:Type="Tables" />
+          <EntitySet Name="Phase" EntityType="Self.Phase" Schema="Payment" store:Type="Tables" />
+          <EntitySet Name="Reason" EntityType="Self.Reason" Schema="Payment" store:Type="Tables" />
+          <EntitySet Name="Receipt" EntityType="Self.Receipt" Schema="Payment" store:Type="Tables" />
+          <EntitySet Name="Rejection" EntityType="Self.Rejection" Schema="Payment" store:Type="Tables" />
+          <EntitySet Name="Career" EntityType="Self.Career" Schema="Person" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="Person" store:Type="Tables" />
+          <EntitySet Name="Permission" EntityType="Self.Permission" Schema="Person" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="Person" store:Type="Tables" />
+          <EntitySet Name="PersonPermission" EntityType="Self.PersonPermission" Schema="Person" store:Type="Tables" />
+          <EntitySet Name="Adviser" EntityType="Self.Adviser" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="AdviserType" EntityType="Self.AdviserType" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Agreement" EntityType="Self.Agreement" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Ambit" EntityType="Self.Ambit" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="CommentType" EntityType="Self.CommentType" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Dictum" EntityType="Self.Dictum" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="FileType" EntityType="Self.FileType" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Kind" EntityType="Self.Kind" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Nature" EntityType="Self.Nature" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="ProjectCareer" EntityType="Self.ProjectCareer" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="ProjectCompany" EntityType="Self.ProjectCompany" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="ProjectFile" EntityType="Self.ProjectFile" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="ProjectPerson" EntityType="Self.ProjectPerson" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="ProjectPhase" EntityType="Self.ProjectPhase" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="ProjectType" EntityType="Self.ProjectType" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Sector" EntityType="Self.Sector" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="SpecificObjective" EntityType="Self.SpecificObjective" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="Instrumentation" EntityType="Self.Instrumentation" Schema="SICSA" store:Type="Tables" />
+          <EntitySet Name="InstrumentationType" EntityType="Self.InstrumentationType" Schema="SICSA" store:Type="Tables" />
+          <EntitySet Name="PersonSubject" EntityType="Self.PersonSubject" Schema="SICSA" store:Type="Tables" />
+          <EntitySet Name="Scope" EntityType="Self.Scope" Schema="SICSA" store:Type="Tables" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" Schema="SICSA" store:Type="Tables" />
+          <EntitySet Name="Unit" EntityType="Self.Unit" Schema="SICSA" store:Type="Tables" />
+          <AssociationSet Name="FK__Adviser__Id_Advi__45BE5BA9" Association="Self.FK__Adviser__Id_Advi__45BE5BA9">
+            <End Role="AdviserType" EntitySet="AdviserType" />
+            <End Role="Adviser" EntitySet="Adviser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Adviser__Id_Pers__46B27FE2" Association="Self.FK__Adviser__Id_Pers__46B27FE2">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Adviser" EntitySet="Adviser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Adviser__Id_Proj__47A6A41B" Association="Self.FK__Adviser__Id_Proj__47A6A41B">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Adviser" EntitySet="Adviser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Agreement__Id_Co__489AC854" Association="Self.FK__Agreement__Id_Co__489AC854">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Agreement" EntitySet="Agreement" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Attempt__Receipt__3B40CD36" Association="Self.FK__Attempt__Receipt__3B40CD36">
+            <End Role="Receipt" EntitySet="Receipt" />
+            <End Role="Attempt" EntitySet="Attempt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Career__Id_Depar__41EDCAC5" Association="Self.FK__Career__Id_Depar__41EDCAC5">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Career" EntitySet="Career" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Id_Comm__498EEC8D" Association="Self.FK__Comment__Id_Comm__498EEC8D">
+            <End Role="CommentType" EntitySet="CommentType" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Id_Pers__4A8310C6" Association="Self.FK__Comment__Id_Pers__4A8310C6">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Id_Proj__4B7734FF" Association="Self.FK__Comment__Id_Proj__4B7734FF">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Id_Dict__4C6B5938" Association="Self.FK__Company__Id_Dict__4C6B5938">
+            <End Role="Dictum" EntitySet="Dictum" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Id_Pers__4D5F7D71" Association="Self.FK__Company__Id_Pers__4D5F7D71">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Id_Sect__4E53A1AA" Association="Self.FK__Company__Id_Sect__4E53A1AA">
+            <End Role="Sector" EntitySet="Sector" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Instrumen__Id_In__5E8A0973" Association="Self.FK__Instrumen__Id_In__5E8A0973">
+            <End Role="InstrumentationType" EntitySet="InstrumentationType" />
+            <End Role="Instrumentation" EntitySet="Instrumentation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Instrumen__Id_Un__5F7E2DAC" Association="Self.FK__Instrumen__Id_Un__5F7E2DAC">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="Instrumentation" EntitySet="Instrumentation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Person__CareerId__42E1EEFE" Association="Self.FK__Person__CareerId__42E1EEFE">
+            <End Role="Career" EntitySet="Career" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonPer__Permi__43D61337" Association="Self.FK__PersonPer__Permi__43D61337">
+            <End Role="Permission" EntitySet="Permission" />
+            <End Role="PersonPermission" EntitySet="PersonPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonPer__Perso__44CA3770" Association="Self.FK__PersonPer__Perso__44CA3770">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonPermission" EntitySet="PersonPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonSub__Id_Pe__607251E5" Association="Self.FK__PersonSub__Id_Pe__607251E5">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonSubject" EntitySet="PersonSubject" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonSub__Id_Su__6166761E" Association="Self.FK__PersonSub__Id_Su__6166761E">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="PersonSubject" EntitySet="PersonSubject" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Ambi__4F47C5E3" Association="Self.FK__Project__Id_Ambi__4F47C5E3">
+            <End Role="Ambit" EntitySet="Ambit" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Comp__503BEA1C" Association="Self.FK__Project__Id_Comp__503BEA1C">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Kind__51300E55" Association="Self.FK__Project__Id_Kind__51300E55">
+            <End Role="Kind" EntitySet="Kind" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Natu__5224328E" Association="Self.FK__Project__Id_Natu__5224328E">
+            <End Role="Nature" EntitySet="Nature" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Proj__531856C7" Association="Self.FK__Project__Id_Proj__531856C7">
+            <End Role="ProjectType" EntitySet="ProjectType" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Proj__540C7B00" Association="Self.FK__Project__Id_Proj__540C7B00">
+            <End Role="ProjectPhase" EntitySet="ProjectPhase" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCa__Id_Ca__55009F39" Association="Self.FK__ProjectCa__Id_Ca__55009F39">
+            <End Role="Career" EntitySet="Career" />
+            <End Role="ProjectCareer" EntitySet="ProjectCareer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCa__Id_Pr__55F4C372" Association="Self.FK__ProjectCa__Id_Pr__55F4C372">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectCareer" EntitySet="ProjectCareer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCo__Id_Co__56E8E7AB" Association="Self.FK__ProjectCo__Id_Co__56E8E7AB">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="ProjectCompany" EntitySet="ProjectCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCo__Id_Pr__57DD0BE4" Association="Self.FK__ProjectCo__Id_Pr__57DD0BE4">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectCompany" EntitySet="ProjectCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectFi__Id_Fi__58D1301D" Association="Self.FK__ProjectFi__Id_Fi__58D1301D">
+            <End Role="FileType" EntitySet="FileType" />
+            <End Role="ProjectFile" EntitySet="ProjectFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectFi__Id_Pr__59C55456" Association="Self.FK__ProjectFi__Id_Pr__59C55456">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectFile" EntitySet="ProjectFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectPe__Id_Di__5AB9788F" Association="Self.FK__ProjectPe__Id_Di__5AB9788F">
+            <End Role="Dictum" EntitySet="Dictum" />
+            <End Role="ProjectPerson" EntitySet="ProjectPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectPe__Id_Pe__5BAD9CC8" Association="Self.FK__ProjectPe__Id_Pe__5BAD9CC8">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ProjectPerson" EntitySet="ProjectPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectPe__Id_Pr__5CA1C101" Association="Self.FK__ProjectPe__Id_Pr__5CA1C101">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectPerson" EntitySet="ProjectPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__MethodI__3C34F16F" Association="Self.FK__Receipt__MethodI__3C34F16F">
+            <End Role="Method" EntitySet="Method" />
+            <End Role="Receipt" EntitySet="Receipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__Payment__3D2915A8" Association="Self.FK__Receipt__Payment__3D2915A8">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="Receipt" EntitySet="Receipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__PersonI__3E1D39E1" Association="Self.FK__Receipt__PersonI__3E1D39E1">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Receipt" EntitySet="Receipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__PhaseId__3F115E1A" Association="Self.FK__Receipt__PhaseId__3F115E1A">
+            <End Role="Phase" EntitySet="Phase" />
+            <End Role="Receipt" EntitySet="Receipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rejection__Reaso__40058253" Association="Self.FK__Rejection__Reaso__40058253">
+            <End Role="Reason" EntitySet="Reason" />
+            <End Role="Rejection" EntitySet="Rejection" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rejection__Recei__40F9A68C" Association="Self.FK__Rejection__Recei__40F9A68C">
+            <End Role="Receipt" EntitySet="Receipt" />
+            <End Role="Rejection" EntitySet="Rejection" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Scope__Id_Unit__625A9A57" Association="Self.FK__Scope__Id_Unit__625A9A57">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="Scope" EntitySet="Scope" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SpecificO__Id_Pr__5D95E53A" Association="Self.FK__SpecificO__Id_Pr__5D95E53A">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="SpecificObjective" EntitySet="SpecificObjective" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Subject__Id_Care__634EBE90" Association="Self.FK__Subject__Id_Care__634EBE90">
+            <End Role="Career" EntitySet="Career" />
+            <End Role="Subject" EntitySet="Subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Unit__Id_Subject__6442E2C9" Association="Self.FK__Unit__Id_Subject__6442E2C9">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="Unit" EntitySet="Unit" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SEPRETModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Attempt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReceiptId" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Receipt" Relationship="Self.FK__Attempt__Receipt__3B40CD36" FromRole="Attempt" ToRole="Receipt" />
+        </EntityType>
+        <EntityType Name="Method">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Receipts" Relationship="Self.FK__Receipt__MethodI__3C34F16F" FromRole="Method" ToRole="Receipt" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="Account" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Highlight" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Receipts" Relationship="Self.FK__Receipt__Payment__3D2915A8" FromRole="Payment" ToRole="Receipt" />
+        </EntityType>
+        <EntityType Name="Phase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Receipts" Relationship="Self.FK__Receipt__PhaseId__3F115E1A" FromRole="Phase" ToRole="Receipt" />
+        </EntityType>
+        <EntityType Name="Reason">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Preset" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Rejections" Relationship="Self.FK__Rejection__Reaso__40058253" FromRole="Reason" ToRole="Rejection" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int64" Nullable="false" />
+          <Property Name="PaymentId" Type="Int64" Nullable="false" />
+          <Property Name="MethodId" Type="Int64" Nullable="false" />
+          <Property Name="PhaseId" Type="Int64" Nullable="false" />
+          <Property Name="Voucher" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Invoice" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoicedBy" Type="Int64" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Attempts" Relationship="Self.FK__Attempt__Receipt__3B40CD36" FromRole="Receipt" ToRole="Attempt" />
+          <NavigationProperty Name="Method" Relationship="Self.FK__Receipt__MethodI__3C34F16F" FromRole="Receipt" ToRole="Method" />
+          <NavigationProperty Name="Payment" Relationship="Self.FK__Receipt__Payment__3D2915A8" FromRole="Receipt" ToRole="Payment" />
+          <NavigationProperty Name="Phase" Relationship="Self.FK__Receipt__PhaseId__3F115E1A" FromRole="Receipt" ToRole="Phase" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__Receipt__PersonI__3E1D39E1" FromRole="Receipt" ToRole="Person" />
+          <NavigationProperty Name="Rejections" Relationship="Self.FK__Rejection__Recei__40F9A68C" FromRole="Receipt" ToRole="Rejection" />
+        </EntityType>
+        <EntityType Name="Rejection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReceiptId" Type="Int64" Nullable="false" />
+          <Property Name="ReasonId" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Reason" Relationship="Self.FK__Rejection__Reaso__40058253" FromRole="Rejection" ToRole="Reason" />
+          <NavigationProperty Name="Receipt" Relationship="Self.FK__Rejection__Recei__40F9A68C" FromRole="Rejection" ToRole="Receipt" />
+        </EntityType>
+        <EntityType Name="Career">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Department" Type="Int64" Nullable="false" />
+          <Property Name="CareerId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="OfficialKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Department" Relationship="Self.FK__Career__Id_Depar__41EDCAC5" FromRole="Career" ToRole="Department" />
+          <NavigationProperty Name="People" Relationship="Self.FK__Person__CareerId__42E1EEFE" FromRole="Career" ToRole="Person" />
+          <NavigationProperty Name="ProjectCareers" Relationship="Self.FK__ProjectCa__Id_Ca__55009F39" FromRole="Career" ToRole="ProjectCareer" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK__Subject__Id_Care__634EBE90" FromRole="Career" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Careers" Relationship="Self.FK__Career__Id_Depar__41EDCAC5" FromRole="Department" ToRole="Career" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PersonPermissions" Relationship="Self.FK__PersonPer__Permi__43D61337" FromRole="Permission" ToRole="PersonPermission" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CareerId" Type="Int64" Nullable="false" />
+          <Property Name="Enrollment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="Int64" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastLogin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ResetPasswordCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Receipts" Relationship="Self.FK__Receipt__PersonI__3E1D39E1" FromRole="Person" ToRole="Receipt" />
+          <NavigationProperty Name="Career" Relationship="Self.FK__Person__CareerId__42E1EEFE" FromRole="Person" ToRole="Career" />
+          <NavigationProperty Name="Advisers" Relationship="Self.FK__Adviser__Id_Pers__46B27FE2" FromRole="Person" ToRole="Adviser" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__Id_Pers__4A8310C6" FromRole="Person" ToRole="Comment" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK__Company__Id_Pers__4D5F7D71" FromRole="Person" ToRole="Company" />
+          <NavigationProperty Name="PersonPermissions" Relationship="Self.FK__PersonPer__Perso__44CA3770" FromRole="Person" ToRole="PersonPermission" />
+          <NavigationProperty Name="PersonSubjects" Relationship="Self.FK__PersonSub__Id_Pe__607251E5" FromRole="Person" ToRole="PersonSubject" />
+          <NavigationProperty Name="ProjectPersons" Relationship="Self.FK__ProjectPe__Id_Pe__5BAD9CC8" FromRole="Person" ToRole="ProjectPerson" />
+        </EntityType>
+        <EntityType Name="PersonPermission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int64" Nullable="false" />
+          <Property Name="PermissionId" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK__PersonPer__Permi__43D61337" FromRole="PersonPermission" ToRole="Permission" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__PersonPer__Perso__44CA3770" FromRole="PersonPermission" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Adviser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Project" Type="Int64" />
+          <Property Name="Id_Person" Type="Int64" />
+          <Property Name="Id_AdviserType" Type="Int64" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__Adviser__Id_Pers__46B27FE2" FromRole="Adviser" ToRole="Person" />
+          <NavigationProperty Name="AdviserType" Relationship="Self.FK__Adviser__Id_Advi__45BE5BA9" FromRole="Adviser" ToRole="AdviserType" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__Adviser__Id_Proj__47A6A41B" FromRole="Adviser" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="AdviserType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Advisers" Relationship="Self.FK__Adviser__Id_Advi__45BE5BA9" FromRole="AdviserType" ToRole="Adviser" />
+        </EntityType>
+        <EntityType Name="Agreement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Company" Type="Int64" />
+          <Property Name="Inicio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Fin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdaetd" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Agreement__Id_Co__489AC854" FromRole="Agreement" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="Ambit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Id_Ambi__4F47C5E3" FromRole="Ambit" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Project" Type="Int64" />
+          <Property Name="Id_CommentType" Type="Int64" />
+          <Property Name="Id_Person" Type="Int64" />
+          <Property Name="Mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__Comment__Id_Pers__4A8310C6" FromRole="Comment" ToRole="Person" />
+          <NavigationProperty Name="CommentType" Relationship="Self.FK__Comment__Id_Comm__498EEC8D" FromRole="Comment" ToRole="CommentType" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__Comment__Id_Proj__4B7734FF" FromRole="Comment" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="CommentType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__Id_Comm__498EEC8D" FromRole="CommentType" ToRole="Comment" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Person" Type="Int64" />
+          <Property Name="Id_Dictum" Type="Int64" />
+          <Property Name="Id_Sector" Type="Int64" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RFC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lema" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mision" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Valores" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Calle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Colonia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ciudad" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__Company__Id_Pers__4D5F7D71" FromRole="Company" ToRole="Person" />
+          <NavigationProperty Name="Agreements" Relationship="Self.FK__Agreement__Id_Co__489AC854" FromRole="Company" ToRole="Agreement" />
+          <NavigationProperty Name="Dictum" Relationship="Self.FK__Company__Id_Dict__4C6B5938" FromRole="Company" ToRole="Dictum" />
+          <NavigationProperty Name="Sector" Relationship="Self.FK__Company__Id_Sect__4E53A1AA" FromRole="Company" ToRole="Sector" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Id_Comp__503BEA1C" FromRole="Company" ToRole="Project" />
+          <NavigationProperty Name="ProjectCompanies" Relationship="Self.FK__ProjectCo__Id_Co__56E8E7AB" FromRole="Company" ToRole="ProjectCompany" />
+        </EntityType>
+        <EntityType Name="Dictum">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK__Company__Id_Dict__4C6B5938" FromRole="Dictum" ToRole="Company" />
+          <NavigationProperty Name="ProjectPersons" Relationship="Self.FK__ProjectPe__Id_Di__5AB9788F" FromRole="Dictum" ToRole="ProjectPerson" />
+        </EntityType>
+        <EntityType Name="FileType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ProjectFiles" Relationship="Self.FK__ProjectFi__Id_Fi__58D1301D" FromRole="FileType" ToRole="ProjectFile" />
+        </EntityType>
+        <EntityType Name="Kind">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Id_Kind__51300E55" FromRole="Kind" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Nature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Id_Natu__5224328E" FromRole="Nature" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_ProjectType" Type="Int64" />
+          <Property Name="Id_Company" Type="Int64" />
+          <Property Name="Id_Nature" Type="Int64" />
+          <Property Name="Id_Ambit" Type="Int64" />
+          <Property Name="Id_Kind" Type="Int64" />
+          <Property Name="Id_ProjectPhase" Type="Int64" />
+          <Property Name="Titulo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ObjetivoGeneral" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ObjetivosEspecificos" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Justificacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Actividades" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Comentarios" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Advisers" Relationship="Self.FK__Adviser__Id_Proj__47A6A41B" FromRole="Project" ToRole="Adviser" />
+          <NavigationProperty Name="Ambit" Relationship="Self.FK__Project__Id_Ambi__4F47C5E3" FromRole="Project" ToRole="Ambit" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__Id_Proj__4B7734FF" FromRole="Project" ToRole="Comment" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Project__Id_Comp__503BEA1C" FromRole="Project" ToRole="Company" />
+          <NavigationProperty Name="Kind" Relationship="Self.FK__Project__Id_Kind__51300E55" FromRole="Project" ToRole="Kind" />
+          <NavigationProperty Name="Nature" Relationship="Self.FK__Project__Id_Natu__5224328E" FromRole="Project" ToRole="Nature" />
+          <NavigationProperty Name="ProjectType" Relationship="Self.FK__Project__Id_Proj__531856C7" FromRole="Project" ToRole="ProjectType" />
+          <NavigationProperty Name="ProjectPhase" Relationship="Self.FK__Project__Id_Proj__540C7B00" FromRole="Project" ToRole="ProjectPhase" />
+          <NavigationProperty Name="ProjectCareers" Relationship="Self.FK__ProjectCa__Id_Pr__55F4C372" FromRole="Project" ToRole="ProjectCareer" />
+          <NavigationProperty Name="ProjectCompanies" Relationship="Self.FK__ProjectCo__Id_Pr__57DD0BE4" FromRole="Project" ToRole="ProjectCompany" />
+          <NavigationProperty Name="ProjectFiles" Relationship="Self.FK__ProjectFi__Id_Pr__59C55456" FromRole="Project" ToRole="ProjectFile" />
+          <NavigationProperty Name="ProjectPersons" Relationship="Self.FK__ProjectPe__Id_Pr__5CA1C101" FromRole="Project" ToRole="ProjectPerson" />
+          <NavigationProperty Name="SpecificObjectives" Relationship="Self.FK__SpecificO__Id_Pr__5D95E53A" FromRole="Project" ToRole="SpecificObjective" />
+        </EntityType>
+        <EntityType Name="ProjectCareer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Career" Type="Int64" />
+          <Property Name="Id_Project" Type="Int64" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Career" Relationship="Self.FK__ProjectCa__Id_Ca__55009F39" FromRole="ProjectCareer" ToRole="Career" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__ProjectCa__Id_Pr__55F4C372" FromRole="ProjectCareer" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="ProjectCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Project" Type="Int64" />
+          <Property Name="Id_Company" Type="Int64" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__ProjectCo__Id_Co__56E8E7AB" FromRole="ProjectCompany" ToRole="Company" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__ProjectCo__Id_Pr__57DD0BE4" FromRole="ProjectCompany" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="ProjectFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Project" Type="Int64" />
+          <Property Name="Id_FileType" Type="Int64" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ruta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Proyecto" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FileType" Relationship="Self.FK__ProjectFi__Id_Fi__58D1301D" FromRole="ProjectFile" ToRole="FileType" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__ProjectFi__Id_Pr__59C55456" FromRole="ProjectFile" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="ProjectPerson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Project" Type="Int64" />
+          <Property Name="Id_Person" Type="Int64" />
+          <Property Name="Id_Dictum" Type="Int64" />
+          <Property Name="Owner" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__ProjectPe__Id_Pe__5BAD9CC8" FromRole="ProjectPerson" ToRole="Person" />
+          <NavigationProperty Name="Dictum" Relationship="Self.FK__ProjectPe__Id_Di__5AB9788F" FromRole="ProjectPerson" ToRole="Dictum" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__ProjectPe__Id_Pr__5CA1C101" FromRole="ProjectPerson" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="ProjectPhase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdaetd" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Id_Proj__540C7B00" FromRole="ProjectPhase" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="ProjectType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Id_Proj__531856C7" FromRole="ProjectType" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Sector">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK__Company__Id_Sect__4E53A1AA" FromRole="Sector" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="SpecificObjective">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Project" Type="Int64" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__SpecificO__Id_Pr__5D95E53A" FromRole="SpecificObjective" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Instrumentation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Unit" Type="Int64" />
+          <Property Name="Id_InstrumentationType" Type="Int64" />
+          <Property Name="Indice" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Preset" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="InstrumentationType" Relationship="Self.FK__Instrumen__Id_In__5E8A0973" FromRole="Instrumentation" ToRole="InstrumentationType" />
+          <NavigationProperty Name="Unit" Relationship="Self.FK__Instrumen__Id_Un__5F7E2DAC" FromRole="Instrumentation" ToRole="Unit" />
+        </EntityType>
+        <EntityType Name="InstrumentationType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Instrumentations" Relationship="Self.FK__Instrumen__Id_In__5E8A0973" FromRole="InstrumentationType" ToRole="Instrumentation" />
+        </EntityType>
+        <EntityType Name="PersonSubject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Person" Type="Int64" />
+          <Property Name="Id_Subject" Type="Int64" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__PersonSub__Id_Pe__607251E5" FromRole="PersonSubject" ToRole="Person" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK__PersonSub__Id_Su__6166761E" FromRole="PersonSubject" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Scope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Unit" Type="Int64" />
+          <Property Name="Indicador" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Valor" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Unit" Relationship="Self.FK__Scope__Id_Unit__625A9A57" FromRole="Scope" ToRole="Unit" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Career" Type="Int64" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Clave" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HorasTeoricas" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HorasPracticas" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Creditos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Competencia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Caracterizacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IntencionDidactica" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Career" Relationship="Self.FK__Subject__Id_Care__634EBE90" FromRole="Subject" ToRole="Career" />
+          <NavigationProperty Name="PersonSubjects" Relationship="Self.FK__PersonSub__Id_Su__6166761E" FromRole="Subject" ToRole="PersonSubject" />
+          <NavigationProperty Name="Units" Relationship="Self.FK__Unit__Id_Subject__6442E2C9" FromRole="Subject" ToRole="Unit" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Subject" Type="Int64" />
+          <Property Name="Indice" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Competencia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Instrumentations" Relationship="Self.FK__Instrumen__Id_Un__5F7E2DAC" FromRole="Unit" ToRole="Instrumentation" />
+          <NavigationProperty Name="Scopes" Relationship="Self.FK__Scope__Id_Unit__625A9A57" FromRole="Unit" ToRole="Scope" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK__Unit__Id_Subject__6442E2C9" FromRole="Unit" ToRole="Subject" />
+        </EntityType>
+        <Association Name="FK__Attempt__Receipt__3B40CD36">
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="1" />
+          <End Role="Attempt" Type="Self.Attempt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attempt">
+              <PropertyRef Name="ReceiptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__MethodI__3C34F16F">
+          <End Role="Method" Type="Self.Method" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Method">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="MethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__Payment__3D2915A8">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__PhaseId__3F115E1A">
+          <End Role="Phase" Type="Self.Phase" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Phase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PhaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rejection__Reaso__40058253">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="Rejection" Type="Self.Rejection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rejection">
+              <PropertyRef Name="ReasonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt__PersonI__3E1D39E1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rejection__Recei__40F9A68C">
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="1" />
+          <End Role="Rejection" Type="Self.Rejection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rejection">
+              <PropertyRef Name="ReceiptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Career__Id_Depar__41EDCAC5">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Career" Type="Self.Career" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Career">
+              <PropertyRef Name="Id_Department" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Person__CareerId__42E1EEFE">
+          <End Role="Career" Type="Self.Career" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Career">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="CareerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCa__Id_Ca__55009F39">
+          <End Role="Career" Type="Self.Career" Multiplicity="0..1" />
+          <End Role="ProjectCareer" Type="Self.ProjectCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Career">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCareer">
+              <PropertyRef Name="Id_Career" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Subject__Id_Care__634EBE90">
+          <End Role="Career" Type="Self.Career" Multiplicity="0..1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Career">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="Id_Career" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonPer__Permi__43D61337">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="PersonPermission" Type="Self.PersonPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonPermission">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Adviser__Id_Pers__46B27FE2">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Adviser" Type="Self.Adviser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Adviser">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Id_Pers__4A8310C6">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Id_Pers__4D5F7D71">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonPer__Perso__44CA3770">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonPermission" Type="Self.PersonPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonPermission">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonSub__Id_Pe__607251E5">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="PersonSubject" Type="Self.PersonSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonSubject">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectPe__Id_Pe__5BAD9CC8">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="ProjectPerson" Type="Self.ProjectPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectPerson">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Adviser__Id_Advi__45BE5BA9">
+          <End Role="AdviserType" Type="Self.AdviserType" Multiplicity="0..1" />
+          <End Role="Adviser" Type="Self.Adviser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdviserType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Adviser">
+              <PropertyRef Name="Id_AdviserType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Adviser__Id_Proj__47A6A41B">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="Adviser" Type="Self.Adviser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Adviser">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Agreement__Id_Co__489AC854">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Agreement" Type="Self.Agreement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agreement">
+              <PropertyRef Name="Id_Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Ambi__4F47C5E3">
+          <End Role="Ambit" Type="Self.Ambit" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ambit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Ambit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Id_Comm__498EEC8D">
+          <End Role="CommentType" Type="Self.CommentType" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommentType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Id_CommentType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__Id_Proj__4B7734FF">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Id_Dict__4C6B5938">
+          <End Role="Dictum" Type="Self.Dictum" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="Id_Dictum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Id_Sect__4E53A1AA">
+          <End Role="Sector" Type="Self.Sector" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="Id_Sector" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Comp__503BEA1C">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCo__Id_Co__56E8E7AB">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="ProjectCompany" Type="Self.ProjectCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCompany">
+              <PropertyRef Name="Id_Company" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectPe__Id_Di__5AB9788F">
+          <End Role="Dictum" Type="Self.Dictum" Multiplicity="0..1" />
+          <End Role="ProjectPerson" Type="Self.ProjectPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectPerson">
+              <PropertyRef Name="Id_Dictum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectFi__Id_Fi__58D1301D">
+          <End Role="FileType" Type="Self.FileType" Multiplicity="0..1" />
+          <End Role="ProjectFile" Type="Self.ProjectFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectFile">
+              <PropertyRef Name="Id_FileType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Kind__51300E55">
+          <End Role="Kind" Type="Self.Kind" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kind">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Kind" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Natu__5224328E">
+          <End Role="Nature" Type="Self.Nature" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_Nature" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Proj__531856C7">
+          <End Role="ProjectType" Type="Self.ProjectType" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_ProjectType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Project__Id_Proj__540C7B00">
+          <End Role="ProjectPhase" Type="Self.ProjectPhase" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectPhase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Id_ProjectPhase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCa__Id_Pr__55F4C372">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectCareer" Type="Self.ProjectCareer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCareer">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectCo__Id_Pr__57DD0BE4">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectCompany" Type="Self.ProjectCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectCompany">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectFi__Id_Pr__59C55456">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectFile" Type="Self.ProjectFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectFile">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectPe__Id_Pr__5CA1C101">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="ProjectPerson" Type="Self.ProjectPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProjectPerson">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SpecificO__Id_Pr__5D95E53A">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="SpecificObjective" Type="Self.SpecificObjective" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpecificObjective">
+              <PropertyRef Name="Id_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Instrumen__Id_In__5E8A0973">
+          <End Role="InstrumentationType" Type="Self.InstrumentationType" Multiplicity="0..1" />
+          <End Role="Instrumentation" Type="Self.Instrumentation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InstrumentationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Instrumentation">
+              <PropertyRef Name="Id_InstrumentationType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Instrumen__Id_Un__5F7E2DAC">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="0..1" />
+          <End Role="Instrumentation" Type="Self.Instrumentation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Instrumentation">
+              <PropertyRef Name="Id_Unit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PersonSub__Id_Su__6166761E">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+          <End Role="PersonSubject" Type="Self.PersonSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonSubject">
+              <PropertyRef Name="Id_Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Scope__Id_Unit__625A9A57">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="0..1" />
+          <End Role="Scope" Type="Self.Scope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scope">
+              <PropertyRef Name="Id_Unit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Unit__Id_Subject__6442E2C9">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="Id_Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SEPRETEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Attempts" EntityType="Self.Attempt" />
+          <EntitySet Name="Methods" EntityType="Self.Method" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="Phases" EntityType="Self.Phase" />
+          <EntitySet Name="Reasons" EntityType="Self.Reason" />
+          <EntitySet Name="Receipts" EntityType="Self.Receipt" />
+          <EntitySet Name="Rejections" EntityType="Self.Rejection" />
+          <EntitySet Name="Careers" EntityType="Self.Career" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="PersonPermissions" EntityType="Self.PersonPermission" />
+          <EntitySet Name="Advisers" EntityType="Self.Adviser" />
+          <EntitySet Name="AdviserTypes" EntityType="Self.AdviserType" />
+          <EntitySet Name="Agreements" EntityType="Self.Agreement" />
+          <EntitySet Name="Ambits" EntityType="Self.Ambit" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="CommentTypes" EntityType="Self.CommentType" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Dicta" EntityType="Self.Dictum" />
+          <EntitySet Name="FileTypes" EntityType="Self.FileType" />
+          <EntitySet Name="Kinds" EntityType="Self.Kind" />
+          <EntitySet Name="Natures" EntityType="Self.Nature" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="ProjectCareers" EntityType="Self.ProjectCareer" />
+          <EntitySet Name="ProjectCompanies" EntityType="Self.ProjectCompany" />
+          <EntitySet Name="ProjectFiles" EntityType="Self.ProjectFile" />
+          <EntitySet Name="ProjectPersons" EntityType="Self.ProjectPerson" />
+          <EntitySet Name="ProjectPhases" EntityType="Self.ProjectPhase" />
+          <EntitySet Name="ProjectTypes" EntityType="Self.ProjectType" />
+          <EntitySet Name="Sectors" EntityType="Self.Sector" />
+          <EntitySet Name="SpecificObjectives" EntityType="Self.SpecificObjective" />
+          <EntitySet Name="Instrumentations" EntityType="Self.Instrumentation" />
+          <EntitySet Name="InstrumentationTypes" EntityType="Self.InstrumentationType" />
+          <EntitySet Name="PersonSubjects" EntityType="Self.PersonSubject" />
+          <EntitySet Name="Scopes" EntityType="Self.Scope" />
+          <EntitySet Name="Subjects" EntityType="Self.Subject" />
+          <EntitySet Name="Units" EntityType="Self.Unit" />
+          <AssociationSet Name="FK__Attempt__Receipt__3B40CD36" Association="Self.FK__Attempt__Receipt__3B40CD36">
+            <End Role="Receipt" EntitySet="Receipts" />
+            <End Role="Attempt" EntitySet="Attempts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__MethodI__3C34F16F" Association="Self.FK__Receipt__MethodI__3C34F16F">
+            <End Role="Method" EntitySet="Methods" />
+            <End Role="Receipt" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__Payment__3D2915A8" Association="Self.FK__Receipt__Payment__3D2915A8">
+            <End Role="Payment" EntitySet="Payments" />
+            <End Role="Receipt" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__PhaseId__3F115E1A" Association="Self.FK__Receipt__PhaseId__3F115E1A">
+            <End Role="Phase" EntitySet="Phases" />
+            <End Role="Receipt" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rejection__Reaso__40058253" Association="Self.FK__Rejection__Reaso__40058253">
+            <End Role="Reason" EntitySet="Reasons" />
+            <End Role="Rejection" EntitySet="Rejections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt__PersonI__3E1D39E1" Association="Self.FK__Receipt__PersonI__3E1D39E1">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Receipt" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rejection__Recei__40F9A68C" Association="Self.FK__Rejection__Recei__40F9A68C">
+            <End Role="Receipt" EntitySet="Receipts" />
+            <End Role="Rejection" EntitySet="Rejections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Career__Id_Depar__41EDCAC5" Association="Self.FK__Career__Id_Depar__41EDCAC5">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Career" EntitySet="Careers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Person__CareerId__42E1EEFE" Association="Self.FK__Person__CareerId__42E1EEFE">
+            <End Role="Career" EntitySet="Careers" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCa__Id_Ca__55009F39" Association="Self.FK__ProjectCa__Id_Ca__55009F39">
+            <End Role="Career" EntitySet="Careers" />
+            <End Role="ProjectCareer" EntitySet="ProjectCareers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Subject__Id_Care__634EBE90" Association="Self.FK__Subject__Id_Care__634EBE90">
+            <End Role="Career" EntitySet="Careers" />
+            <End Role="Subject" EntitySet="Subjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonPer__Permi__43D61337" Association="Self.FK__PersonPer__Permi__43D61337">
+            <End Role="Permission" EntitySet="Permissions" />
+            <End Role="PersonPermission" EntitySet="PersonPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Adviser__Id_Pers__46B27FE2" Association="Self.FK__Adviser__Id_Pers__46B27FE2">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Adviser" EntitySet="Advisers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Id_Pers__4A8310C6" Association="Self.FK__Comment__Id_Pers__4A8310C6">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Id_Pers__4D5F7D71" Association="Self.FK__Company__Id_Pers__4D5F7D71">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonPer__Perso__44CA3770" Association="Self.FK__PersonPer__Perso__44CA3770">
+            <End Role="Person" EntitySet="People" />
+            <End Role="PersonPermission" EntitySet="PersonPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonSub__Id_Pe__607251E5" Association="Self.FK__PersonSub__Id_Pe__607251E5">
+            <End Role="Person" EntitySet="People" />
+            <End Role="PersonSubject" EntitySet="PersonSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectPe__Id_Pe__5BAD9CC8" Association="Self.FK__ProjectPe__Id_Pe__5BAD9CC8">
+            <End Role="Person" EntitySet="People" />
+            <End Role="ProjectPerson" EntitySet="ProjectPersons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Adviser__Id_Advi__45BE5BA9" Association="Self.FK__Adviser__Id_Advi__45BE5BA9">
+            <End Role="AdviserType" EntitySet="AdviserTypes" />
+            <End Role="Adviser" EntitySet="Advisers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Adviser__Id_Proj__47A6A41B" Association="Self.FK__Adviser__Id_Proj__47A6A41B">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Adviser" EntitySet="Advisers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Agreement__Id_Co__489AC854" Association="Self.FK__Agreement__Id_Co__489AC854">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Agreement" EntitySet="Agreements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Ambi__4F47C5E3" Association="Self.FK__Project__Id_Ambi__4F47C5E3">
+            <End Role="Ambit" EntitySet="Ambits" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Id_Comm__498EEC8D" Association="Self.FK__Comment__Id_Comm__498EEC8D">
+            <End Role="CommentType" EntitySet="CommentTypes" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__Id_Proj__4B7734FF" Association="Self.FK__Comment__Id_Proj__4B7734FF">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Id_Dict__4C6B5938" Association="Self.FK__Company__Id_Dict__4C6B5938">
+            <End Role="Dictum" EntitySet="Dicta" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Id_Sect__4E53A1AA" Association="Self.FK__Company__Id_Sect__4E53A1AA">
+            <End Role="Sector" EntitySet="Sectors" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Comp__503BEA1C" Association="Self.FK__Project__Id_Comp__503BEA1C">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCo__Id_Co__56E8E7AB" Association="Self.FK__ProjectCo__Id_Co__56E8E7AB">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="ProjectCompany" EntitySet="ProjectCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectPe__Id_Di__5AB9788F" Association="Self.FK__ProjectPe__Id_Di__5AB9788F">
+            <End Role="Dictum" EntitySet="Dicta" />
+            <End Role="ProjectPerson" EntitySet="ProjectPersons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectFi__Id_Fi__58D1301D" Association="Self.FK__ProjectFi__Id_Fi__58D1301D">
+            <End Role="FileType" EntitySet="FileTypes" />
+            <End Role="ProjectFile" EntitySet="ProjectFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Kind__51300E55" Association="Self.FK__Project__Id_Kind__51300E55">
+            <End Role="Kind" EntitySet="Kinds" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Natu__5224328E" Association="Self.FK__Project__Id_Natu__5224328E">
+            <End Role="Nature" EntitySet="Natures" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Proj__531856C7" Association="Self.FK__Project__Id_Proj__531856C7">
+            <End Role="ProjectType" EntitySet="ProjectTypes" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Project__Id_Proj__540C7B00" Association="Self.FK__Project__Id_Proj__540C7B00">
+            <End Role="ProjectPhase" EntitySet="ProjectPhases" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCa__Id_Pr__55F4C372" Association="Self.FK__ProjectCa__Id_Pr__55F4C372">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectCareer" EntitySet="ProjectCareers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectCo__Id_Pr__57DD0BE4" Association="Self.FK__ProjectCo__Id_Pr__57DD0BE4">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectCompany" EntitySet="ProjectCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectFi__Id_Pr__59C55456" Association="Self.FK__ProjectFi__Id_Pr__59C55456">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectFile" EntitySet="ProjectFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectPe__Id_Pr__5CA1C101" Association="Self.FK__ProjectPe__Id_Pr__5CA1C101">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectPerson" EntitySet="ProjectPersons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SpecificO__Id_Pr__5D95E53A" Association="Self.FK__SpecificO__Id_Pr__5D95E53A">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="SpecificObjective" EntitySet="SpecificObjectives" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Instrumen__Id_In__5E8A0973" Association="Self.FK__Instrumen__Id_In__5E8A0973">
+            <End Role="InstrumentationType" EntitySet="InstrumentationTypes" />
+            <End Role="Instrumentation" EntitySet="Instrumentations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Instrumen__Id_Un__5F7E2DAC" Association="Self.FK__Instrumen__Id_Un__5F7E2DAC">
+            <End Role="Unit" EntitySet="Units" />
+            <End Role="Instrumentation" EntitySet="Instrumentations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PersonSub__Id_Su__6166761E" Association="Self.FK__PersonSub__Id_Su__6166761E">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="PersonSubject" EntitySet="PersonSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Scope__Id_Unit__625A9A57" Association="Self.FK__Scope__Id_Unit__625A9A57">
+            <End Role="Unit" EntitySet="Units" />
+            <End Role="Scope" EntitySet="Scopes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Unit__Id_Subject__6442E2C9" Association="Self.FK__Unit__Id_Subject__6442E2C9">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="Unit" EntitySet="Units" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SEPRETModelStoreContainer" CdmEntityContainer="SEPRETEntities">
+          <EntitySetMapping Name="Attempts">
+            <EntityTypeMapping TypeName="SEPRETModel.Attempt">
+              <MappingFragment StoreEntitySet="Attempt">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ReceiptId" ColumnName="ReceiptId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Methods">
+            <EntityTypeMapping TypeName="SEPRETModel.Method">
+              <MappingFragment StoreEntitySet="Method">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="SEPRETModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Highlight" ColumnName="Highlight" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Phases">
+            <EntityTypeMapping TypeName="SEPRETModel.Phase">
+              <MappingFragment StoreEntitySet="Phase">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reasons">
+            <EntityTypeMapping TypeName="SEPRETModel.Reason">
+              <MappingFragment StoreEntitySet="Reason">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Preset" ColumnName="Preset" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipts">
+            <EntityTypeMapping TypeName="SEPRETModel.Receipt">
+              <MappingFragment StoreEntitySet="Receipt">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="MethodId" ColumnName="MethodId" />
+                <ScalarProperty Name="PhaseId" ColumnName="PhaseId" />
+                <ScalarProperty Name="Voucher" ColumnName="Voucher" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Invoice" ColumnName="Invoice" />
+                <ScalarProperty Name="InvoicedBy" ColumnName="InvoicedBy" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rejections">
+            <EntityTypeMapping TypeName="SEPRETModel.Rejection">
+              <MappingFragment StoreEntitySet="Rejection">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ReceiptId" ColumnName="ReceiptId" />
+                <ScalarProperty Name="ReasonId" ColumnName="ReasonId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Careers">
+            <EntityTypeMapping TypeName="SEPRETModel.Career">
+              <MappingFragment StoreEntitySet="Career">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Department" ColumnName="Id_Department" />
+                <ScalarProperty Name="CareerId" ColumnName="CareerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="OfficialKey" ColumnName="OfficialKey" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="SEPRETModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="SEPRETModel.Permission">
+              <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="SEPRETModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CareerId" ColumnName="CareerId" />
+                <ScalarProperty Name="Enrollment" ColumnName="Enrollment" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="ResetPasswordCode" ColumnName="ResetPasswordCode" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonPermissions">
+            <EntityTypeMapping TypeName="SEPRETModel.PersonPermission">
+              <MappingFragment StoreEntitySet="PersonPermission">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Advisers">
+            <EntityTypeMapping TypeName="SEPRETModel.Adviser">
+              <MappingFragment StoreEntitySet="Adviser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Project" ColumnName="Id_Project" />
+                <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
+                <ScalarProperty Name="Id_AdviserType" ColumnName="Id_AdviserType" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdviserTypes">
+            <EntityTypeMapping TypeName="SEPRETModel.AdviserType">
+              <MappingFragment StoreEntitySet="AdviserType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Agreements">
+            <EntityTypeMapping TypeName="SEPRETModel.Agreement">
+              <MappingFragment StoreEntitySet="Agreement">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Company" ColumnName="Id_Company" />
+                <ScalarProperty Name="Inicio" ColumnName="Inicio" />
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdaetd" ColumnName="TimeUpdaetd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ambits">
+            <EntityTypeMapping TypeName="SEPRETModel.Ambit">
+              <MappingFragment StoreEntitySet="Ambit">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="SEPRETModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Project" ColumnName="Id_Project" />
+                <ScalarProperty Name="Id_CommentType" ColumnName="Id_CommentType" />
+                <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentTypes">
+            <EntityTypeMapping TypeName="SEPRETModel.CommentType">
+              <MappingFragment StoreEntitySet="CommentType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="SEPRETModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
+                <ScalarProperty Name="Id_Dictum" ColumnName="Id_Dictum" />
+                <ScalarProperty Name="Id_Sector" ColumnName="Id_Sector" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="RFC" ColumnName="RFC" />
+                <ScalarProperty Name="Lema" ColumnName="Lema" />
+                <ScalarProperty Name="Mision" ColumnName="Mision" />
+                <ScalarProperty Name="Valores" ColumnName="Valores" />
+                <ScalarProperty Name="Calle" ColumnName="Calle" />
+                <ScalarProperty Name="Colonia" ColumnName="Colonia" />
+                <ScalarProperty Name="CP" ColumnName="CP" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dicta">
+            <EntityTypeMapping TypeName="SEPRETModel.Dictum">
+              <MappingFragment StoreEntitySet="Dictum">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileTypes">
+            <EntityTypeMapping TypeName="SEPRETModel.FileType">
+              <MappingFragment StoreEntitySet="FileType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kinds">
+            <EntityTypeMapping TypeName="SEPRETModel.Kind">
+              <MappingFragment StoreEntitySet="Kind">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Natures">
+            <EntityTypeMapping TypeName="SEPRETModel.Nature">
+              <MappingFragment StoreEntitySet="Nature">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="SEPRETModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_ProjectType" ColumnName="Id_ProjectType" />
+                <ScalarProperty Name="Id_Company" ColumnName="Id_Company" />
+                <ScalarProperty Name="Id_Nature" ColumnName="Id_Nature" />
+                <ScalarProperty Name="Id_Ambit" ColumnName="Id_Ambit" />
+                <ScalarProperty Name="Id_Kind" ColumnName="Id_Kind" />
+                <ScalarProperty Name="Id_ProjectPhase" ColumnName="Id_ProjectPhase" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="ObjetivoGeneral" ColumnName="ObjetivoGeneral" />
+                <ScalarProperty Name="ObjetivosEspecificos" ColumnName="ObjetivosEspecificos" />
+                <ScalarProperty Name="Justificacion" ColumnName="Justificacion" />
+                <ScalarProperty Name="Actividades" ColumnName="Actividades" />
+                <ScalarProperty Name="Comentarios" ColumnName="Comentarios" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectCareers">
+            <EntityTypeMapping TypeName="SEPRETModel.ProjectCareer">
+              <MappingFragment StoreEntitySet="ProjectCareer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Career" ColumnName="Id_Career" />
+                <ScalarProperty Name="Id_Project" ColumnName="Id_Project" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectCompanies">
+            <EntityTypeMapping TypeName="SEPRETModel.ProjectCompany">
+              <MappingFragment StoreEntitySet="ProjectCompany">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Project" ColumnName="Id_Project" />
+                <ScalarProperty Name="Id_Company" ColumnName="Id_Company" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectFiles">
+            <EntityTypeMapping TypeName="SEPRETModel.ProjectFile">
+              <MappingFragment StoreEntitySet="ProjectFile">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Project" ColumnName="Id_Project" />
+                <ScalarProperty Name="Id_FileType" ColumnName="Id_FileType" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Ruta" ColumnName="Ruta" />
+                <ScalarProperty Name="Proyecto" ColumnName="Proyecto" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectPersons">
+            <EntityTypeMapping TypeName="SEPRETModel.ProjectPerson">
+              <MappingFragment StoreEntitySet="ProjectPerson">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Project" ColumnName="Id_Project" />
+                <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
+                <ScalarProperty Name="Id_Dictum" ColumnName="Id_Dictum" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectPhases">
+            <EntityTypeMapping TypeName="SEPRETModel.ProjectPhase">
+              <MappingFragment StoreEntitySet="ProjectPhase">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdaetd" ColumnName="TimeUpdaetd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectTypes">
+            <EntityTypeMapping TypeName="SEPRETModel.ProjectType">
+              <MappingFragment StoreEntitySet="ProjectType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sectors">
+            <EntityTypeMapping TypeName="SEPRETModel.Sector">
+              <MappingFragment StoreEntitySet="Sector">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpecificObjectives">
+            <EntityTypeMapping TypeName="SEPRETModel.SpecificObjective">
+              <MappingFragment StoreEntitySet="SpecificObjective">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Project" ColumnName="Id_Project" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instrumentations">
+            <EntityTypeMapping TypeName="SEPRETModel.Instrumentation">
+              <MappingFragment StoreEntitySet="Instrumentation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Unit" ColumnName="Id_Unit" />
+                <ScalarProperty Name="Id_InstrumentationType" ColumnName="Id_InstrumentationType" />
+                <ScalarProperty Name="Indice" ColumnName="Indice" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Preset" ColumnName="Preset" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InstrumentationTypes">
+            <EntityTypeMapping TypeName="SEPRETModel.InstrumentationType">
+              <MappingFragment StoreEntitySet="InstrumentationType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonSubjects">
+            <EntityTypeMapping TypeName="SEPRETModel.PersonSubject">
+              <MappingFragment StoreEntitySet="PersonSubject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
+                <ScalarProperty Name="Id_Subject" ColumnName="Id_Subject" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Scopes">
+            <EntityTypeMapping TypeName="SEPRETModel.Scope">
+              <MappingFragment StoreEntitySet="Scope">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Unit" ColumnName="Id_Unit" />
+                <ScalarProperty Name="Indicador" ColumnName="Indicador" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="SEPRETModel.Subject">
+              <MappingFragment StoreEntitySet="Subject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Career" ColumnName="Id_Career" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="HorasTeoricas" ColumnName="HorasTeoricas" />
+                <ScalarProperty Name="HorasPracticas" ColumnName="HorasPracticas" />
+                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
+                <ScalarProperty Name="Competencia" ColumnName="Competencia" />
+                <ScalarProperty Name="Caracterizacion" ColumnName="Caracterizacion" />
+                <ScalarProperty Name="IntencionDidactica" ColumnName="IntencionDidactica" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Units">
+            <EntityTypeMapping TypeName="SEPRETModel.Unit">
+              <MappingFragment StoreEntitySet="Unit">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Subject" ColumnName="Id_Subject" />
+                <ScalarProperty Name="Indice" ColumnName="Indice" />
+                <ScalarProperty Name="Competencia" ColumnName="Competencia" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.ProjectPersonVM>
+
+
+@if (Model.Any())
+{
+
+    switch (Model.FirstOrDefault(x => x.Id != 0).Id_Dictum)
+    {
+        case 1:
+            foreach (var person in Model)
+            {
+                <tr id="@person.Id">
+                    <td width="40%"><a rel="tooltip" data-placement="bottom" title="Clic para enviar email" href="mailto:@person.PersonEmail?subject=Proyecto: @person.ProjectName">@person.PersonName</a> <small class="text-muted"><time class="timeago" datetime="@person.TimeCreated.ToString("O")" rel="tooltip" data-placement="bottom" title="@person.TimeCreated"></time></small> </td>
+                    <td>@person.PersonCareer</td>
+                    <td class="td-actions text-right d-flex justify-content-between mr-lg-4 mr-md-4">
+                        <button type="button" rel="tooltip" data-placement="bottom" title="Aceptar" class="btn btn-primary btn-link btn-lg" onclick="MemberDictum(@person.Id, 'Accept', this);">
+                            <i class="material-icons">done</i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            break;
+        case 2:
+            foreach (var person in Model)
+            {
+                <tr id="@person.Id">
+                    <td width="40%"><a rel="tooltip" data-placement="bottom" title="Clic para enviar email" href="mailto:@person.PersonEmail?subject=Proyecto: @person.ProjectName">@person.PersonName</a> <small class="text-muted"><time class="timeago" datetime="@person.TimeCreated.ToString("O")" rel="tooltip" data-placement="bottom" title="@person.TimeCreated"></time></small> </td>
+                    <td>@person.PersonCareer</td>
+                    <td class="td-actions text-right d-flex justify-content-between mr-lg-4 mr-md-4">
+                        <button type="button" rel="tooltip" data-placement="bottom" title="Aceptar" class="btn btn-primary btn-link btn-lg" onclick="MemberDictum(@person.Id, 'Accept', this);">
+                            <i class="material-icons">done</i>
+                        </button>
+                        <button type="button" rel="tooltip" data-placement="bottom" title="Rechazar" class="btn btn-danger btn-link btn-lg" onclick="MemberDictum(@person.Id, 'Reject', this);">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            break;
+        case 3:
+            foreach (var person in Model)
+            {
+                <tr id="@person.Id">
+                    <td width="40%"><a rel="tooltip" data-placement="bottom" title="Clic para enviar email" href="mailto:@person.PersonEmail?subject=Proyecto: @person.ProjectName">@person.PersonName</a> <small class="text-muted"><time class="timeago" datetime="@person.TimeCreated.ToString("O")" rel="tooltip" data-placement="bottom" title="@person.TimeCreated"></time></small> </td>
+                    <td>@person.PersonCareer</td>
+                    <td class="td-actions text-right d-flex justify-content-between mr-lg-4 mr-md-4">
+                        <button type="button" rel="tooltip" data-placement="bottom" title="Rechazar" class="btn btn-danger btn-link btn-lg" onclick="MemberDictum(@person.Id, 'Reject', this);">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            break;
+        default:
+            break;
+    }
+}
+else
+{
+    <tr class="text-center">
+        <td colspan="3"><small class="text-muted"><i class="material-icons">notifications_paused</i> No hay personas que mostrar</small></td>
+    </tr>
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $("time.timeago").timeago();
+        $('[rel="tooltip"]').tooltip();
+    });
+</script>

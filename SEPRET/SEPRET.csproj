@@ -1,0 +1,715 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B2F06057-BBC1-432F-80D5-654260A1FF9D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SEPRET</RootNamespace>
+    <AssemblyName>SEPRET</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44384</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>4.0</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AdoNetCore.AseClient, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AdoNetCore.AseClient.0.19.2\lib\net46\AdoNetCore.AseClient.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdviserTypeController.cs" />
+    <Compile Include="Controllers\AmbitController.cs" />
+    <Compile Include="Controllers\CareerController.cs" />
+    <Compile Include="Controllers\CommentTypeController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\DictumController.cs" />
+    <Compile Include="Controllers\FakeController.cs" />
+    <Compile Include="Controllers\FileTypeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InstrumentationTypeController.cs" />
+    <Compile Include="Controllers\KindController.cs" />
+    <Compile Include="Controllers\MethodController.cs" />
+    <Compile Include="Controllers\NatureController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\PersonSubjectController.cs" />
+    <Compile Include="Controllers\PhaseController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ProjectPhaseController.cs" />
+    <Compile Include="Controllers\ProjectTypeController.cs" />
+    <Compile Include="Controllers\ReasonController.cs" />
+    <Compile Include="Controllers\ReceiptController.cs" />
+    <Compile Include="Controllers\RecidenceController.cs" />
+    <Compile Include="Controllers\SectorController.cs" />
+    <Compile Include="Controllers\SubjectController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="CustomClasses\DataTablesParameters.cs" />
+    <Compile Include="CustomClasses\RolesProvider.cs" />
+    <Compile Include="CustomClasses\Site.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Adviser.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdviserType.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Agreement.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Ambit.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Attempt.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Career.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Comment.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CommentType.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Company.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\AdviserTest.cs" />
+    <Compile Include="Models\Custom\AdviserTypeVM.cs" />
+    <Compile Include="Models\Custom\AmbitVM.cs" />
+    <Compile Include="Models\Custom\CareerVM.cs" />
+    <Compile Include="Models\Custom\CommentTypeVM.cs" />
+    <Compile Include="Models\Custom\CommentVM.cs" />
+    <Compile Include="Models\Custom\CompanyVM.cs" />
+    <Compile Include="Models\Custom\ConfirmReceiptRejectVM.cs" />
+    <Compile Include="Models\Custom\DepartmentVM.cs" />
+    <Compile Include="Models\Custom\DictumVM.cs" />
+    <Compile Include="Models\Custom\FileTypeVM.cs" />
+    <Compile Include="Models\Custom\InstrumentationTypeVM.cs" />
+    <Compile Include="Models\Custom\InstrumentationVM.cs" />
+    <Compile Include="Models\Custom\KindVM.cs" />
+    <Compile Include="Models\Custom\MethodVM.cs" />
+    <Compile Include="Models\Custom\NatureVM.cs" />
+    <Compile Include="Models\Custom\PasswordRecoveryVM.cs" />
+    <Compile Include="Models\Custom\PaymentVM.cs" />
+    <Compile Include="Models\Custom\PermissionVM.cs" />
+    <Compile Include="Models\Custom\PersonVM.cs" />
+    <Compile Include="Models\Custom\PhaseVM.cs" />
+    <Compile Include="Models\Custom\ProjectPersonVM.cs" />
+    <Compile Include="Models\Custom\ProjectPhaseVM.cs" />
+    <Compile Include="Models\Custom\ProjectTypeVM.cs" />
+    <Compile Include="Models\Custom\ProjectVM.cs" />
+    <Compile Include="Models\Custom\ReasonVM.cs" />
+    <Compile Include="Models\Custom\ReceiptVM.cs" />
+    <Compile Include="Models\Custom\SectorVM.cs" />
+    <Compile Include="Models\Custom\SignInVM.cs" />
+    <Compile Include="Models\Custom\StudentSII.cs" />
+    <Compile Include="Models\Custom\SubjectVM.cs" />
+    <Compile Include="Models\Custom\UnitVM.cs" />
+    <Compile Include="Models\Custom\VoucherVM.cs" />
+    <Compile Include="Models\Department.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Dictum.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FileType.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Instrumentation.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InstrumentationType.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Kind.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Method.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Nature.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Payment.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Permission.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Person.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PersonPermission.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PersonSubject.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Phase.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Project.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectCareer.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectCompany.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectFile.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectPerson.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectPhase.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectType.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reason.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Receipt.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rejection.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Scope.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sector.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SEPRETDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SEPRETDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SEPRETDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SEPRETDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SEPRETDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpecificObjective.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Subject.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Unit.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\img\dust_scratches.png" />
+    <Content Include="Assets\img\favicon.png" />
+    <Content Include="Assets\img\login.jpg" />
+    <Content Include="Assets\img\login.png" />
+    <Content Include="Assets\img\office.jpg" />
+    <Content Include="Assets\img\pattern.png" />
+    <Content Include="Assets\img\project-bg.jpg" />
+    <Content Include="Assets\img\projectbank-bg-reverse.jpg" />
+    <Content Include="Assets\img\projectbank-bg.jpg" />
+    <Content Include="Assets\img\receipts\111\22\ccfb184b-87ed-4f44-8180-2e36a4c8c3db.jpg" />
+    <Content Include="Assets\img\receipts\119\22\WhatsApp Image 2020-08-15 at 1.42.15 PM.jpeg" />
+    <Content Include="Assets\img\receipts\128\22\IMG_20200817_143848142.jpg" />
+    <Content Include="Assets\img\receipts\130\22\001.jpg" />
+    <Content Include="Assets\img\receipts\149\22\inbound5095410852491881010.jpg" />
+    <Content Include="Assets\img\receipts\189\22\img001.jpg" />
+    <Content Include="Assets\img\receipts\199\22\recibo2.png" />
+    <Content Include="Assets\img\receipts\201\22\tec.jpg" />
+    <Content Include="Assets\img\receipts\203\22\02BD41E7-1C56-4CE8-B232-66CD28FCD61C.jpeg" />
+    <Content Include="Assets\img\receipts\204\2\WhatsApp Image 2020-08-17 at 11.35.50 AM.jpeg" />
+    <Content Include="Assets\img\receipts\219\22\8F1FECF6-8B6A-467C-83FD-088AA179DCFC.jpeg" />
+    <Content Include="Assets\img\receipts\21\22\comprobante de pago.png" />
+    <Content Include="Assets\img\receipts\223\22\20200818_111526-1.jpg" />
+    <Content Include="Assets\img\receipts\244\6\tec.jpeg" />
+    <Content Include="Assets\img\receipts\51\22\img010.jpg" />
+    <Content Include="Assets\img\receipts\53\22\A2B649D3-219D-489D-840A-AC53094C978F.jpeg" />
+    <Content Include="Assets\img\receipts\62\22\IMG_20200817_110109.jpg" />
+    <Content Include="Assets\img\receipts\78\22\20200817_124029.jpg" />
+    <Content Include="Assets\img\receipts\81\22\53818FEF-5FA2-4D42-A015-F6005915BDFD.jpeg" />
+    <Content Include="Assets\img\receipts\85\22\118007651_865707787171115_6798969154997405402_n.jpg" />
+    <Content Include="Assets\img\receipts\87\22\2020-08-17 14.17.08.jpg" />
+    <Content Include="Assets\img\receipts\Empty.png" />
+    <Content Include="Assets\img\sidebar-bg.png" />
+    <Content Include="Assets\img\sidebar.jpg" />
+    <Content Include="Assets\img\TACM.png" />
+    <Content Include="Assets\img\user\emptyAvatar.png" />
+    <Content Include="Assets\img\voucher\banamex.jpg" />
+    <Content Include="Assets\img\voucher\logo-tec.png" />
+    <Content Include="Assets\img\voucher\oxxo.png" />
+    <Content Include="Assets\img\voucher\soriana.png" />
+    <Content Include="Assets\img\voucher\TECNM.png" />
+    <Content Include="Assets\img\voucher\walmart.png" />
+    <Content Include="Assets\img\_BlankPicture.png" />
+    <Content Include="Assets\js\Site.js" />
+    <Content Include="Content\fontawesome.min.css" />
+    <Content Include="Content\iv-viewer.min.css" />
+    <Content Include="Content\kendo-pdf-visor.css" />
+    <Content Include="Content\material-dashboard.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Assets\img\receipts\119\22\FITLXXXIX0000022041.pdf" />
+    <Content Include="Assets\img\receipts\2\22\63\FITLXXXIX0000022041.pdf" />
+    <Content Include="Assets\img\receipts\5\6\67\22024.pdf" />
+    <Content Include="Assets\json\SpanishDT.json" />
+    <Content Include="Content\material-dashboard.css.map" />
+    <Content Include="Models\SEPRETDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SEPRETDB.edmx</DependentUpon>
+      <LastGenOutput>SEPRETDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SEPRETDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SEPRETDB.edmx</DependentUpon>
+      <LastGenOutput>SEPRETDB.cs</LastGenOutput>
+    </Content>
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\index.js.flow" />
+    <Content Include="App_Browsers\qt.browser" />
+    <EntityDeploy Include="Models\SEPRETDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SEPRETDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\SEPRETDB.edmx.diagram">
+      <DependentUpon>SEPRETDB.edmx</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\arrive.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-material-design.min.js" />
+    <Content Include="Scripts\bootstrap-notify.js" />
+    <Content Include="Scripts\bootstrap-selectpicker.js" />
+    <Content Include="Scripts\bootstrap-tagsinput.js" />
+    <Content Include="Scripts\chartist.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\iv-viewer.min.js" />
+    <Content Include="Scripts\jasny-bootstrap.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.min.map" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-3.5.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.5.1.js" />
+    <Content Include="Scripts\jquery-3.5.1.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
+    <Content Include="Scripts\jquery-jvectormap.js" />
+    <Content Include="Scripts\jquery.bootstrap-wizard.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
+    <Content Include="Scripts\jquery.tagsinput.js" />
+    <Content Include="Scripts\jquery.timeago.es.js" />
+    <Content Include="Scripts\jquery.timeago.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\kendo-pdf.js" />
+    <Content Include="Scripts\kendo.all.min.js" />
+    <Content Include="Scripts\material-dashboard.js" />
+    <Content Include="Scripts\material-dashboard.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\nouislider.min.js" />
+    <Content Include="Scripts\perfect-scrollbar.jquery.min.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\src\index.js" />
+    <Content Include="Scripts\src\methods\defaults.js" />
+    <Content Include="Scripts\src\methods\destroy.js" />
+    <Content Include="Scripts\src\methods\disableEventListeners.js" />
+    <Content Include="Scripts\src\methods\enableEventListeners.js" />
+    <Content Include="Scripts\src\methods\placements.js" />
+    <Content Include="Scripts\src\methods\update.js" />
+    <Content Include="Scripts\src\modifiers\applyStyle.js" />
+    <Content Include="Scripts\src\modifiers\arrow.js" />
+    <Content Include="Scripts\src\modifiers\computeStyle.js" />
+    <Content Include="Scripts\src\modifiers\flip.js" />
+    <Content Include="Scripts\src\modifiers\hide.js" />
+    <Content Include="Scripts\src\modifiers\index.js" />
+    <Content Include="Scripts\src\modifiers\inner.js" />
+    <Content Include="Scripts\src\modifiers\keepTogether.js" />
+    <Content Include="Scripts\src\modifiers\offset.js" />
+    <Content Include="Scripts\src\modifiers\preventOverflow.js" />
+    <Content Include="Scripts\src\modifiers\shift.js" />
+    <Content Include="Scripts\src\utils\clockwise.js" />
+    <Content Include="Scripts\src\utils\computeAutoPlacement.js" />
+    <Content Include="Scripts\src\utils\debounce.js" />
+    <Content Include="Scripts\src\utils\find.js" />
+    <Content Include="Scripts\src\utils\findCommonOffsetParent.js" />
+    <Content Include="Scripts\src\utils\findIndex.js" />
+    <Content Include="Scripts\src\utils\getBordersSize.js" />
+    <Content Include="Scripts\src\utils\getBoundaries.js" />
+    <Content Include="Scripts\src\utils\getBoundingClientRect.js" />
+    <Content Include="Scripts\src\utils\getClientRect.js" />
+    <Content Include="Scripts\src\utils\getFixedPositionOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetRect.js" />
+    <Content Include="Scripts\src\utils\getOffsetRectRelativeToArbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getOppositePlacement.js" />
+    <Content Include="Scripts\src\utils\getOppositeVariation.js" />
+    <Content Include="Scripts\src\utils\getOuterSizes.js" />
+    <Content Include="Scripts\src\utils\getParentNode.js" />
+    <Content Include="Scripts\src\utils\getPopperOffsets.js" />
+    <Content Include="Scripts\src\utils\getReferenceNode.js" />
+    <Content Include="Scripts\src\utils\getReferenceOffsets.js" />
+    <Content Include="Scripts\src\utils\getRoot.js" />
+    <Content Include="Scripts\src\utils\getRoundedOffsets.js" />
+    <Content Include="Scripts\src\utils\getScroll.js" />
+    <Content Include="Scripts\src\utils\getScrollParent.js" />
+    <Content Include="Scripts\src\utils\getStyleComputedProperty.js" />
+    <Content Include="Scripts\src\utils\getSupportedPropertyName.js" />
+    <Content Include="Scripts\src\utils\getViewportOffsetRectRelativeToArtbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getWindow.js" />
+    <Content Include="Scripts\src\utils\getWindowSizes.js" />
+    <Content Include="Scripts\src\utils\includeScroll.js" />
+    <Content Include="Scripts\src\utils\index.js" />
+    <Content Include="Scripts\src\utils\isBrowser.js" />
+    <Content Include="Scripts\src\utils\isFixed.js" />
+    <Content Include="Scripts\src\utils\isFunction.js" />
+    <Content Include="Scripts\src\utils\isIE.js" />
+    <Content Include="Scripts\src\utils\isModifierEnabled.js" />
+    <Content Include="Scripts\src\utils\isModifierRequired.js" />
+    <Content Include="Scripts\src\utils\isNumeric.js" />
+    <Content Include="Scripts\src\utils\isOffsetContainer.js" />
+    <Content Include="Scripts\src\utils\removeEventListeners.js" />
+    <Content Include="Scripts\src\utils\runModifiers.js" />
+    <Content Include="Scripts\src\utils\setAttributes.js" />
+    <Content Include="Scripts\src\utils\setStyles.js" />
+    <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\sweetalert2.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\material-dashboard.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.flow" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Views\AdviserType\Index.cshtml" />
+    <Content Include="Views\AdviserType\_AddEdit.cshtml" />
+    <Content Include="Views\Ambit\Index.cshtml" />
+    <Content Include="Views\Ambit\_AddEdit.cshtml" />
+    <Content Include="Views\Career\Index.cshtml" />
+    <Content Include="Views\Career\_AddEditCareer.cshtml" />
+    <Content Include="Views\CommentType\Index.cshtml" />
+    <Content Include="Views\CommentType\_AddEdit.cshtml" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\Company\_AddEdit.cshtml" />
+    <Content Include="Views\Company\_Detail.cshtml" />
+    <Content Include="Views\Dashboard\CorreoIns.cshtml" />
+    <Content Include="Views\Dashboard\EmailReceiptAccepted.cshtml" />
+    <Content Include="Views\Dashboard\EmailReceiptRejected.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Dashboard\_AddInvoice.cshtml" />
+    <Content Include="Views\Dashboard\_ConfirmReceiptReject.cshtml" />
+    <Content Include="Views\Dashboard\_Paginacion.cshtml" />
+    <Content Include="Views\Dashboard\_SearchReceipt.cshtml" />
+    <Content Include="Views\Department\Index.cshtml" />
+    <Content Include="Views\Department\_AddEdit.cshtml" />
+    <Content Include="Views\Dictum\Index.cshtml" />
+    <Content Include="Views\Dictum\_AddEdit.cshtml" />
+    <Content Include="Views\FileType\Index.cshtml" />
+    <Content Include="Views\FileType\_AddEdit.cshtml" />
+    <Content Include="Views\Home\EmailPasswordRecovery.cshtml" />
+    <Content Include="Views\Home\PaswordRecovery.cshtml" />
+    <Content Include="Views\Home\Privacy.cshtml" />
+    <Content Include="Views\Home\ResetPassword.cshtml" />
+    <Content Include="Views\Home\SignIn.cshtml" />
+    <Content Include="Views\Home\SignUp.cshtml" />
+    <Content Include="Views\InstrumentationType\Index.cshtml" />
+    <Content Include="Views\InstrumentationType\_AddEdit.cshtml" />
+    <Content Include="Views\Kind\Index.cshtml" />
+    <Content Include="Views\Kind\_AddEdit.cshtml" />
+    <Content Include="Views\Method\Index.cshtml" />
+    <Content Include="Views\Method\_AddEditMethod.cshtml" />
+    <Content Include="Views\Nature\Index.cshtml" />
+    <Content Include="Views\Nature\_AddEdit.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Payment\_AddEditPayment.cshtml" />
+    <Content Include="Views\Permission\Index.cshtml" />
+    <Content Include="Views\Permission\_AddEditPermission.cshtml" />
+    <Content Include="Views\PersonSubject\Index.cshtml" />
+    <Content Include="Views\Phase\Index.cshtml" />
+    <Content Include="Views\Phase\_AddEditPhase.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\ProjectPhase\Index.cshtml" />
+    <Content Include="Views\ProjectPhase\_AddEdit.cshtml" />
+    <Content Include="Views\ProjectType\Index.cshtml" />
+    <Content Include="Views\ProjectType\_AddEdit.cshtml" />
+    <Content Include="Views\Project\Bank.cshtml" />
+    <Content Include="Views\Project\Coordinador.cshtml" />
+    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\JefeDepartamental.cshtml" />
+    <Content Include="Views\Project\Student.cshtml" />
+    <Content Include="Views\Project\Teacher.cshtml" />
+    <Content Include="Views\Project\_AddEdit.cshtml" />
+    <Content Include="Views\Project\_AddEditRevisor.cshtml" />
+    <Content Include="Views\Project\_CommentReject.cshtml" />
+    <Content Include="Views\Project\_CommentUnpublish.cshtml" />
+    <Content Include="Views\Project\_Details.cshtml" />
+    <Content Include="Views\Project\_ListMember.cshtml" />
+    <Content Include="Views\Project\_ManageMembers.cshtml" />
+    <Content Include="Views\Project\_Search.cshtml" />
+    <Content Include="Views\Project\_SearchBank.cshtml" />
+    <Content Include="Views\Project\_SearchCC.cshtml" />
+    <Content Include="Views\Project\_SideDetails.cshtml" />
+    <Content Include="Views\Project\_SideStudentDetails.cshtml" />
+    <Content Include="Views\Project\_StudentAddAnteproyecto.cshtml" />
+    <Content Include="Views\Project\_StudentAddEdit.cshtml" />
+    <Content Include="Views\Project\_StudentBank.cshtml" />
+    <Content Include="Views\Project\_StudentDetails.cshtml" />
+    <Content Include="Views\Project\_StudentSearch.cshtml" />
+    <Content Include="Views\Reason\Index.cshtml" />
+    <Content Include="Views\Reason\_AddEditReason.cshtml" />
+    <Content Include="Views\Receipt\Index.cshtml" />
+    <Content Include="Views\Receipt\Voucher.cshtml" />
+    <Content Include="Views\Receipt\_AddEditReceipt.cshtml" />
+    <Content Include="Views\Receipt\_SearchPayment.cshtml" />
+    <Content Include="Views\Receipt\_SearchReceipt.cshtml" />
+    <Content Include="Views\Recidence\Index.cshtml" />
+    <Content Include="Views\Sector\Index.cshtml" />
+    <Content Include="Views\Sector\_AddEdit.cshtml" />
+    <Content Include="Views\Shared\_Paginacion.cshtml" />
+    <Content Include="Views\Shared\_PublicLayout.cshtml" />
+    <Content Include="Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Views\Subject\Index.cshtml" />
+    <Content Include="Views\Subject\Instrumentacion.cshtml" />
+    <Content Include="Views\Subject\_AddEdit.cshtml" />
+    <Content Include="Views\Subject\_AddEditDocente.cshtml" />
+    <Content Include="Views\Subject\_AddEditInstrumentation.cshtml" />
+    <Content Include="Views\Subject\_Search.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\_AddEditUser.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Assets\pdf\anteproyectos\" />
+    <Folder Include="Views\ProjectPerson\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52741</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44384/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

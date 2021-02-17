@@ -1,0 +1,79 @@
+﻿@model SEPRET.Models.Custom.PersonVM
+@{
+    ViewBag.Title = "Cambiar contraseña";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<div id="PasswordRecovery" class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto" style="display: none">
+    <form id="form" onsubmit="event.preventDefault(); PaswordRecovery();">
+        <div class="card card-hidden">
+            <div class="card-header card-header-primary text-center">
+                <h4 class="card-title">Recuperar contraseña</h4>
+            </div>
+            <div class="card-body">
+
+                <div class="form-group bmd-form-group mt-4">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="material-icons">person</i></div>
+                        </div>
+                        <label class="bmd-label-floating prepend-label-margin">Número de control</label>
+                        @Html.TextBoxFor(x => x.Enrollment, new { @class = "form-control", @name = "Enrollment", @type = "text", @required = "true", @aria_required = "true" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer justify-content-center">
+                <button id="submit" class="btn btn-primary btn-round">Solicitar código</button>
+            </div>
+            <div class="d-flex justify-content-around mt-2 mb-3">
+                @Html.ActionLink("¿Ya tienes cuenta? Inicia sesión aquí", "SignIn", "Home")
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            md.checkFullPageBackgroundImage();
+            setTimeout(function () {
+                $('#PasswordRecovery').fadeIn();
+            }, 300);
+        });
+
+        PaswordRecovery = () => {
+            const formData = new FormData(document.getElementById('form'));
+            jQuery(document.getElementById('submit')).attr('disabled', true).removeClass('btn-primary').addClass('btn-info').html('Procesando...');
+
+
+            fetch('@Url.Action("PaswordRecovery", "Home")', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.includes('enlace')) {
+                        jQuery(document.getElementById('submit')).attr('disabled', false).removeClass('btn-info').addClass('btn-primary').html('Solicitar código');
+                        mensaje = data.split(':');
+                        Swal.fire(
+                            '¡Realizado!',
+                            `${mensaje[0]}: <u class="text-primary font-weight-bold">${mensaje[1]}</u>`,
+                            'success'
+                        );
+                    } else {
+                        jQuery(document.getElementById('submit')).attr('disabled', false).removeClass('btn-info').addClass('btn-primary').html('Solicitar código');
+                        Swal.fire({
+                            title: '<strong>¡Oops!</strong>',
+                            type: 'error',
+                            html: `${data} crea una cuenta dando clic <a href="http://matehuala.tecnm.mx:800/Home/SignUp">AQUÍ</a>`,
+                            showCloseButton: true,
+                            focusConfirm: true,
+                            confirmButtonText: 'Ok',
+                        });
+                    }
+                })
+                .catch(error => Site.ErrorNotification())
+        }
+    </script>
+}

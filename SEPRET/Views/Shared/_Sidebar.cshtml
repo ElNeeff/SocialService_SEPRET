@@ -1,0 +1,360 @@
+﻿
+<ul class="nav">
+    @if (User.IsInRole("Super Administrador"))
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
+                <i class="material-icons">dashboard</i>
+                <p> Bitácora de pagos </p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#System">
+                <i class="material-icons">settings</i>
+                <p>
+                    Sistema
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="System">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "User")">
+                            <span class="sidebar-mini"> <i class="material-icons">people_alt</i> </span>
+                            <span class="sidebar-normal"> Usuarios </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Department")">
+                            <span class="sidebar-mini"> <i class="material-icons">category</i> </span>
+                            <span class="sidebar-normal"> Departamentos </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Career")">
+                            <span class="sidebar-mini"> <i class="material-icons">category</i> </span>
+                            <span class="sidebar-normal"> Carreras </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Permission")">
+                            <span class="sidebar-mini"> <i class="material-icons">admin_panel_settings</i> </span>
+                            <span class="sidebar-normal"> Permisos </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link collapsed" data-toggle="collapse" href="#recidenceSettings" aria-expanded="false">
+                            <span class="sidebar-mini"> <i class="material-icons">miscellaneous_services</i> </span>
+                            <span class="sidebar-normal">
+                                Residencias
+                                <b class="caret"></b>
+                            </span>
+                        </a>
+                        <div class="collapse" id="recidenceSettings" style="">
+                            <ul class="nav">
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "Dictum")">
+                                        <span class="sidebar-mini"> <i class="material-icons">gavel</i> </span>
+                                        <span class="sidebar-normal"> Dictámenes </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "ProjectPhase")">
+                                        <span class="sidebar-mini"> <i class="material-icons">timeline</i> </span>
+                                        <span class="sidebar-normal"> Etapas de proyectos </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "CommentType")">
+                                        <span class="sidebar-mini"> <i class="material-icons">comment_bank</i> </span>
+                                        <span class="sidebar-normal"> Tipos de comentarios </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "Nature")">
+                                        <span class="sidebar-mini"> <i class="material-icons">category</i> </span>
+                                        <span class="sidebar-normal"> Tipos de Carácter </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "Ambit")">
+                                        <span class="sidebar-mini"> <i class="material-icons">style</i> </span>
+                                        <span class="sidebar-normal"> Tipos de ámbito </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "Kind")">
+                                        <span class="sidebar-mini"> <i class="material-icons">transform</i> </span>
+                                        <span class="sidebar-normal">Tipos de proyectos</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "ProjectType")">
+                                        <span class="sidebar-mini"> <i class="material-icons">folder</i> </span>
+                                        <span class="sidebar-normal">Tipos de propuesta</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "AdviserType")">
+                                        <span class="sidebar-mini"> <i class="material-icons">person_pin</i> </span>
+                                        <span class="sidebar-normal">Tipos de asesor</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#Payment">
+                <i class="material-icons">payments</i>
+                <p>
+                    Conceptos de pago
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="Payment">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Payment")">
+                            <span class="sidebar-mini"> <i class="material-icons">receipt</i> </span>
+                            <span class="sidebar-normal"> Administrar </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Reason")">
+                            <span class="sidebar-mini"> <i class="material-icons">feedback</i> </span>
+                            <span class="sidebar-normal"> Motivos de rechazo </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Method")">
+                            <span class="sidebar-mini"> <i class="material-icons">payments</i> </span>
+                            <span class="sidebar-normal"> Métodos de pago </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Phase")">
+                            <span class="sidebar-mini"> <i class="material-icons">timeline</i> </span>
+                            <span class="sidebar-normal"> Etapas del proceso de pago </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Receipt")">
+                <i class="material-icons">account_balance</i>
+                <p> Pagos </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Recidence")">
+                <i class="material-icons">apartment</i>
+                <p> Residencias profesionales </p>
+            </a>
+        </li>
+    }
+    else if (User.IsInRole("Administrador"))
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
+                <i class="material-icons">dashboard</i>
+                <p> Bitácora de pagos </p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#System">
+                <i class="material-icons">settings</i>
+                <p>
+                    Sistema
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="System">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "User")">
+                            <span class="sidebar-mini"> <i class="material-icons">people_alt</i> </span>
+                            <span class="sidebar-normal"> Usuarios </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#Payment">
+                <i class="material-icons">payments</i>
+                <p>
+                    Conceptos de pago
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="Payment">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Payment")">
+                            <span class="sidebar-mini"> <i class="material-icons">receipt</i> </span>
+                            <span class="sidebar-normal"> Administrar </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Reason")">
+                            <span class="sidebar-mini"> <i class="material-icons">feedback</i> </span>
+                            <span class="sidebar-normal"> Motivos de rechazo </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Method")">
+                            <span class="sidebar-mini"> <i class="material-icons">payments</i> </span>
+                            <span class="sidebar-normal"> Métodos de pago </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Receipt")">
+                <i class="material-icons">account_balance</i>
+                <p> Pagos </p>
+            </a>
+        </li>
+    }
+    else if (User.IsInRole("Financiero"))
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
+                <i class="material-icons">dashboard</i>
+                <p> Bitácora de pagos </p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#Payment">
+                <i class="material-icons">payments</i>
+                <p>
+                    Conceptos de pago
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="Payment">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Payment")">
+                            <span class="sidebar-mini"> <i class="material-icons">receipt</i> </span>
+                            <span class="sidebar-normal"> Administrar </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Reason")">
+                            <span class="sidebar-mini"> <i class="material-icons">feedback</i> </span>
+                            <span class="sidebar-normal"> Motivos de rechazo </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Method")">
+                            <span class="sidebar-mini"> <i class="material-icons">payments</i> </span>
+                            <span class="sidebar-normal"> Métodos de pago </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    }
+    else if (User.IsInRole("Jefe departamental"))
+    {
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#System">
+                <i class="material-icons">engineering</i>
+                <p>
+                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="System">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Administrative", "Project")">
+                            <span class="sidebar-mini"> <i class="material-icons">groups</i> </span>
+                            <span class="sidebar-normal"> Asignar revisor/asesor </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Project")">
+                            <span class="sidebar-mini"> <i class="material-icons">category</i> </span>
+                            <span class="sidebar-normal"> Banco de proyectos </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    }
+    else if (User.IsInRole("Jefe academia"))
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Project")">
+                <i class="material-icons">engineering</i>
+                <p>
+                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                </p>
+            </a>
+        </li>
+    }
+    else if (User.IsInRole("Coordinador de carrera"))
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Administrative", "Project")">
+                <i class="material-icons">engineering</i>
+                <p>
+                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                </p>
+            </a>
+        </li>
+    }
+    else if (User.IsInRole("Docente"))
+    {
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#System">
+                <i class="material-icons">engineering</i>
+                <p>
+                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="System">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Teacher", "Project")">
+                            <span class="sidebar-mini"> <i class="material-icons">history_edu</i> </span>
+                            <span class="sidebar-normal"> Proyectos en revisión/asesoría </span>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Project")">
+                            <span class="sidebar-mini"> <i class="material-icons">category</i> </span>
+                            <span class="sidebar-normal"> Mis propuestas a banco </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Receipt")">
+                <i class="material-icons">account_balance</i>
+                <p> Pagos </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Project")">
+                <i class="material-icons">engineering</i>
+                <p>
+                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                </p>
+            </a>
+        </li>
+    }
+
+</ul>

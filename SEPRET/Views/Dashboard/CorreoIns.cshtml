@@ -1,0 +1,89 @@
+﻿@model SEPRET.Models.Custom.PersonVM
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <title>Correo Institucional </title>
+
+    <style>
+
+        body {
+            font-family: 'Roboto', serif;
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        b.rojo {
+            color: red;
+            font-size: 20px;
+        }
+
+        b.azul {
+            color: rgb(2, 10, 88);
+        }
+
+
+        p.tam {
+            font-size: 20px;
+        }
+
+        .vertical-align {
+            vertical-align: middle;
+            width: 80px;
+            height: 20px;
+        }
+
+        p {
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div>
+            <p class="centrar"><img src="~/Assets/img/TACM.png" /></p>
+        </div>
+
+        <p><b>@Model.UserFullName</b></p>
+        <br>
+
+
+        <p>Estimado Alumno:</p>
+        <br>
+
+        <p>
+            Estamos trabajando en nuestra imagen Institucional que nos define como Campus Matehuala del Tecnológico Nacional de México, es por ello que realizamos algunos
+            cambios  por lo cual la Institución te ha proporcionado un correo electrónico para uso académico:
+        </p>
+
+
+        <p class="tam"><b class="rojo">Correo electrónico/Usuario:</b>@Model.Email</p>
+        <p class="tam"><b class="rojo">Contraseña:</b>  Jaj15204</p>
+
+
+        <p>
+            Este mismo te servirá de acceso a los diversos sistemas que se encuentran alojados en la
+            página web del plantel<a href="http://itmh.edu.mx/index.html"> www.itmh.edu.mx;</a> además lo podrás usar como correo y gozar los
+            beneficios que brinda la suite de <img class="vertical-align" src="~/Assets/img/office.jpg" />.
+        </p>
+
+        <p>A partir de este momento ya se encuentra activo y listo para usarse como acceso a los sistemas de residencias, tutorías, etc. </p>
+        <br>
+
+        <p>Amablemente.</p>
+        <br>
+
+        <p>
+            <b class="azul">Jesús Alberto Garza Ortega.</b> <br>
+            <b>Jefe de Centro de Cómputo.</b>
+        </p>
+
+
+    </div>
+</body>
+</html>

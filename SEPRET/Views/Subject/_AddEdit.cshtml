@@ -1,0 +1,144 @@
+﻿@model SEPRET.Models.Custom.SubjectVM
+
+<div class="wizard-container modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-labelledby="AddEditModal" aria-hidden="true" style="margin-top: -50px">
+    <div class="card card-wizard modal-dialog modal-lg" role="document" data-color="rose" id="wizardProfile">
+        <div class="modal-content">
+            <form id="Form">
+                <div class="card-header text-center">
+                    <h3 class="card-title">
+                        Registrar nueva asignatura
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </h3>
+                    <h5 class="card-description">Detalles de la asignatura</h5>
+                </div>
+                <div class="wizard-navigation">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#image" data-toggle="tab" role="tab">
+                                Información básica
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#voucher" data-toggle="tab" role="tab">
+                                Caracterización
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#method" data-toggle="tab" role="tab">
+                                Intención didáctica
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+
+                        <dliv class="tab-pane active" id="image">
+                            @Html.HiddenFor(x => x.Id)
+
+                            <div class="row">
+                                <div class="col-9">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Nombre</label>
+                                        @Html.TextBoxFor(x => x.Nombre, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Clave</label>
+                                        @Html.TextBoxFor(x => x.Clave, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Horas teóricas</label>
+                                        @Html.TextBoxFor(x => x.HorasTeoricas, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Horas prácticas</label>
+                                        @Html.TextBoxFor(x => x.HorasPracticas, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Créditos</label>
+                                        @Html.TextBoxFor(x => x.Creditos, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Competencia</label>
+                                        @Html.TextAreaFor(x => x.Competencia, new { @required = "", @type = "text", @class = "form-control", @rows = "3" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </dliv>
+                        <div class="tab-pane" id="voucher">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Caracterización</label>
+                                        @Html.TextAreaFor(x => x.Caracterizacion, new { @required = "", @class = "form-control", @rows = "16" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="method">
+
+                            <div class="col-12">
+                                <div class="form-group" style="width: 90%;">
+                                    <label for="ProductName" class="bmd-label-floating"> Intención didáctica</label>
+                                    @Html.TextAreaFor(x => x.IntencionDidactica, new { @required = "", @class = "form-control", @rows = "16" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="mr-auto">
+                        <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="Anterior">
+                    </div>
+                    <div class="ml-auto">
+                        <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Siguiente">
+                        <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" onclick="Save(this);" name="finish" value="Finalizar" style="display: none;">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function () {
+        $('.card.card-wizard').addClass('active');
+    }, 600);
+
+    $('.moving-tab').hide();
+
+    $('#AddEditModal').on('shown.bs.modal', function () {
+        Site.initWizardForms();
+        $('.moving-tab').show();
+        $('.btn-next').removeClass('disabled');
+    })
+
+    $('select').selectpicker();
+
+</script>

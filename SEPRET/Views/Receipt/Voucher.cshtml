@@ -1,0 +1,194 @@
+﻿@model SEPRET.Models.Custom.ReceiptVM
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <title>Voucher - @Model.PersonName</title>
+
+    <style>
+        body {
+            font-family: 'Roboto', serif;
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        .positex {
+            clear: both;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .borde {
+            border-top-style: solid;
+            border-bottom-style: solid;
+        }
+
+        .dashed {
+            border: 1px dashed;
+        }
+
+        th {
+            font-weight: 400;
+        }
+
+        .foot {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+
+        .foot-top {
+            padding-top: 20px;
+            width: 70%;
+        }
+
+        .logo {
+            width: 150px;
+            height: 120px;
+        }
+
+        .vertical-align {
+            vertical-align: middle;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        div span,
+        div img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div>
+            <img class="float-left" src="@Server.MapPath("/Assets/img/voucher/TECNM.png")" width="250" />
+            <span style="font-size: small; margin-left: 1%; margin-top: 6%; text-align: center;">
+                <b>INSTITUTO TECNOLOGICO DE MATEHUALA</b><br>
+                Fecha de generación: @DateTime.Now.ToString("F", new System.Globalization.CultureInfo("es-MX"))
+            </span>
+            <img class="float-right" src="@Server.MapPath("/Assets/img/voucher/logo-tec.png")" width="120" />
+        </div>
+
+        <table style="margin-top: 10%; border-collapse: collapse; width: 100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <p class="text-center" style="font-size:100%; "><b>Referencia de Pago<b></p>
+                        <p class="text-center" style="font-size:120%; color: red;"><b>@Model.Reference</b> </p>
+                    </td>
+                    <td class="borde text-right" style="padding-top: 20px; padding-bottom: 20px;">
+                        <b>VENTANILLA / CAJERO</b><br>
+                        Referencia:<b>@Model.Reference</b><br>
+                        Alumno: <b>@Model.PersonName</b><br>
+                        Concepto: <b>@Model.PaymentId</b><br>
+                        Monto: <b>@Model.PriceFormatted</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2">
+                        No.Control: <b>@Model.Enrollment</b><br>
+                        Alumno: <b>@Model.PersonName</b><br>
+                        Carrera: <b>@Model.Career</b><br>
+                        <p style="color: red; font-size:medium;">
+                            <img class="float-left" style="margin-right: 2%;" src="@Server.MapPath("/Assets/img/voucher/banamex.jpg")" width="45" />
+                            Banco: <b>BANAMEX</b> <br>
+                            No.Cuenta: <b>006426189</b> <br>
+                            Clabe Interbancaria: <b>002709006400261894</b>
+                        </p>
+                        <p style="color: red; font-size:medium;">
+                            <img class="float-left" style="margin-right: 2%;" src="@Server.MapPath("/Assets/img/voucher/bbva.png")" width="45" />
+                            Banco: <b>BBVA Bancomer</b> <br>
+                            No.Cuenta: <b>0116382096</b> <br>
+                            Sucursal: <b>0830</b> <br>
+                            Clabe Interbancaria: <b>012700001163820964</b>
+                        </p>
+                        @*<div class="text-left">
+                                <p style="margin-bottom: 0px;">Puedes pagar en:</p>
+                                <img style="margin-right: 15px;" src="@Server.MapPath("/Assets/img/voucher/oxxo.png")" width="60" />
+                                <img style="margin-right: 15px;" src="@Server.MapPath("/Assets/img/voucher/walmart.png")" width="100" />
+                                <img style="margin-right: 15px;" src="@Server.MapPath("/Assets/img/voucher/soriana.png")" width="100" />
+                            </div>*@
+                    </td>
+                    <td class="borde text-right" style="padding-top: 20px; padding-bottom: 20px;">
+                        <b>TELEGRAFOS</b><br>
+                        Alumno: <b>@Model.PersonName</b><br>
+                        Concepto: <b>@Model.PaymentId</b><br>
+                        Monto: <b>@Model.PriceFormatted</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="borde text-right" style="padding-top: 20px; padding-bottom: 20px;">
+                        <b>TRANSFERENCIA / DEPÓSITO</b><br>
+                        Clabe interbancaria: <b>002709006400261894</b><br>
+                        Concepto: <b>@Model.PaymentId</b><br>
+                        Monto: <b>@Model.PriceFormatted</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <table class="borde" style="width: 100%; text-align: left;">
+            <tr>
+                <th style="width: 90%">Concepto</th>
+                <th>Pago</th>
+            </tr>
+            <tr>
+                <td>@Model.PaymentName</td>
+                <td>@Model.PriceFormatted</td>
+            </tr>
+        </table>
+
+        <p class="left-align" style="font-size:65%; margin-bottom: 10%;">
+            <b>IMPORTANTE:</b>Este documento es una <b>referencia</b> con la cual puedes hacer el pago del concepto que hayas seleccionado, sea en el banco o aquí mismo en el Tecnológico. <b>Esta ficha es PERSONAL, verifica que tu NOMBRE, CARRERA y No DE CONTROL sean los correctos.</b> <br><b>- No es un  comprobante de dicho pago.</b>
+            <br>- Los pagos menores a 500 pesos puedes realizarlos en el Tecnólogico en el Departamento de Recursos Financieros. A excepción de los pagos de curso de Inglés. <br>- Cuentas con <b>5 días para realizar el pago</b>  a partir de la fecha que se creo. <b>Una vez REALIZADO el PAGO, NO se podrán hacer DEVOLUCIONES.</b> <br>- Esperar de 24 a 48 Hrs. para validación de comprobante de pago por Departamento de Recursos Financieros.
+        </p>
+
+        <hr class="dashed" />
+
+        <div style="text-align: center;">
+            <h3>Copia</h3>
+            <p class="center-align"<b>Referencia de Pago</b></p>
+            <p class="center-align"><b>@Model.Reference</b></p>
+        </div>
+
+        <div>
+            No.Control: <b>@Model.Enrollment</b>
+            Nombre del Alumno: <b>@Model.PersonName</b>
+            <p style="margin-top: auto">Carrera: <b>@Model.Career</b></p>
+
+            <p style="text-align: right; font-size: small">Fecha de generación: <b>@DateTime.Now.ToString("F", new System.Globalization.CultureInfo("es-MX"))</b></p>
+
+            <table class="borde" style="width: 100%; text-align:left;">
+                <tr>
+                    <th class="foot-top">Concepto</th>
+                    <th class="foot-top">Pago</th>
+                </tr>
+                <tr>
+                    <td class="foot">@Model.PaymentName</td>
+                    <td class="foot">@Model.PriceFormatted</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+</body>
+</html>

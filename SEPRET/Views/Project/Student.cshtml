@@ -1,0 +1,428 @@
+﻿
+@{
+    ViewBag.Title = "View";
+}
+
+<div class="panel-wrap">
+    <div class="panel">
+        <button type="button" class="close toggleSidePanel" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div id="Viewer" style="overflow-y: scroll;">
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="col-xl-9 col-sm-12">
+                    <div class="card-icon">
+                        <i class="material-icons">style</i>
+                    </div>
+                    <h4 class="card-title">Proyectos alumno</h4>
+                </div>
+
+                <div id="search" class="col-xl-12 col-sm-12" style="display: none;">
+
+                    <div class="form-group bmd-form-group mt-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">search</i></div>
+                            </div>
+                            <label class="bmd-label-floating prepend-label-margin">Buscar un proyecto...</label>
+                            <input type="text" class="form-control" id="Search">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row d-flex justify-content-around">
+                        <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link disabled text-rose" data-toggle="tab" role="tablist">
+                                    Ir a:
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" role="tablist" onclick="ProjectList('MyProject');" style="cursor: pointer;">
+                                    Mi proyecto
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectList('Bank');" style="cursor: pointer;">
+                                    Banco de proyectos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<nav>
+    <ul class="pagination justify-content-end" id="Pages"></ul>
+</nav>
+
+<div class="row" id="Container">
+    @if (ViewBag.ProjectList != null)
+    {
+        foreach (var item in ViewBag.ProjectList)
+        {
+            <div class="col-12">
+                <div class="card card-background" style="background-image: url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=750&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D')">
+                    <div class="card-body w-100">
+                        @if (item.Empresa != "-")
+                        {
+                            <h6 class="card-category">@item.Empresa</h6>
+                        }
+
+                        @switch ((int)item.Id_ProjectPhase)
+                        {
+                            case 10:
+                            case 9:
+                                if (item.Id_ProjectPhase == 10)
+                                {
+                                    <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa:</h6>
+                                }
+                                else
+                                {
+                                    <h6 class="card-category" style="color: #ffd800 !important;">@item.Etapa:</h6>
+                                }
+                                foreach (var revisor in item.Revisores)
+                                {
+                                    <a class="text-info" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@revisor.Email?subject=Proyecto: @item.Titulo">@revisor.UserFullName</a>
+                                }
+                                break;
+                            case 12:
+                                <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa:</h6>
+                                <h6 class="card-category" style="color: #ff9800  !important;">Asesores:</h6>
+                                foreach (var revisor in item.Asesores)
+                                {
+                                    <a class="text-warning" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@revisor.Email?subject=Proyecto: @item.Titulo">@revisor.UserFullName</a>
+                                }
+                                break;
+                            default:
+                                <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa</h6>
+                                break;
+                        }
+                        <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                        <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
+                        <div class="card-description">
+                            @if (item.PDFExists)
+                            {
+                                <a href="javascript:;" class="btn btn-social btn-link btn-info btn-sm mb-2" onclick="ViewPDF(@item.Id, this);" rel="tooltip" data-placement="right" title="Ver anteproyecto">
+                                    <i class="material-icons">description</i>
+                                </a>
+                            }
+                            @switch ((int)item.Id_ProjectPhase)
+                            {
+                                case 5:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    <button class="btn btn-round btn-success" onclick="AddAnteproyecto(@item.Id);">
+                                        <i class="material-icons">note_add</i> Enviar anteproyecto
+                                    </button>
+                                    break;
+                                case 6:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa<br><em>Motivo:</em><br><b>@item.CommentCC</b>">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    break;
+                                case 7:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    break;
+                                case 8:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    break;
+                                case 9:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa<br><em></em><b>@item.CommentRevisor</b>">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    <button class="btn btn-round btn-success" onclick="AddAnteproyecto(@item.Id);">
+                                        <i class="material-icons">note_add</i> Enviar anteproyecto
+                                    </button>
+                                    break;
+                                case 10:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    break;
+                                case 11:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    break;
+                                case 12:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 3</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En asesoría por @foreach (var revisor in item.Asesores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 4</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 5</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                    </div>
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <i class="material-icons">notifications</i>
+            </div>
+            <h4 class="info-title">Aún no has registrado un proyecto</h4>
+            <button class="btn btn-round btn-lg btn-outline-primary" onclick="AddEdit(0, false);">
+                <i class="material-icons">add</i> Agregar proyecto
+            </button>
+        </div>
+    }
+</div>
+
+<div id="ModalContainer" style="margin-top: -50px">
+
+</div>
+
+
+<div class="modal fade" id="Modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/kendo-pdf.js"></script>
+    <script>
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
+    </script>
+    <script src="~/Scripts/kendo.all.min.js"></script>
+
+    <script>
+        $(() => {
+            Paginate('Student');
+            $('#Search').keyup(function () {
+                var filter = $('a.filter.nav-link.active').attr('id');
+                var keyword = $(this).val();
+                ProjectList(filter, keyword);
+            });
+            $('.filter').click(function () {
+                var filter = $(this).attr('id');
+                Paginate(filter);
+            })
+            $("time.timeago").timeago();
+            $('[rel="tooltip"]').tooltip();
+            Site.initSidePanel();
+        })
+
+        ViewPDF = Id => {
+            $('#Comments').hide();
+            fetch('@Url.Action("ViewPDF", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(({ success, base64 }) => {
+                    if (success) {
+                        Site.OpenVisor(base64);
+                        $('.panel-wrap').addClass('activeVisor');
+                    } else {
+                        console.log('else');
+                        Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor');
+                    }
+                })
+                .catch(error => Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor'))
+        }
+
+        AddAnteproyecto = Id => {
+            fetch('@Url.Action("AddAnteproyecto", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('.modal-content').html(data);
+                    $('#Modal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        Apply = Id => {
+            fetch('@Url.Action("Apply", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id})
+            })
+                .then(response => response.json())
+                .then(success => {
+                    if (success) {
+                        Site.OkNotification('Te has postulado con éxito al proyecto');
+                    } else {
+                        Site.ErrorNotification('No puedes postularte a este proyecto');
+                    }
+                })
+        }
+
+        Paginate = Filter => {
+            (Filter == 'Student') ? $('#Pages').hide() : $('#Pages').show();
+            fetch("@Url.Action("Paginate", "Project")", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({ Filter: Filter })
+            })
+                .then(response => response.text())
+                .then(data => $('#Pages').html(data))
+                .catch(error => console.error(error))
+        }
+
+        Save = button => {
+            jQuery(button).attr('disabled', true);
+            let formData = new FormData(document.getElementById('Form'));
+
+            fetch('@Url.Action("StudentProject", "Project")', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(success => {
+                    if (success) {
+                        ProjectList('MyProject');
+                        $('#AddEditModal').modal('hide');
+                        Site.OkNotification('El proyecto se guardó exitosamente');
+                    } else {
+                        $('#AddEditModal').modal('hide');
+                        Site.ErrorNotification('Ya tienes un proyecto activo en curso, debes darlo de baja para registrar uno nuevo');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEdit = (Id, ReadOnly) => {
+            fetch('@Url.Action("AddEdit", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id, ReadOnly: ReadOnly})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ModalContainer').html(data);
+
+                    $('.moving-tab').hide();
+                    $('#AddEditModal').on('shown.bs.modal', function () {
+                        Site.initMaterialWizard();
+                        $('.moving-tab').show();
+                        $('.btn-next').removeClass('disabled');
+                    });
+                    if (ReadOnly) {
+                        $('#Details :input').prop("disabled", true);
+                        $('#Form :input').prop("disabled", true);
+                    }
+                    $('#AddEditModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        ProjectList = (Filter, Keyword, Skip) => {
+            if (Filter == "Bank") {
+                $('#search').show();
+            } else {
+                $('#search').hide();
+            }
+            fetch('@Url.Action("ProjectListStudent", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
+            })
+                .then(response => response.text())
+                .then(data => $('#Container').html(data))
+                .catch(error => console.error(error))
+        }
+    </script>
+}

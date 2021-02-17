@@ -1,0 +1,58 @@
+﻿
+
+@model SEPRET.Models.Custom.CareerVM
+
+<div class="card-body">
+    <form id="CareerForm">
+
+        <div class="form-group bmd-form-group" style="display: none;">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">vpn_key</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Id</label>
+                @Html.TextBoxFor(x => x.Id, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">admin_panel_settings</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Nombre</label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control text-capitalize", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">vpn_key</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Clave oficial</label>
+                @Html.TextBoxFor(x => x.OfficialKey, new { @class = "form-control text-capitalize", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">event</i></div>
+                </div>
+                <label class="bmd-label-static prepend-label-margin">Fecha de inicio</label>
+                @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control datepicker", @type = "text" })
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script>
+
+    // initialise Datetimepicker and Sliders
+    md.initFormExtendedDatetimepickers();
+    if ($('.slider').length != 0) {
+        md.initSliders();
+    }
+</script>

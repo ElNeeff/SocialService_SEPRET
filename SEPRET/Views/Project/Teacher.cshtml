@@ -1,0 +1,426 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.ProjectVM>
+
+@{
+    ViewBag.Title = "Revisión y asesoría";
+}
+
+<div class="panel-wrap">
+    <div class="panel">
+        <button type="button" class="close toggleSidePanel row" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div id="Comments" style="display:none;">
+            <form class="d-flex mb-0 flex-column" id="FormReview">
+                @Html.Hidden("Id")
+                <div class="form-group bmd-form-group is-filled w-100">
+                    <label class="bmd-label-floating">Comentarios de revisión</label>
+                    <textarea class="form-control" cols="20" id="Review" name="Review" required="" rows="3"></textarea>
+                </div>
+                <div class="align-self-center">
+                    <button onclick="SendReview(this);" class="btn btn-primary btn-round btn-sm"><i class="material-icons">send</i> Enviar </button>
+                    <small id="response" style="display:none;" class="text-muted"></small>
+                </div>
+            </form>
+        </div>
+        <div id="Viewer">
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="col-xl-9 col-sm-12">
+                    <div class="card-icon">
+                        <i class="material-icons">style</i>
+                    </div>
+                    <h4 class="card-title">Proyectos</h4>
+                </div>
+
+                <div class="col-xl-3 col-sm-12">
+
+                    <div class="form-group bmd-form-group mt-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">search</i></div>
+                            </div>
+                            <label class="bmd-label-floating prepend-label-margin">Buscar un proyecto...</label>
+                            <input type="text" class="form-control" id="Search">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" role="tablist" onclick="ProjectList('Pending');" style="cursor: pointer;">
+                                    En revisión
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectList('PendingAdviser');" style="cursor: pointer;">
+                                    En asesoría
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectList('AllTeacher');" style="cursor: pointer;">
+                                    Todos los proyectos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<nav>
+    <ul class="pagination justify-content-end" id="Pages"></ul>
+</nav>
+
+<div class="row" id="Container">
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
+                <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg')">
+                    <div class="card-body">
+                        @if (item.Empresa != "-")
+                        {
+                            <h6 class="card-category">@item.Empresa</h6>
+                        }
+
+                        @switch ((int)item.Id_ProjectPhase)
+                        {
+                            case 10:
+                            case 9:
+                                <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa por:</h6>
+                                foreach (var revisor in item.Revisores)
+                                {
+                                    <a class="text-info" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@revisor.Email?subject=Proyecto: @item.Titulo">@revisor.UserFullName</a>
+                                }
+                                break;
+                            default:
+                                <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa</h6>
+                                break;
+                        }
+                        <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                        <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
+                        <div class="card-description mt-0">
+
+                            <p class="text-rose mb-0 mt-0">
+                                @item.Tipo
+                            </p>
+
+                            <p class="text-rose mb-0 mt-0">
+
+                                @foreach (var miembro in item.Miembros)
+                                {
+                                    if (miembro.ProjectOwner)
+                                    {
+                                        <a class="text-warning" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@miembro.Email?subject=Proyecto: @item.Titulo">@(item.Tipo.Contains("Propuesta propia") ? miembro.UserFullName + " (" + miembro.Enrollment + ")" : miembro.UserFullName)</a>
+                                    }
+                                    else
+                                    {
+                                        <br />
+                                        <a class="text-success" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@miembro.Email?subject=Proyecto: @item.Titulo">@miembro.UserFullName (@miembro.Enrollment)</a>
+                                    }
+                                }
+                            </p>
+
+                            <a href="javascript:;" class="btn btn-social btn-link btn-info btn-sm mb-2" onclick="ReviewPDF(@item.Id, this);" rel="tooltip" data-placement="right" title="Ver anteproyecto">
+                                <i class="material-icons">description</i>
+                            </a>
+                            @if (item.Id_ProjectPhase == 10)
+                            {
+                                <br />
+                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Dar visto bueno">
+                                    <i class="material-icons">assignment_turned_in</i>
+                                </a>
+                            }
+                            else
+                            {
+                                <p class="text-rose font-weight-bold mb-0 mt-0">
+                                    En espera de correcciones por parte del alumno
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <i class="material-icons">notifications</i>
+            </div>
+            <h4 class="info-title">¡Genial!</h4>
+            <p>No tienes pendientes</p>
+        </div>
+        <script>
+            document.getElementById('Pages').style.display = 'none';
+        </script>
+    }
+</div>
+
+<div id="ModalContainer" style="margin-top: -50px">
+
+</div>
+
+
+<div class="modal fade" id="CommentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="ModalBody" class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/kendo-pdf.js"></script>
+    <script>
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
+    </script>
+    <script src="~/Scripts/kendo.all.min.js"></script>
+
+    <script>
+        $(() => {
+            Paginate('PendingCC');
+            $('#Search').keyup(function () {
+                var filter = $('a.filter.nav-link.active').attr('id');
+                var keyword = $(this).val();
+                ProjectList(filter, keyword);
+            });
+            $('.filter').click(function () {
+                var filter = $(this).attr('id');
+                Paginate(filter);
+            });
+            $("time.timeago").timeago();
+            $('[rel="tooltip"]').tooltip();
+            Site.initSidePanel();
+        });
+
+        Details = Id => {
+            fetch('@Url.Action("Details", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.text())
+                .then(data => Site.Visor(data, true))
+                .catch(error => console.error(error))
+        }
+
+        SendReview = button => {
+            jQuery(button).attr('disabled', true);
+            $('#Review').focus(function () {
+                $('#response').hide();
+            })
+            //let review = $('#Review').val();
+            let review = new FormData(document.getElementById('FormReview'));
+            fetch('@Url.Action("AddReview", "Project")', {
+                method: 'POST',
+                body: review
+            })
+                .then(response => {
+                    if (response.ok) {
+                        $('#Review').val('');
+                        $('#response').html('El comentario se ha enviado exitosamente').addClass('text-success').show();
+                        jQuery(button).attr('disabled', false);
+                    } else {
+                        $('#response').html('Ocurrió un error al procesar la solicitud').addClass('text-danger').show();
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        ReviewPDF = Id => {
+            fetch('@Url.Action("ViewPDF", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(({ success, base64 }) => {
+                    if (success) {
+                        //y = '<div class="form-group bmd-form-group is-filled w-100"> <label class="bmd-label-floating">Comentarios de revisión</label> <textarea class="form-control" cols="20" id="Review" name="Comentarios" required="" rows="3"></textarea> </div> <div class="align-self-center"> <button onclick="SendReview(this);" class="btn btn-primary btn-round btn-sm"><i class="material-icons">send</i> Enviar </button> </div>';
+                        //Site.OpenVisor(base64);
+                        $('#Viewer').children().remove();
+                        $('#Comments').show();
+                        $('#Id').val(Id);
+                        //var firstRender = true;
+                        $('#Viewer').kendoPDFViewer({
+                            pdfjsProcessing: {
+                                file: base64
+                            },
+                            width: '100%',
+                            height: '85%'
+                            //render: function (e) {
+                            //    if (firstRender) {
+                            //        e.sender.toolbar.zoom.combobox.value("fitToWidth");
+                            //        e.sender.toolbar.zoom.combobox.trigger("change");
+                            //        firstRender = false;
+                            //    }
+                            //}
+                        }).data('kendoPDFViewer');
+                        $('.panel-wrap').addClass('activeVisor');
+                    } else {
+                        Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        ViewPDF = Id => {
+            $('#Comments').hide();
+            fetch('@Url.Action("ViewPDF", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(({ success, base64 }) => {
+                    if (success) {
+                        Site.OpenVisor(base64);
+                        $('.panel-wrap').addClass('activeVisor');
+                    } else {
+                        Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor');
+                    }
+                })
+                .catch(error => Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor'))
+        }
+
+        Paginate = Filter => {
+            fetch("@Url.Action("Paginate", "Project")", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({ Filter: Filter })
+            })
+                .then(response => response.text())
+                .then(data => $('#Pages').html(data))
+                .catch(error => console.error(error))
+        }
+
+        Dictum = (Id, Action, Button) => {
+            jQuery(Button).attr('disabled', true);
+
+            fetch('@Url.Action("Dictum", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id, Dictum: Action})
+            })
+                .then(respones => respones.json())
+                .then(success => {
+                    if (success) {
+                        $('#' + Id + ', div.tooltip').hide('slow', () => { $('#' + Id + ', div.tooltip').remove(); });
+                        Site.OkNotification('La acción se procesó correctamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+        }
+
+        AddEditRevisor = Id => {
+            fetch('@Url.Action("AddEditRevisor", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ModalBody').html(data);
+                    $('#Modal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        Comment = (Id, Dictum) => {
+            fetch('@Url.Action("Comment", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id, Dictum: Dictum})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('.modal-content').html(data);
+                    $('#CommentModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEdit = (Id, ReadOnly) => {
+            fetch('@Url.Action("AddEdit", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id, ReadOnly: ReadOnly})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ModalContainer').html(data);
+
+                    $('.moving-tab').hide();
+                    $('#AddEditModal').on('shown.bs.modal', function () {
+                        Site.initMaterialWizard();
+                        $('.moving-tab').show();
+                        $('.btn-next').removeClass('disabled');
+                    });
+                    if (ReadOnly) {
+                        $('#Details :input').prop("disabled", true);
+                        $('#Form :input').prop("disabled", true);
+                    }
+                    $('#AddEditModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        ProjectList = (Filter, Keyword, Skip) => {
+            Paginate(Filter);
+            fetch('@Url.Action("ProjectListTeacher", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
+            })
+                .then(response => response.text())
+                .then(data => $('#Container').html(data))
+                .catch(error => console.error(error))
+        }
+    </script>
+}

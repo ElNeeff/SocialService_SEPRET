@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "Lista de carreras";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="card-icon">
+                    <i class="material-icons">group_work</i>
+                </div>
+                <h4 class="card-title">Lista de carreras</h4>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="CareerDT('Active');" style="cursor: pointer;">
+                                        Activas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="CareerDT('Inactive');" style="cursor: pointer;">
+                                        Inactivas
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-12 text-right">
+                            <button class="btn btn-round btn-sm btn-outline-primary" onclick="AddEditCareer(0);">
+                                <i class="material-icons">add</i> Agregar carrera
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="material-datatables" style="display: none;">
+                    <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="col-sm-12">
+                            <table id="CareerDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Fecha de inicio</th>
+                                        <th>Clave oficial</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Fecha de inicio</th>
+                                        <th>Clave oficial</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<div class="modal fade" id="AddEditCareerModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+
+                        <h4 class="card-title">Detalles de la carrera</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-primary btn-round" onclick="SaveCareer();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            CareerDT('Active');
+        })
+
+        SaveCareer= () => {
+            let CareerForm = document.getElementById('CareerForm');
+            let CareerData = new FormData(CareerForm);
+
+            fetch('@Url.Action("Index", "Career")', {
+                method: 'POST',
+                body: CareerData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Table.draw();
+                        $('#AddEditCareerModal').modal('hide');
+                        md.showNotification('bottom', 'right', 'success', 'La carrera se guardó exitosamente');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEditCareer= Id => {
+            fetch('@Url.Action("AddEditCareer", "Career")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('.modal-body').html(data);
+                    $('#AddEditCareerModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        UpdateCareerStatus = Id => {
+            fetch('@Url.Action("UpdateCareerStatus", "Career")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(success => {
+                    if (success) {
+                        md.showNotification('bottom', 'right', 'success', 'El estado de la carrera se actualizó exitosamente');
+                    } else {
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        CareerDT = Filter => {
+            Table = $('#CareerDT').DataTable({
+                destroy: true,
+                responsive: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '@Url.Action("CareerDT", "Career")',
+                    data: data => {
+                        data.Filter = Filter;
+                    }
+                },
+                columns: [
+                    { data: 'Name' },
+                    { data: 'StartDateFormatted' },
+                    { data: 'OfficialKey' },
+                    {
+                        render: (data, type, row) => {
+                            if (row['Active']) {
+                                return '<div class="togglebutton"><label><input type="checkbox" checked="" onClick="UpdateCareerStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            } else {
+                                return '<div class="togglebutton"><label><input type="checkbox" onClick="UpdateCareerStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        render: (Id, type, full, meta) => '<button class="btn btn-round btn-outline-primary btn-fab btn-fab-mini" onclick="AddEditCareer(' + Id + ');"><i class="material-icons">edit</i></button>'
+                    }
+                ],
+                columnDefs: [
+                    { className: "text-center", targets: [1, 2, 3, 4] }
+                ],
+                language: {
+                    url: '/Assets/json/SpanishDT.json'
+                },
+                initComplete: () => {
+                    $('select').selectpicker();
+                    Site.StyleDropdownDT();
+                    $('.material-datatables').show();
+                }
+            })
+        }
+    </script>
+
+}

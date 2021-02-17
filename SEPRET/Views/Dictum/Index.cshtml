@@ -1,0 +1,201 @@
+﻿
+@{
+    ViewBag.Title = "View";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="card-icon">
+                    <i class="material-icons">gavel</i>
+                </div>
+                <h4 class="card-title">Lista de dictámenes disponibles para los proyectos de residencias</h4>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="DT('Active');" style="cursor: pointer;">
+                                        Activos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="DT('Inactive');" style="cursor: pointer;">
+                                        Inactivos
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-12 text-right">
+                            <button class="btn btn-round btn-sm btn-outline-primary" onclick="AddEdit(0);">
+                                <i class="material-icons">add</i> Agregar dictamen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="material-datatables" style="display: none;">
+                    <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="col-sm-12">
+                            <table id="DT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Creado el</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Creado el</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<div class="modal fade" id="AddEditModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+
+                        <h4 class="card-title">Nombre del dictamen</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-primary btn-round" onclick="Save();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            DT('Active');
+        })
+
+        Save = () => {
+            let formData = new FormData(document.getElementById('Form'));
+
+            fetch('@Url.Action("Index", "Dictum")', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Table.draw();
+                        $('#AddEditModal').modal('hide');
+                        Site.OkNotification('El dictamen se guardó exitosamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEdit = Id => {
+            fetch('@Url.Action("AddEdit", "Dictum")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('.modal-body').html(data);
+                    $('#AddEditModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        UpdateStatus = Id => {
+            fetch("@Url.Action("UpdateStatus", "Dictum")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Site.OkNotification('El estado del dictamen se actualizó correctamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        DT = Filter => {
+            Table = $('#DT').DataTable({
+                destroy: true,
+                responsive: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '@Url.Action("DT", "Dictum")',
+                    data: data => {
+                        data.Filter = Filter
+                    }
+                },
+                columns: [
+                    { data: 'Nombre' },
+                    { data: 'TimeCreatedFormatted' },
+                    {
+                        render: (data, type, row) => {
+                            if (row['Active']) {
+                                return '<div class="togglebutton"><label><input type="checkbox" checked="" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                            else {
+                                return '<div class="togglebutton"><label><input type="checkbox" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        render: (Id, type, full, meta) => '<button class="btn btn-round btn-outline-primary btn-fab btn-fab-mini" onClick="AddEdit(' + Id + ');"><i class="material-icons">edit</i></button>'
+                    }
+                ],
+                columnDefs: [
+                    { className: 'text-center', targets: [2, 3] }
+                ],
+                language: {
+                    url: '/Assets/json/SpanishDT.json'
+                },
+                initComplete: () => {
+                    $('select').selectpicker();
+                    Site.StyleDropdownDT();
+                    $('.material-datatables').show();
+                }
+            })
+        }
+    </script>
+} 

@@ -1,0 +1,237 @@
+﻿
+@{
+    ViewBag.Title = "View";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="card-icon">
+                    <i class="material-icons">style</i>
+                </div>
+                <h4 class="card-title">Catálogo de asignaturas del departamento</h4>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="DT('Active');" style="cursor: pointer;">
+                                        Activas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="DT('Inactive');" style="cursor: pointer;">
+                                        Inactivas
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-12 text-right">
+                            <button class="btn btn-round btn-sm btn-outline-primary" onclick="AddEdit(0);">
+                                <i class="material-icons">add</i> Agregar asignatura
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="material-datatables" style="display: none;">
+                    <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="col-sm-12">
+                            <table id="DT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Clave</th>
+                                        <th>TPC</th>
+                                        <th>Creado el</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Clave</th>
+                                        <th>TPC</th>
+                                        <th>Creado el</th>
+                                        <th>Activo</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+
+<div id="ModalContainer" style="margin-top: -50px">
+
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="ModalBody" class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(() => {
+            DT('Active');
+        })
+
+        Save = button => {
+            jQuery(button).attr('disabled', true);
+            let formData = new FormData(document.getElementById('Form'));
+
+            fetch('@Url.Action("Index", "Subject")', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Table.draw();
+                        $('#AddEditModal').modal('hide');
+                        Site.OkNotification('La materia se guardó exitosamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        Instrumentacion = Id => {
+            var InstrumentacionUrl = '@(Html.Raw( Url.Action("Instrumentacion", "Subject", new { Id ="_Id_" })))';
+            window.location.href = InstrumentacionUrl.replace('_Id_', Id);
+        }
+
+        AddEdit = Id => {
+            fetch('@Url.Action("AddEdit", "Subject")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#ModalContainer').html(data);
+                    $('.moving-tab').hide();
+                    $('#AddEditModal').on('shown.bs.modal', function () {
+                        Site.initMaterialWizard();
+                        $('.moving-tab').show();
+                        $('.btn-next').removeClass('disabled');
+                    });
+                    $('#AddEditModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        UpdateStatus = Id => {
+            fetch("@Url.Action("UpdateStatus", "Subject")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        Site.OkNotification('El estado del registro se actualizó correctamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        AddEditDocente= Id => {
+            fetch('@Url.Action("AddEditDocente", "Subject")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    //$('#Modal').on('hidden.bs.modal', function (e) {
+                    //});
+                    $('#ModalBody').html(data);
+                    $('#Modal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        DT = Filter => {
+            Table = $('#DT').DataTable({
+                destroy: true,
+                responsive: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '@Url.Action("DT", "Subject")',
+                    data: data => {
+                        data.Filter = Filter
+                    }
+                },
+                columns: [
+                    {
+                        render: (data, type, row) => {
+                            return `<div class="dropdown">
+                                        <button class="btn btn-outline-primary dropdown-toggle btn-sm btn-round" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> ${row['Nombre']} </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="javascript:;" onClick="AddEditDocente(${row['Id']});">Asignar docente</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="javascript:;" onClick="Instrumentacion(${row['Id']});">Agregar/editar instrumentación</a>
+                                        </div>
+                                    </div>`;
+                        }
+                    },
+                    { data: 'Clave' },
+                    { data: 'TPC' },
+                    { data: 'TimeCreatedFormatted' },
+                    {
+                        render: (data, type, row) => {
+                            if (row['Active']) {
+                                return '<div class="togglebutton"><label><input type="checkbox" checked="" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                            else {
+                                return '<div class="togglebutton"><label><input type="checkbox" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'Id',
+                        render: (Id, type, full, meta) => '<button class="btn btn-round btn-outline-primary btn-fab btn-fab-mini" onClick="AddEdit(' + Id + ');"><i class="material-icons">edit</i></button>'
+                    }
+                ],
+                columnDefs: [
+                    { className: 'text-center', targets: [4, 5] }
+                ],
+                language: {
+                    url: '/Assets/json/SpanishDT.json'
+                },
+                initComplete: () => {
+                    $('select').selectpicker();
+                    Site.StyleDropdownDT();
+                    $('.material-datatables').show();
+                }
+            })
+        }
+    </script>
+} 

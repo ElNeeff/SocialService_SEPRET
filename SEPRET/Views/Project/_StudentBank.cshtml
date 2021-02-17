@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.ProjectVM>
+
+
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
+            <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg') ">
+                <div class="card-body">
+                    <h6 class="card-category text-info">@item.Presentador (<a class="card-category text-info" href="mailto:@item.EmailPresentador?body=Escribe%20tu%20n%C3%BAmero%20de%20control%2C%20nombre%20completo%20y%20tu%20mensaje%20al%20presentador%20del%20proyecto&subject=Interesado%20en%20el%20proyecto: @item.Titulo.Replace(" ", "%20")">Enviar email</a>)</h6>
+                    <h3 class="card-title mb-0">@item.Titulo</h3>
+                    <small class="text-muted mt-0"><time class="timeago" datetime="@item.TimeCreated.ToString("O")" rel="tooltip" data-placement="top" title="@item.TimeCreated"></time></small>
+                    <div class="card-description">
+                        @item.Comentarios
+                    </div>
+                    <a href="javascript:;" class="btn btn-link btn-info" onclick="AddEdit(@item.Id, true);">
+                        <i class="material-icons">subject</i> Ver detalles
+                    </a>
+                    <a href="javascript:;" class="btn btn-link btn-success" onclick="Apply(@item.Id);">
+                        <i class="material-icons">group_add</i> Postularme
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        $('#Pages').show();
+    </script>
+}
+else
+{
+    <div class="info text-center">
+        <div class="icon icon-primary">
+            <i class="material-icons">notifications</i>
+        </div>
+        <h4 class="info-title">Por el momento no hay proyectos para tu carrera disponibles en el banco</h4>
+    </div>
+    <script>
+        $('#Pages').hide();
+    </script>
+}
+
+<script>
+    $("time.timeago").timeago();
+    $('[rel="tooltip"]').tooltip();
+</script>

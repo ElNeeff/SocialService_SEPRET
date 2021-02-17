@@ -1,0 +1,157 @@
+﻿@model SEPRET.Models.Custom.InstrumentationVM
+
+<div class="wizard-container modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-labelledby="AddEditModal" aria-hidden="true" style="margin-top: -50px">
+    <div class="card card-wizard modal-dialog modal-lg" role="document" data-color="rose" id="wizardProfile">
+        <div class="modal-content">
+            <form id="Form">
+                <div class="card-header text-center">
+                    <h3 class="card-title">
+                        Registrar unidad de asignatura
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </h3>
+                    <h5 class="card-description">Detalles de la unidad</h5>
+                </div>
+                <div class="wizard-navigation">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#BasicInfo" data-toggle="tab" role="tab">
+                                Competencia
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Temas" data-toggle="tab" role="tab">
+                                Temas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Aprendizaje" data-toggle="tab" role="tab">
+                                Aprendizaje
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Enseñanza" data-toggle="tab" role="tab">
+                                Enzeñanza
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Competencias" data-toggle="tab" role="tab">
+                                Competencias
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="BasicInfo">
+                            @Html.HiddenFor(x => x.Id_Subject)
+                            @Html.HiddenFor(x => x.Id_Unit)
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Competencia</label>
+                                        @Html.TextBoxFor(x => x.Competencia, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Horas teóricas</label>
+                                        @Html.TextBoxFor(x => x.HorasTeoricas, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Horas prácticas</label>
+                                        @Html.TextBoxFor(x => x.HorasPracticas, new { @required = "", @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Descripción</label>
+                                        @Html.TextAreaFor(x => x.Descripcion, new { @required = "", @type = "text", @class = "form-control", @rows = "4" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="tab-pane" id="Temas">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Temas y subtemas para desarrollar la competencia específica</label>
+                                        @Html.TextAreaFor(x => x.topicsRAW, new { @required = "", @type = "text", @class = "form-control", @rows = "16" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="Aprendizaje">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Actividades de aprendizaje</label>
+                                        @Html.TextAreaFor(x => x.learningActivitiesRAW, new { @required = "", @class = "form-control", @rows = "16" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="Enseñanza">
+
+                            <div class="col-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Actividades de enseñanza</label>
+                                    @Html.TextAreaFor(x => x.teachingActivitiesRAW, new { @required = "", @class = "form-control", @rows = "16" })
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane" id="Competencias">
+
+                            <div class="col-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Desarrollo de competencias genéricas</label>
+                                    @Html.TextAreaFor(x => x.proeficienciesRAW, new { @required = "", @class = "form-control", @rows = "16" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="mr-auto">
+                        <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="Anterior">
+                    </div>
+                    <div class="ml-auto">
+                        <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Siguiente">
+                        <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" onclick="Save(this);" name="finish" value="Finalizar" style="display: none;">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function () {
+        $('.card.card-wizard').addClass('active');
+    }, 600);
+
+    $('.moving-tab').hide();
+
+    $('#AddEditModal').on('shown.bs.modal', function () {
+        Site.initWizardForms();
+        $('.moving-tab').show();
+        $('.btn-next').removeClass('disabled');
+    })
+
+    $('select').selectpicker();
+
+</script>

@@ -1,0 +1,76 @@
+﻿@model SEPRET.Models.Custom.PersonVM
+
+<div class="card-body">
+    <form id="UserForm">
+        <div class="form-group bmd-form-group" style="margin-left: 5%;">
+            @Html.DropDownListFor(x => x.PermissionID, ViewBag.PermissionList as SelectList, new { @class = "col-12 selectpicker", @data_style = "btn btn-outline-primary btn-round", @id = "ListaPermisos", @title = "Selecciona un permiso" })
+        </div>
+        <div class="form-group bmd-form-group" style="margin-left: 5%;">
+            @Html.DropDownListFor(x => x.CareerId, ViewBag.CareerList as SelectList, new { @class = "col-12 selectpicker", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una carrera" })
+        </div>
+
+        <div class="form-group bmd-form-group" style="display: none;">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">person</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">UserID</label>
+                @Html.TextBoxFor(x => x.Id, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">person</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Nombre</label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">person</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Apellido paterno</label>
+                @Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">person</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Apellido materno</label>
+                @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @type = "text" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">contact_mail</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Correo electrónico</label>
+                @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @type = "mail" })
+            </div>
+        </div>
+
+        <div class="form-group bmd-form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="material-icons">vpn_key</i></div>
+                </div>
+                <label class="bmd-label-floating prepend-label-margin">Contraseña</label>
+                @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @type = "password" })
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $('select').selectpicker();
+</script>
