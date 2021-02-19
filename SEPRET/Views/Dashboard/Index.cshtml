@@ -323,7 +323,7 @@
                         $('#' + ReceiptId + ', div.tooltip').hide('slow', () => { $('#' + ReceiptId + ', div.tooltip').remove(); });
                         md.showNotification('bottom', 'right', 'success', 'La factura se adjunto exitosamente');
                     } else {
-                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la sUrllicitud');
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
                     }
                 })
                 .catch(error => console.error(error))
