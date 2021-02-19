@@ -78,6 +78,21 @@ namespace SEPRET.Controllers
         }
 
         [HttpPost]
+        public JsonResult Copy(long Id)
+        {
+            using (SEPRETEntities DBC = new SEPRETEntities())
+            {
+                Person person = DBC.People.FirstOrDefault(x => x.Id == Id && x.Active);
+
+                return Json(new
+                {
+                    Email = person.Email,
+                    Password = person.Password
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public ActionResult AddEditUser(long Id)
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
@@ -184,7 +199,7 @@ namespace SEPRET.Controllers
                 int colId = DTParam.order[0].column;
                 Func<PersonPermission, string> orderingFunction = (x => colId == 0 ? x.Person.Enrollment :
                                       colId == 1 ? x.Person.Name :
-                                      colId == 2 ? x.Person.Career.Name:
+                                      colId == 2 ? x.Person.Career.Name :
                                       colId == 3 ? x.Permission.Name :
                                       colId == 4 ? x.Person.Email :
                                       x.Person.LastLogin.ToString());

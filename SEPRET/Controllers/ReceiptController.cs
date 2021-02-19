@@ -77,81 +77,164 @@ namespace SEPRET.Controllers
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
                 long UserId = (long)Session["Id"];
-                bool receiptExists = DBC.Receipts.Any(x => x.PersonId == UserId && x.PaymentId == modelo.PaymentId && x.PhaseId != 4 && x.PhaseId != 1 && x.Active == true);
+                string RelativePath, Destination, NombreArchivo, Folders, Ruta;
+                RelativePath = Destination = NombreArchivo = Folders = Ruta = string.Empty;
+                dynamic response;
 
-                if (!receiptExists)
+                Receipt receipt = DBC.Receipts.Where(x => x.PersonId == UserId && x.PaymentId == modelo.PaymentId && x.Active == true).OrderByDescending(x => x.Id).FirstOrDefault();
+
+                if (modelo.File != null && modelo.File.ContentType.Contains("image"))
                 {
-                    string RelativePath, Destination, NombreArchivo, Folders, Ruta;
-                    RelativePath = Destination = NombreArchivo = Folders = Ruta = string.Empty;
+                    Folders = string.Concat("/Assets/img/receipts/", (long)Session["Id"], "/", modelo.PaymentId + "/");
+                    Ruta = Server.MapPath(Folders);
+                    NombreArchivo = Path.GetFileName(modelo.File.FileName);
+                    RelativePath = Folders + NombreArchivo;
+                    Destination = Ruta + NombreArchivo;
+                    Directory.CreateDirectory(Ruta);
+                    modelo.File.SaveAs(Destination);
 
-                    //if (modelo.File != null && modelo.File.ContentType.Contains("image/"))
-                    if (modelo.File != null)
+                    response = "isImage";
+                }
+                else if (modelo.File != null)
+                {
+                    response = "notImage";
+                }
+                else
+                {
+                    response = "emptyFile";
+                }
+
+                if (response == "isImage")
+                {
+                    if (receipt == null || receipt.PhaseId == 4)
                     {
-                        Folders = string.Concat("/Assets/img/receipts/", (long)Session["Id"], "/", modelo.PaymentId + "/");
-                        Ruta = Server.MapPath(Folders);
-                        NombreArchivo = Path.GetFileName(modelo.File.FileName);
-                        RelativePath = Folders + NombreArchivo;
-                        Destination = Ruta + NombreArchivo;
-                        Directory.CreateDirectory(Ruta);
-                        modelo.File.SaveAs(Destination);
+                        //INSERT
+                        Receipt newReceipt = new Receipt
+                        {
+                            PersonId = (long)Session["Id"],
+                            PaymentId = modelo.PaymentId,
+                            PhaseId = 2,
+                            Image = RelativePath,
+                            Voucher = modelo.Voucher,
+                            MethodId = modelo.MethodId,
+                            Active = true,
+                            TimeCreated = DateTime.Now
+                        };
+
+                        DBC.Receipts.Add(newReceipt);
+                        DBC.SaveChanges();
+
+                        long LastReceiptId = newReceipt.Id;
+                        Attempt attempt = new Attempt
+                        {
+                            ReceiptId = LastReceiptId,
+                            Active = true,
+                            TimeCreated = DateTime.Now
+                        };
+
+                        DBC.Attempts.Add(attempt);
+                        DBC.SaveChanges();
+
+                        response = true;
                     }
-
-                    bool receiptRejected = DBC.Receipts.Any(x => x.PersonId == UserId && x.PaymentId == modelo.PaymentId && x.PhaseId == 1 && x.Active == true);
-
-                    if (modelo.Id > 0 && receiptRejected)
+                    else if (receipt.PhaseId == 1)
                     {
+                        //UPDATE
                         Folders = string.Concat("/Assets/img/receipts/", modelo.Id, "/", modelo.PaymentId + "/");
-                        // U P D A T E
-                        Receipt receipt = DBC.Receipts.FirstOrDefault(x => x.Id == modelo.Id);
                         receipt.MethodId = modelo.MethodId;
-                        //receipt.PaymentId = modelo.PaymentId;
-                        //receipt.PersonId = modelo.PersonId;
                         receipt.PhaseId = 2;
                         receipt.Voucher = modelo.Voucher;
                         receipt.Image = string.IsNullOrEmpty(RelativePath) ? receipt.Image : RelativePath;
                         receipt.TimeUpdated = DateTime.Now;
 
                         DBC.SaveChanges();
+
+                        response = true;
                     }
                     else
                     {
-                        if (!string.IsNullOrEmpty(RelativePath) && !receiptRejected)
-                        {
-                            // I N S E R T
-                            Receipt receipt = new Receipt
-                            {
-                                PersonId = (long)Session["Id"],
-                                PaymentId = modelo.PaymentId,
-                                PhaseId = 2,
-                                Image = RelativePath,
-                                Voucher = modelo.Voucher,
-                                MethodId = modelo.MethodId,
-                                Active = true,
-                                TimeCreated = DateTime.Now
-                            };
-
-                            DBC.Receipts.Add(receipt);
-                            DBC.SaveChanges();
-
-                            long LastReceiptId = receipt.Id;
-                            Attempt attempt = new Attempt
-                            {
-                                ReceiptId = LastReceiptId,
-                                Active = true,
-                                TimeCreated = DateTime.Now
-                            };
-
-                            DBC.Attempts.Add(attempt);
-                            DBC.SaveChanges();
-                        }
-                        else
-                        {
-                            return Json("emptyImage", JsonRequestBehavior.AllowGet);
-                        }
+                        //EN PROCESO
+                        response = false;
                     }
                 }
 
-                return Json(receiptExists, JsonRequestBehavior.AllowGet);
+                return Json(response, JsonRequestBehavior.AllowGet);
+
+
+                //bool receiptExists = DBC.Receipts.Any(x => x.PersonId == UserId && x.PaymentId == modelo.PaymentId && x.PhaseId != 4 && x.PhaseId != 1 && x.Active == true);
+
+                //if (!receiptExists)
+                //{
+                //    string RelativePath, Destination, NombreArchivo, Folders, Ruta;
+                //    RelativePath = Destination = NombreArchivo = Folders = Ruta = string.Empty;
+
+                //    //if (modelo.File != null && modelo.File.ContentType.Contains("image/"))
+                //    if (modelo.File != null)
+                //    {
+                //        Folders = string.Concat("/Assets/img/receipts/", (long)Session["Id"], "/", modelo.PaymentId + "/");
+                //        Ruta = Server.MapPath(Folders);
+                //        NombreArchivo = Path.GetFileName(modelo.File.FileName);
+                //        RelativePath = Folders + NombreArchivo;
+                //        Destination = Ruta + NombreArchivo;
+                //        Directory.CreateDirectory(Ruta);
+                //        modelo.File.SaveAs(Destination);
+                //    }
+
+                //    bool receiptRejected = DBC.Receipts.Any(x => x.PersonId == UserId && x.PaymentId == modelo.PaymentId && x.PhaseId == 1 && x.Active == true);
+
+                //    if (modelo.Id > 0 && receiptRejected)
+                //    {
+                //        Folders = string.Concat("/Assets/img/receipts/", modelo.Id, "/", modelo.PaymentId + "/");
+                //        // U P D A T E
+                //        Receipt receipt = DBC.Receipts.FirstOrDefault(x => x.Id == modelo.Id);
+                //        receipt.MethodId = modelo.MethodId;
+                //        //receipt.PaymentId = modelo.PaymentId;
+                //        //receipt.PersonId = modelo.PersonId;
+                //        receipt.PhaseId = 2;
+                //        receipt.Voucher = modelo.Voucher;
+                //        receipt.Image = string.IsNullOrEmpty(RelativePath) ? receipt.Image : RelativePath;
+                //        receipt.TimeUpdated = DateTime.Now;
+
+                //        DBC.SaveChanges();
+                //    }
+                //    else
+                //    {
+                //        if (!string.IsNullOrEmpty(RelativePath) && !receiptRejected)
+                //        {
+                //            // I N S E R T
+                //            Receipt receipt = new Receipt
+                //            {
+                //                PersonId = (long)Session["Id"],
+                //                PaymentId = modelo.PaymentId,
+                //                PhaseId = 2,
+                //                Image = RelativePath,
+                //                Voucher = modelo.Voucher,
+                //                MethodId = modelo.MethodId,
+                //                Active = true,
+                //                TimeCreated = DateTime.Now
+                //            };
+
+                //            DBC.Receipts.Add(receipt);
+                //            DBC.SaveChanges();
+
+                //            long LastReceiptId = receipt.Id;
+                //            Attempt attempt = new Attempt
+                //            {
+                //                ReceiptId = LastReceiptId,
+                //                Active = true,
+                //                TimeCreated = DateTime.Now
+                //            };
+
+                //            DBC.Attempts.Add(attempt);
+                //            DBC.SaveChanges();
+                //        }
+                //        else
+                //        {
+                //            return Json("emptyImage", JsonRequestBehavior.AllowGet);
+                //        }
+                //    }
+                //}
+
             }
         }
 
@@ -243,7 +326,7 @@ namespace SEPRET.Controllers
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
-                IEnumerable<Payment> payments = DBC.Payments.Where(x => x.Active == true);
+                IEnumerable<Payment> payments = DBC.Payments.Where(x => x.Active == true).OrderByDescending(x => x.Highlight);
 
                 #region Búsqueda
                 if (!string.IsNullOrEmpty(Keyword))

@@ -30,7 +30,7 @@ namespace SEPRET.Controllers
         {
             using (SEPRETEntities db = new SEPRETEntities())
             {
-                IEnumerable<Receipt> receipts = db.Receipts.Where(x => x.Active == true && x.PhaseId == 2).Take(12).ToList();
+                IEnumerable<Receipt> receipts = db.Receipts.OrderByDescending(x => x.TimeCreated).Where(x => x.Active == true && x.PhaseId == 2).Take(12).ToList();
                 long total = receipts.Count();
 
                 if (total > 0)
@@ -59,7 +59,27 @@ namespace SEPRET.Controllers
                 }
 
                 ViewBag.BinnacleTotal = total;
+
                 return View();
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ReceiptCounter()
+        {
+            using (SEPRETEntities DBC = new SEPRETEntities())
+            {
+                ReceiptCounter receiptCounter = new ReceiptCounter
+                {
+                    Rejected = DBC.Receipts.Count(x => x.PhaseId == 1 && x.Active),
+                    Pending = DBC.Receipts.Count(x => x.PhaseId == 2 && x.Active),
+                    Accepted = DBC.Receipts.Count(x => x.PhaseId == 3 && x.Active),
+                    Invoiced = DBC.Receipts.Count(x => x.PhaseId == 4 && x.Active),
+                    Deleted = DBC.Receipts.Count(x => !x.Active),
+                    Total = DBC.Receipts.Count(x => x.Active)
+                };
+
+                return Json(receiptCounter, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -417,19 +437,19 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Pending":
-                        receipts = DBC.Receipts.Where(x => x.PhaseId == 2 && x.Active == true).ToList();
+                        receipts = DBC.Receipts.OrderByDescending(x => x.TimeCreated).Where(x => x.PhaseId == 2 && x.Active == true).ToList();
                         break;
                     case "Accepted":
-                        receipts = DBC.Receipts.Where(x => x.PhaseId == 3 && x.Active == true).ToList();
+                        receipts = DBC.Receipts.OrderByDescending(x => x.TimeCreated).Where(x => x.PhaseId == 3 && x.Active == true).ToList();
                         break;
                     case "Rejected":
-                        receipts = DBC.Receipts.Where(x => x.PhaseId == 1 && x.Active == true).ToList();
+                        receipts = DBC.Receipts.OrderByDescending(x => x.TimeCreated).Where(x => x.PhaseId == 1 && x.Active == true).ToList();
                         break;
                     case "Deleted":
-                        receipts = DBC.Receipts.Where(x => x.Active == false).ToList();
+                        receipts = DBC.Receipts.OrderByDescending(x => x.TimeCreated).Where(x => x.Active == false).ToList();
                         break;
                     case "Finished":
-                        receipts = DBC.Receipts.Where(x => x.PhaseId == 4 && x.Active == true).ToList();
+                        receipts = DBC.Receipts.OrderByDescending(x => x.TimeCreated).Where(x => x.PhaseId == 4 && x.Active == true).ToList();
                         break;
                     default:
                         break;

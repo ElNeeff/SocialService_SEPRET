@@ -177,6 +177,29 @@
                 .catch(error => console.error(error))
         }
 
+        Copy = Id => {
+            fetch('@Url.Action("Copy", "User")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const { Email, Password } = data;
+                    const Data = `Correo: ${Email} \nContraseña: ${Password}`;
+
+                    const input = document.createElement("textarea");
+                    input.value = Data;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand("Copy");
+                    input.remove();
+                    md.showNotification('bottom', 'right', 'success', 'Correo y contraseña copiado exitosamente.');
+                })
+                .catch(error => console.error(error))
+        }
         UserDT = Filter => {
             $('.material-datatables').hide();
             Table = $('#UserDT').DataTable({
@@ -194,7 +217,11 @@
                 },
                 columns: [
                     { 'data': 'Enrollment' },
-                    { 'data': 'UserFullName' },
+                    {
+                        'render': (data, type, row) => {
+                            return `<a href="javascript:;" onClick="Copy(${row['Id']});" data-toggle="tooltip" data-placement="right" title="Copiar correo y contraseña">${row['UserFullName']}</a>`
+                        }
+                    },
                     { 'data': 'CareerName' },
                     { 'data': 'PermissionName' },
                     { 'data': 'Email' },

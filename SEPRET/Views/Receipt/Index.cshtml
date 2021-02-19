@@ -196,6 +196,17 @@
         //    }, 100);
         //}
 
+        setFileTabActive = () => {
+            $('[href="#image"]').addClass('active show');
+            $('[href="#image"]').attr('aria-selected', 'active');
+            $('.moving-tab').css({
+                'transform': 'translate3d(' + -8 + 'px, ' + 0 + 'px, 0)',
+                'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
+            });
+            $('#method,#voucher,[href="#method"],[href="#voucher]"').removeClass('active show');
+            $('#image').addClass('active show');
+        };
+
         SaveReceipt = () => {
             let ReceiptForm = document.getElementById('ReceiptForm');
             let ReceiptData = new FormData(ReceiptForm);
@@ -205,30 +216,47 @@
                 body: ReceiptData
             })
                 .then(response => response.json())
-                .then(receiptExists => {
-                    if (receiptExists == "emptyImage") {
-                        $('[href="#image"]').addClass('active show');
-                        $('[href="#image"]').attr('aria-selected', 'active');
-                        $('.moving-tab').css({
-                            'transform': 'translate3d(' + -8 + 'px, ' + 0 + 'px, 0)',
-                            'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
-                        });
-                        $('#method,#voucher,[href="#method"],[href="#voucher]"').removeClass('active show');
-                        $('#image').addClass('active show');
+                .then(data => {
+                    if (data === "emptyImage") {
+                        setFileTabActive();
                         md.showNotification('bottom', 'right', 'danger', 'Debes seleccionar una imagen para poder continuar.');
                     } else {
-                        if (!receiptExists) {
-                            $('#PaymentList').removeClass('active show');
-                            $('#MyPayment').addClass('active');
-                            ReceiptList('');
-                            $('#AddEditReceiptModal').modal('hide');
-                            md.showNotification('bottom', 'right', 'success', 'El comprobante de pago se envió correctamente. En espera de autorización');
-                        } else {
-                            md.showNotification('bottom', 'right', 'danger', 'Ya has enviado un pago y está en proceso de autorización, da click en "PAGOS REALIZADOS" para mayor información.');
+                        let message, notificationType;
+                        console.log('hey:', data);
+                        switch (data) {
+                            case 'emptyFile':
+                                setFileTabActive();
+                                notificationType = 'warning';
+                                message = 'Debes seleccionar una imagen para poder continuar.';
+                                break;
+                            case 'notImage':
+                                setFileTabActive();
+                                notificationType = 'warning';
+                                message = 'El archivo que seleccionaste no es una imagen.';
+                                break;
+                            case true:
+                                $('#PaymentList').removeClass('active show');
+                                $('#MyPayment').addClass('active');
+                                ReceiptList('');
+                                $('#AddEditReceiptModal').modal('hide');
+                                notificationType = 'success';
+                                message = 'El pago se ha enviado exitosamente para su revisión, recibirás una notificación por correo cuando sea procesado.';
+                                break;
+                            case false:
+                                $('#PaymentList').removeClass('active show');
+                                $('#MyPayment').addClass('active');
+                                ReceiptList('');
+                                $('#AddEditReceiptModal').modal('hide');
+                                notificationType = 'danger';
+                                message = 'Ya tienes un pago de tipo en proceso de evaluación. Verifica la sección PAGOS REALIZADOS para mayor información.';
+                                break;
+                            default:
+                                break;
                         }
+                        md.showNotification('bottom', 'right', notificationType, message);
                     }
                 })
-                .catch(errror => console.error(error))
+                .catch(error => console.error(error))
         }
 
         AddEditReceipt = (PaymentId, ReceiptId)  => {

@@ -198,7 +198,7 @@
     <Compile Include="Models\Company.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Custom\AdviserTest.cs" />
+    <Compile Include="Models\Custom\ReceiptCounter.cs" />
     <Compile Include="Models\Custom\AdviserTypeVM.cs" />
     <Compile Include="Models\Custom\AmbitVM.cs" />
     <Compile Include="Models\Custom\CareerVM.cs" />

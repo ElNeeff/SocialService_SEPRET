@@ -15,7 +15,7 @@
                     <div class="card-icon">
                         <i class="material-icons">receipt</i>
                     </div>
-                    <h4 class="card-title">Bitácora de pagos</h4>
+                    <h4 id="title" class="card-title">Bitácora de pagos</h4>
                 </div>
 
                 <div class="col-xl-3 col-sm-12">
@@ -80,7 +80,7 @@
     <!-- end col-md-12 -->
 </div>
 
-<nav>
+<nav id="xxx">
     <ul class="pagination justify-content-end" id="Pages"></ul>
 </nav>
 
@@ -215,6 +215,7 @@
     <script>
         $(() => {
             Paginate('Pending');
+            ReceiptCounter();
             $('#SearchReceipt').keyup(function () {
                 var filter = $('a.filter.nav-link.active').attr('id');
                 var keyword = $(this).val();
@@ -225,6 +226,21 @@
                 Paginate(filter);
             })
         });
+
+        ReceiptCounter = () => {
+            fetch('@Url.Action("ReceiptCounter", "Dashboard")')
+                .then(response => response.json())
+                .then(data => {
+                    const { Rejected, Pending, Accepted, Invoiced, Deleted, Total } = data;
+                    Pending > 0 && $('#Pending').html(`Pendientes <span class="badge badge-pill badge-danger">${Pending}</span>`);
+                    Accepted > 0 && $('#Accepted').html(`Por facturar <span class="badge badge-pill badge-warning">${Accepted}</span>`);
+                    Invoiced > 0 && $('#Finished').html(`Finalizados <span class="badge badge-pill badge-success">${Invoiced}</span>`);
+                    Rejected > 0 && $('#Rejected').html(`Rechazados <span class="badge badge-pill badge-secondary">${Rejected}</span>`);
+                    Deleted > 0 && $('#Deleted').html(`Eliminados <span class="badge badge-pill badge-default">${Deleted}</span>`);
+                    Total > 0 && $('#title').html(`Bitácora de pagos | <small class="muted text-primary">Total de pagos: ${Total}</small>`);
+                })
+                .catch(error => console.error())
+        }
 
         Paginate = Filter => {
             $('#Pages').show();
@@ -265,6 +281,7 @@
         }
 
         DeleteReceipt = Id => {
+            ReceiptCounter();
             fetch('@Url.Action("DeleteReceipt", "Dashboard")', {
                 method: 'POST',
                 headers: {
@@ -290,6 +307,7 @@
         }
 
         SaveInvoice = () => {
+            ReceiptCounter();
             let AddInvoiceForm = document.getElementById('AddInvoiceForm');
             let InvoiceFormData = new FormData(AddInvoiceForm);
             let ReceiptId = InvoiceFormData.get('Id');
@@ -305,7 +323,7 @@
                         $('#' + ReceiptId + ', div.tooltip').hide('slow', () => { $('#' + ReceiptId + ', div.tooltip').remove(); });
                         md.showNotification('bottom', 'right', 'success', 'La factura se adjunto exitosamente');
                     } else {
-                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la solicitud');
+                        md.showNotification('bottom', 'right', 'danger', 'Ocurrió un error al procesar la sUrllicitud');
                     }
                 })
                 .catch(error => console.error(error))
@@ -361,6 +379,7 @@
         }
 
         ConfirReceiptReject = Id => {
+            ReceiptCounter();
             fetch('@Url.Action("ConfirmReceiptReject", "Dashboard")', {
                 method: 'POST',
                 headers: {
@@ -377,6 +396,7 @@
         }
 
         AcceptReceipt = ReceiptId => {
+            ReceiptCounter();
             $('#aceptarpago-' + ReceiptId).prop('disabled', true);
             fetch('@Url.Action("AcceptReceipt", "Dashboard")', {
                 method: 'POST',
@@ -399,6 +419,19 @@
         }
 
         ReceiptList = (Filter, Keyword, Skip) => {
+            ReceiptCounter();
+            $('#xxx').hide();
+            $('#ReceiptContainer').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+            );
+
             fetch('@Url.Action("ReceiptList", "Dashboard")', {
                 method: 'POST',
                 headers: {
@@ -407,7 +440,10 @@
                 body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
             })
                 .then(response => response.text())
-                .then(data => $('#ReceiptContainer').html(data))
+                .then(data => {
+                    $('#xxx').show();
+                    $('#ReceiptContainer').html(data);
+                })
                 .catch(error => console.error(error))
         }
     </script>
