@@ -499,6 +499,7 @@ namespace SEPRET.Controllers
                     PriceFormatted = x.Payment.Price.ToString("C"),
                     Active = x.Active,
                     TimeCreatedFormatted = x.TimeCreated.ToString(),
+                    RejectDescription = x.Rejections.Select(xx => xx.Reason.Description).LastOrDefault(),
                     TotalRecords = TotalRecords
                 }).ToList();
                 #endregion

@@ -17,22 +17,30 @@ namespace SEPRET.Controllers
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
-                IEnumerable<Payment> payments = DBC.Payments.Where(x => x.Active == true).OrderByDescending(x => x.Highlight);
+                long UserId = (long)Session["Id"];
+                IEnumerable<Receipt> receipts = DBC.Receipts.Where(x => x.PersonId == UserId && x.Active == true).ToList();
 
-                #region Lista
-                List<PaymentVM> list = payments.Select(x => new PaymentVM
+                List<ReceiptVM> ReceiptList = receipts.OrderByDescending(x => x.TimeCreated).Select(x => new ReceiptVM
                 {
                     Id = x.Id,
-                    Name = x.Name,
-                    PriceFormatted = x.Price.ToString("C"),
-                    Account = x.Account
+                    PaymentId = x.PaymentId,
+                    Enrollment = x.Person.Enrollment,
+                    Career = x.Person.Career.Name,
+                    PersonName = string.Concat(x.Person.Name, " ", x.Person.MiddleName, " ", x.Person.LastName),
+                    Email = x.Person.Email,
+                    PaymentName = x.Payment.Name,
+                    MethodName = x.Method.Name,
+                    Voucher = x.Voucher,
+                    Image = x.Image,
+                    PhaseId = x.Phase.Id,
+                    PriceFormatted = x.Payment.Price.ToString("C"),
+                    Active = x.Active,
+                    TimeCreatedFormatted = x.TimeCreated.ToString(),
+                    RejectDescription = x.Rejections.Select(xx => xx.Reason.Description).LastOrDefault()
                 }).ToList();
-                #endregion
 
-                ViewBag.PaymentList = list;
+                return View(ReceiptList);
             }
-
-            return View();
         }
 
         [HttpPost]

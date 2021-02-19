@@ -67,6 +67,8 @@
                         <p>@item.Career</p>
                         <p class="text-center mb-0">@item.PaymentName</p>
                         <p>Recibido el: <b>@item.TimeCreatedFormatted</b></p>
+                        @if (!string.IsNullOrEmpty(item.RejectDescription) && item.PhaseId == 1)
+                        {<small class="text-muted text-warning">Motivo de rechazo:</small><p class="text-danger font-weight-bold">@item.RejectDescription</p>}
                     </div>
                 </div>
                 <div class="card-footer">

@@ -80,7 +80,7 @@
     <!-- end col-md-12 -->
 </div>
 
-<nav id="xxx">
+<nav id="PagesContainer">
     <ul class="pagination justify-content-end" id="Pages"></ul>
 </nav>
 
@@ -420,7 +420,7 @@
 
         ReceiptList = (Filter, Keyword, Skip) => {
             ReceiptCounter();
-            $('#xxx').hide();
+            $('#PagesContainer').hide();
             $('#ReceiptContainer').html(`
                 <div class="sk-chase">
                     <div class="sk-chase-dot"></div>
@@ -441,7 +441,7 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    $('#xxx').show();
+                    $('#PagesContainer').show();
                     $('#ReceiptContainer').html(data);
                 })
                 .catch(error => console.error(error))
