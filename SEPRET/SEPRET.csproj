@@ -395,7 +395,8 @@
     <Content Include="Models\SEPRETDB.edmx.diagram">
       <DependentUpon>SEPRETDB.edmx</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
+    <None Include="Properties\PublishProfiles\Producción.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\arrive.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />

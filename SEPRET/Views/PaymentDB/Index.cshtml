@@ -18,7 +18,7 @@
             <div class="row d-flex justify-content-end mr-1">
                 <label class="col-form-label mr-2 mt-2">Establecer fecha:</label>
                 <div class="form-group has-default bmd-form-group">
-                    <input type="text" class="form-control datetimepicker" name="daterange" autocomplete="off"/>
+                    <input id="xxx" type="text" class="form-control datetimepicker" name="daterange" autocomplete="off"/>
                 </div>
             </div>
         </div>
@@ -36,9 +36,9 @@
                 <p class="card-category">Rechazados</p>
                 <div class="card-title">
                     <div class="spinner float-right mr-2 mt-2">
-                        <div class="inner one"></div>
-                        <div class="inner two"></div>
-                        <div class="inner three"></div>
+                        <div class="spinner-inner one"></div>
+                        <div class="spinner-inner two"></div>
+                        <div class="spinner-inner three"></div>
                     </div>
                     <h3 id="rejected" class="card-title counter" style="display: none;">@Model.Rejected</h3>
                 </div>
@@ -59,9 +59,9 @@
                 <p class="card-category">Pendientes</p>
                 <div class="card-title">
                     <div class="spinner float-right mr-2 mt-2">
-                        <div class="inner one"></div>
-                        <div class="inner two"></div>
-                        <div class="inner three"></div>
+                        <div class="spinner-inner one"></div>
+                        <div class="spinner-inner two"></div>
+                        <div class="spinner-inner three"></div>
                     </div>
                     <h3 id="pending" class="card-title counter" style="display: none;">@Model.Pending</h3>
                 </div>
@@ -82,9 +82,9 @@
                 <p class="card-category">Aceptados</p>
                 <div class="card-title">
                     <div class="spinner float-right mr-2 mt-2">
-                        <div class="inner one"></div>
-                        <div class="inner two"></div>
-                        <div class="inner three"></div>
+                        <div class="spinner-inner one"></div>
+                        <div class="spinner-inner two"></div>
+                        <div class="spinner-inner three"></div>
                     </div>
                     <h3 id="accepted" class="card-title counter" style="display: none;">@Model.Accepted</h3>
                 </div>
@@ -105,9 +105,9 @@
                 <p class="card-category">Facturados</p>
                 <div class="card-title">
                     <div class="spinner float-right mr-2 mt-2">
-                        <div class="inner one"></div>
-                        <div class="inner two"></div>
-                        <div class="inner three"></div>
+                        <div class="spinner-inner one"></div>
+                        <div class="spinner-inner two"></div>
+                        <div class="spinner-inner three"></div>
                     </div>
                     <h3 id="invoiced" class="card-title counter" style="display: none;">@Model.Invoiced</h3>
                 </div>
@@ -179,6 +179,7 @@
             const AcceptedGeneral = @Html.Raw(Json.Encode(Model.AcceptedGeneral));
             const InvoicedGeneral = @Html.Raw(Json.Encode(Model.InvoicedGeneral));
             const Progress = @Html.Raw(Model.Progress);
+            
 
             generalChartInit(RejectedGeneral.Phase, RejectedGeneral.Data, PendingGeneral.Phase, PendingGeneral.Data, AcceptedGeneral.Phase, AcceptedGeneral.Data, InvoicedGeneral.Phase, InvoicedGeneral.Data);
             progressChartInit(Progress);
@@ -239,7 +240,17 @@
                     Filter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
             });
 
-            $('input[name="daterange"]').on('showCalendar.daterangepicker', () => {
+            $('input[name="daterange"]').on('showCalendar.daterangepicker', function () {
+                $('th').click(function () {
+                    $('select').css('all', 'revert');
+                })
+                $('select').css('all', 'revert');
+            });
+
+            $('input[name="daterange"]').on('show.daterangepicker', function (ev, picker) {
+                $('th').click(function () {
+                    $('select').css('all', 'revert');
+                })
                 $('select').css('all', 'revert');
             });
 

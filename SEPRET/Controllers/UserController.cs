@@ -27,12 +27,13 @@ namespace SEPRET.Controllers
                 {
                     // U P D A T E
                     PersonPermission user = DBC.PersonPermissions.FirstOrDefault(x => x.PersonId == modelo.Id);
+                    user.Person.Enrollment = modelo.Enrollment;
                     user.Person.CareerId = modelo.CareerId;
                     user.PermissionId = modelo.PermissionID;
                     user.Person.Name = modelo.Name.ToTitleCase();
                     user.Person.MiddleName = modelo.MiddleName.ToTitleCase();
                     user.Person.LastName = modelo.LastName.ToTitleCase();
-                    user.Person.Email = modelo.Email;
+                    user.Person.Email = modelo.Email.Replace(" ", "");
                     user.Person.Password = modelo.Password;
                     user.Person.TimeUpdated = DateTime.Now;
                     user.TimeUpdated = DateTime.Now;
@@ -45,11 +46,11 @@ namespace SEPRET.Controllers
                     Person user = new Person
                     {
                         CareerId = modelo.CareerId,
-                        Enrollment = string.Concat(DateTime.Now.ToString("yy"), 66, DateTime.Now.ToString("ffff")),
+                        Enrollment = modelo.Enrollment,
                         Name = modelo.Name.ToTitleCase(),
                         MiddleName = modelo.MiddleName.ToTitleCase(),
                         LastName = modelo.LastName.ToTitleCase(),
-                        Email = modelo.Email,
+                        Email = modelo.Email.Replace(" ", ""),
                         Password = modelo.Password,
                         LastLogin = DateTime.Now,
                         Active = true,
@@ -106,6 +107,7 @@ namespace SEPRET.Controllers
                 if (Id > 0)
                 {
                     PersonPermission user = DBC.PersonPermissions.FirstOrDefault(x => x.Person.Id == Id);
+                    modelo.Enrollment = user.Person.Enrollment;
                     modelo.CareerId = user.Person.CareerId;
                     modelo.PermissionID = user.PermissionId;
                     modelo.Id = user.Person.Id;
