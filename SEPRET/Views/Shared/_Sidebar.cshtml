@@ -3,12 +3,47 @@
     @if (User.IsInRole("Super Administrador"))
     {
         <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "PaymentDB")">
+                <i class="material-icons">analytics</i>
+                <p>Estadísticas de pagos</p>
+
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
                 <i class="material-icons">dashboard</i>
                 <p> Bitácora de pagos </p>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Receipt")">
+                <i class="material-icons">account_balance</i>
+                <p> Pagos </p>
+            </a>
+        </li>
+
         <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#SICSA">
+                <i class="material-icons">school</i>
+                <p>
+                    SICSA
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="SICSA">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Subject")">
+                            <span class="sidebar-mini"> <i class="material-icons">post_add</i> </span>
+                            <span class="sidebar-normal">Registrar asignatura</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+
+        <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#System">
                 <i class="material-icons">settings</i>
                 <p>
@@ -143,21 +178,15 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("Index", "Receipt")">
-                <i class="material-icons">account_balance</i>
-                <p> Pagos </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("Index", "Recidence")">
-                <i class="material-icons">apartment</i>
-                <p> Residencias profesionales </p>
-            </a>
-        </li>
     }
     else if (User.IsInRole("Administrador"))
     {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "PaymentDB")">
+                <i class="material-icons">analytics</i>
+                <p> Estadísticas de pagos </p>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
                 <i class="material-icons">dashboard</i>
@@ -223,6 +252,12 @@
     }
     else if (User.IsInRole("Financiero"))
     {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "PaymentDB")">
+                <i class="material-icons">analytics</i>
+                <p> Estadísticas de pagos <span class="badge badge-danger">Nuevo</span></p>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
                 <i class="material-icons">dashboard</i>

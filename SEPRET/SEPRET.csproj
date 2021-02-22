@@ -151,6 +151,7 @@
     <Compile Include="Controllers\KindController.cs" />
     <Compile Include="Controllers\MethodController.cs" />
     <Compile Include="Controllers\NatureController.cs" />
+    <Compile Include="Controllers\PaymentDBController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\PersonSubjectController.cs" />
@@ -198,6 +199,8 @@
     <Compile Include="Models\Company.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Custom\PaymentDBGeneral.cs" />
+    <Compile Include="Models\Custom\PaymentDBVM.cs" />
     <Compile Include="Models\Custom\ReceiptCounter.cs" />
     <Compile Include="Models\Custom\AdviserTypeVM.cs" />
     <Compile Include="Models\Custom\AmbitVM.cs" />
@@ -630,6 +633,7 @@
     <Content Include="Views\Subject\_Search.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\_AddEditUser.cshtml" />
+    <Content Include="Views\PaymentDB\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

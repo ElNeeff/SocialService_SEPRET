@@ -1,0 +1,423 @@
+﻿@model SEPRET.Models.Custom.PaymentDBVM
+@{
+    ViewBag.Title = "Estadísticas de pagos";
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<div class="card">
+    <div class="card-header card-header-primary card-header-icon row">
+        <div class="col-xl-9 col-sm-12">
+            <div class="card-icon">
+                <i class="material-icons">receipt</i>
+            </div>
+            <h4 id="title" class="card-title">Bitácora de pagos | <small class="muted text-primary">Total de pagos: @Model.Total</small></h4>
+        </div>
+
+        <div class="col-xl-3 col-sm-12">
+            <div class="row d-flex justify-content-end mr-1">
+                <label class="col-form-label mr-2 mt-2">Establecer fecha:</label>
+                <div class="form-group has-default bmd-form-group">
+                    <input type="text" class="form-control datetimepicker" name="daterange" autocomplete="off"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="fa fa-file-excel"></i>
+                </div>
+                <p class="card-category">Rechazados</p>
+                <div class="card-title">
+                    <div class="spinner float-right mr-2 mt-2">
+                        <div class="inner one"></div>
+                        <div class="inner two"></div>
+                        <div class="inner three"></div>
+                    </div>
+                    <h3 id="rejected" class="card-title counter" style="display: none;">@Model.Rejected</h3>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> <time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">note_add</i>
+                </div>
+                <p class="card-category">Pendientes</p>
+                <div class="card-title">
+                    <div class="spinner float-right mr-2 mt-2">
+                        <div class="inner one"></div>
+                        <div class="inner two"></div>
+                        <div class="inner three"></div>
+                    </div>
+                    <h3 id="pending" class="card-title counter" style="display: none;">@Model.Pending</h3>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> <time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">task</i>
+                </div>
+                <p class="card-category">Aceptados</p>
+                <div class="card-title">
+                    <div class="spinner float-right mr-2 mt-2">
+                        <div class="inner one"></div>
+                        <div class="inner two"></div>
+                        <div class="inner three"></div>
+                    </div>
+                    <h3 id="accepted" class="card-title counter" style="display: none;">@Model.Accepted</h3>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> <time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">file_present</i>
+                </div>
+                <p class="card-category">Facturados</p>
+                <div class="card-title">
+                    <div class="spinner float-right mr-2 mt-2">
+                        <div class="inner one"></div>
+                        <div class="inner two"></div>
+                        <div class="inner three"></div>
+                    </div>
+                    <h3 id="invoiced" class="card-title counter" style="display: none;">@Model.Invoiced</h3>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> <time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="min-height: 50vh;">
+    <div class="col-md-10 d-flex align-items-stretch">
+        <div class="card">
+
+            <div class="mx-auto">
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>
+            </div>
+
+            <div class="chartContainer" style="display:none;">
+                <div class="card-header card-chart card-header-rose" style="color: inherit; background: white;">
+                    <div class="ct-chart" id="general"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons">access_time</i> <time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2 card d-flex justify-content-center">
+        <div class="align-items-center mx-auto">
+            <div class="sk-chase">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+            </div>
+        </div>
+
+        <div class="ct-chart chartContainer align-items-center" id="progress" style="display:none;"></div>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+    <script>
+        let generalChart, progressChart;
+        $(() => {
+            const RejectedGeneral = @Html.Raw(Json.Encode(Model.RejectedGeneral));
+            const PendingGeneral = @Html.Raw(Json.Encode(Model.PendingGeneral));
+            const AcceptedGeneral = @Html.Raw(Json.Encode(Model.AcceptedGeneral));
+            const InvoicedGeneral = @Html.Raw(Json.Encode(Model.InvoicedGeneral));
+            const Progress = @Html.Raw(Model.Progress);
+
+            generalChartInit(RejectedGeneral.Phase, RejectedGeneral.Data, PendingGeneral.Phase, PendingGeneral.Data, AcceptedGeneral.Phase, AcceptedGeneral.Data, InvoicedGeneral.Phase, InvoicedGeneral.Data);
+            progressChartInit(Progress);
+
+            $("time.timeago").timeago();
+
+            $('input[name="daterange"]').daterangepicker({
+                "showDropdowns": true,
+                ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Últimos 7 dias': [moment().subtract(6, 'days'), moment()],
+                    'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+                    'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Último mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'Enero-Junio': [moment().startOf('year'), moment().month(5).endOf('month')],
+                    'Julio-Diciembre': [moment().month(6).startOf('month'), moment().endOf('year')]
+                },
+                "locale": {
+                    "format": "MM/DD/YYYY",
+                    "separator": " - ",
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar",
+                    "fromLabel": "Desde",
+                    "toLabel": "hasta",
+                    "customRangeLabel": "Personalizado",
+                    "weekLabel": "S",
+                    "daysOfWeek": [
+                        "D",
+                        "L",
+                        "M",
+                        "M",
+                        "J",
+                        "V",
+                        "S"
+                    ],
+                    "monthNames": [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ],
+                    "firstDay": 1
+                },
+                "alwaysShowCalendars": true,
+                "showCustomRangeLabel": false,
+                autoUpdateInput: false,
+                "opens": "left"
+            }, (start, end, label) => {
+                    Filter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+            });
+
+            $('input[name="daterange"]').on('showCalendar.daterangepicker', () => {
+                $('select').css('all', 'revert');
+            });
+
+            $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+        })
+
+        Filter = (startDate, endDate) => {
+            $('.counter, .chartContainer').hide();
+            $('.sk-chase, .spinner').show();
+
+            fetch('@Url.Action("Filter", "PaymentDB")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ startDate: startDate, endDate: endDate })
+            })
+                .then(response => response.json())
+                .then(({ Rejected, Pending, Accepted, Invoiced, Total, Progress, RejectedGeneral, PendingGeneral, AcceptedGeneral, InvoicedGeneral }) => {
+                    $('.sk-chase, .spinner').hide();
+                    $('.counter, .chartContainer').show();
+
+                    $('#title').html(`Bitácora de pagos | <small class="muted text-primary">Total de pagos: ${Total}</small>`);
+                    $('#rejected').html(Rejected);
+                    $('#pending').html(Pending);
+                    $('#accepted').html(Accepted);
+                    $('#invoiced').html(Invoiced);
+
+                    generalChart.updateSeries([{
+                        name: RejectedGeneral.Phase,
+                        data: RejectedGeneral.Data
+                    }, {
+                        name: PendingGeneral.Phase,
+                        data: PendingGeneral.Data
+                    }, {
+                        name: AcceptedGeneral.Phase,
+                        data: AcceptedGeneral.Data
+                    }, {
+                        name: InvoicedGeneral.Phase,
+                        data: InvoicedGeneral.Data
+                    }]);
+
+                    progressChart.updateSeries([Progress]);
+                })
+                .catch(error => console.error(error))
+        }
+
+        generalChartInit = (Rejected, RejectedData, Pending, PendingData, Accepted, AcceptedData, Invoiced, InvoicedData) => {
+            let options = {
+                series: [{
+                    name: Rejected,
+                    data: RejectedData
+                }, {
+                    name: Pending,
+                    data: PendingData
+                }, {
+                    name: Accepted,
+                    data: AcceptedData
+                }, {
+                    name: Invoiced,
+                    data: InvoicedData
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    stacked: true,
+                    events: {
+                        beforeMount: (chartContext, config) => {
+                            $('.sk-chase, .spinner').hide();
+                            $('.counter, .chartContainer').show();
+                        }
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 8,
+                        horizontal: true,
+                    },
+                },
+                colors: ['#e73f3b', '#09b2c7', '#fc9209', '#4da851'],
+                stroke: {
+                    width: 1,
+                    colors: ['#fff']
+                },
+                title: {
+                    text: 'Resumen detallado de pagos'
+                },
+                xaxis: {
+                    categories: ['Civíl', 'Gestión', 'Industrial', 'Sistemas', 'Contaduría'],
+                    labels: {
+                        formatter: val => val
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: undefined
+                    },
+                },
+                tooltip: {
+                    y: {
+                        formatter: val => val
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    offsetX: 40
+                },
+                responsive: [
+                    {
+                        breakpoint: 1000,
+                        options: {
+                            plotOptions: {
+                                bar: {
+                                    horizontal: false
+                                }
+                            },
+                            legend: {
+                                position: "bottom"
+                            }
+                        }
+                    }
+                ]
+            };
+
+            generalChart = new ApexCharts(document.querySelector("#general"), options);
+            generalChart.render();
+        }
+
+        progressChartInit = Progress => {
+            let options = {
+                chart: {
+                    height: 280,
+                    type: "radialBar"
+                },
+
+                series: [Progress],
+
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            margin: 15,
+                            size: "70%"
+                        },
+
+                        dataLabels: {
+                            showOn: "always",
+                            name: {
+                                offsetY: -10,
+                                show: true,
+                                color: "#888",
+                                fontSize: "13px"
+                            },
+                            value: {
+                                color: "#111",
+                                fontSize: "30px",
+                                show: true
+                            }
+                        }
+                    }
+                },
+
+                stroke: {
+                    lineCap: "round",
+                },
+                labels: ["Progreso general"]
+            };
+
+            progressChart = new ApexCharts(document.querySelector("#progress"), options);
+
+            progressChart.render();
+        }
+    </script>
+
+
+}
