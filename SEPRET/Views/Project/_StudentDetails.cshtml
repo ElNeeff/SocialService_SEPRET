@@ -26,7 +26,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#method" data-toggle="tab" role="tab">
-                                Carácter y carrera
+                                Carácter
                             </a>
                         </li>
                     </ul>
@@ -129,9 +129,6 @@
                             <div class="d-flex flex-column">
                                 <div class="form-group">
                                     @Html.DropDownListFor(x => x.Id_Nature, ViewBag.NatureList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Carácter", @required = "" })
-                                </div>
-                                <div class="form-group">
-                                    @Html.DropDownListFor(x => x.Id_Carreras, ViewBag.CareerList as MultiSelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Carrera", @required = "", @multiple = "" })
                                 </div>
                             </div>
                         </div>

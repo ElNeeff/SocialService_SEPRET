@@ -875,18 +875,18 @@ namespace SEPRET.Controllers
 
                         long lastProjectId = newProject.Id;
 
-                        foreach (var Id_Career in modelo.Id_Carreras)
-                        {
-                            ProjectCareer projectCareer = new ProjectCareer
-                            {
-                                Id_Career = Id_Career,
-                                Id_Project = lastProjectId,
-                                Active = true,
-                                TimeCreated = DateTime.Now
-                            };
+                        //foreach (var Id_Career in modelo.Id_Carreras)
+                        //{
+                        //    ProjectCareer projectCareer = new ProjectCareer
+                        //    {
+                        //        Id_Career = Id_Career,
+                        //        Id_Project = lastProjectId,
+                        //        Active = true,
+                        //        TimeCreated = DateTime.Now
+                        //    };
 
-                            DBC.ProjectCareers.Add(projectCareer);
-                        }
+                        //    DBC.ProjectCareers.Add(projectCareer);
+                        //}
 
                         ProjectPerson projectPerson = new ProjectPerson
                         {
@@ -898,7 +898,9 @@ namespace SEPRET.Controllers
                             TimeCreated = DateTime.Now
                         };
 
-                        if (modelo.File != null && modelo.File.ContentType.Contains("pdf"))
+                        var xxx = modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower();
+
+                        if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
                         {
                             string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
                             string NombreArchivo = Path.GetFileName(modelo.File.FileName);
@@ -937,6 +939,7 @@ namespace SEPRET.Controllers
                             {
                                 string member = integrante.Replace(" ", "");
                                 Person person = DBC.People.FirstOrDefault(x => x.Enrollment == member);
+
                                 if (person != null)
                                 {
                                     ProjectPerson newMember = new ProjectPerson
@@ -949,6 +952,16 @@ namespace SEPRET.Controllers
                                         TimeCreated = DateTime.Now
                                     };
                                     DBC.ProjectPersons.Add(newMember);
+
+                                    ProjectCareer projectCareer = new ProjectCareer
+                                    {
+                                        Id_Career = person.CareerId,
+                                        Id_Project = lastProjectId,
+                                        Active = true,
+                                        TimeCreated = DateTime.Now
+                                    };
+
+                                    DBC.ProjectCareers.Add(projectCareer);
                                 }
                             }
                         }
@@ -1138,7 +1151,7 @@ namespace SEPRET.Controllers
 
                 if (modelo.File != null)
                 {
-                    if (modelo.File.ContentType.Contains("pdf"))
+                    if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
                     {
                         Project project = DBC.Projects.FirstOrDefault(x => x.Id == modelo.Id);
                         string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
