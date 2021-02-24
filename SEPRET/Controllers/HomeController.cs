@@ -425,6 +425,10 @@ namespace SEPRET.Controllers
             {
                 return RedirectToAction("Teacher", "Project");
             }
+            else if (roles.Contains("Gestión Tecnológica Y Vinculación"))
+            {
+                return RedirectToAction("Index", "Company");
+            }
             else
             {
                 return RedirectToAction("Index", "Receipt");

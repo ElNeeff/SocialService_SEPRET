@@ -18,7 +18,7 @@
             <div class="row d-flex justify-content-end mr-1">
                 <label class="col-form-label mr-2 mt-2">Establecer fecha:</label>
                 <div class="form-group has-default bmd-form-group">
-                    <input id="xxx" type="text" class="form-control datetimepicker" name="daterange" autocomplete="off"/>
+                    <input id="xxx" type="text" class="form-control datetimepicker" name="daterange" autocomplete="off" />
                 </div>
             </div>
         </div>
@@ -122,7 +122,7 @@
 </div>
 
 <div class="row" style="min-height: 50vh;">
-    <div class="col-md-10 d-flex align-items-stretch">
+    <div class="col-md-12 col-lg-8 col-sm-12 col-xl-9 d-flex align-items-stretch">
         <div class="card">
 
             <div class="mx-auto">
@@ -149,7 +149,7 @@
         </div>
     </div>
 
-    <div class="col-md-2 card d-flex justify-content-center">
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xl-3 card d-flex justify-content-center">
         <div class="align-items-center mx-auto">
             <div class="sk-chase">
                 <div class="sk-chase-dot"></div>
@@ -179,7 +179,7 @@
             const AcceptedGeneral = @Html.Raw(Json.Encode(Model.AcceptedGeneral));
             const InvoicedGeneral = @Html.Raw(Json.Encode(Model.InvoicedGeneral));
             const Progress = @Html.Raw(Model.Progress);
-            
+
 
             generalChartInit(RejectedGeneral.Phase, RejectedGeneral.Data, PendingGeneral.Phase, PendingGeneral.Data, AcceptedGeneral.Phase, AcceptedGeneral.Data, InvoicedGeneral.Phase, InvoicedGeneral.Data);
             progressChartInit(Progress);
@@ -366,7 +366,7 @@
                 },
                 responsive: [
                     {
-                        breakpoint: 1000,
+                        breakpoint: 1300,
                         options: {
                             plotOptions: {
                                 bar: {

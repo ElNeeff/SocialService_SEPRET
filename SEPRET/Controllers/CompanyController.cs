@@ -75,7 +75,7 @@ namespace SEPRET.Controllers
                     Company Company = new Company
                     {
                         Id_Person = UserId,
-                        Id_Dictum = User.IsInRole("Gestión Tecnológica y Vinculación") ? 3 : 2,
+                        Id_Dictum = User.IsInRole("Gestión Tecnológica Y Vinculación") ? 3 : 2,
                         Id_Sector = modelo.Id_Sector,
                         Nombre = modelo.Nombre,
                         RFC = modelo.RFC,

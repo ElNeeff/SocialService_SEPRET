@@ -374,6 +374,28 @@
             </div>
         </li>
     }
+    else if (User.IsInRole("Gestión tecnológica y vinculación"))
+    {
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#System">
+                <i class="material-icons">engineering</i>
+                <p>
+                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="System">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Company")">
+                            <span class="sidebar-mini"> <i class="material-icons">business</i> </span>
+                            <span class="sidebar-normal"> Empresas </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    }
     else
     {
         <li class="nav-item">
