@@ -263,19 +263,18 @@
                     "Content-Type": "application/json; charset=UTF-8"
                 },
                 body: JSON.stringify({
-                    idtickt: Id,
+                    ReceiptId: Id,
                     Type: Type,
                     RequierePDF: RequierePDF
                 })
             })
                 .then(respuesta => respuesta.json())
                 .then(saliobien => {
-                    console.log('send');
-                        if (saliobien) {
-                            md.showNotification("bottom", "right", "success", "Se a enviado el correo.");
-                        } else {
-                            md.showNotification("bottom", "right", "danger", "Error al enviar el correo.");
-                        }
+                    if (saliobien) {
+                        md.showNotification("bottom", "right", "success", "Se a enviado el correo.");
+                    } else {
+                        md.showNotification("bottom", "right", "danger", "Error al enviar el correo.");
+                    }
                 })
                 .catch(error => console.error(error))
         }

@@ -424,7 +424,7 @@
       MENURIGHT: 'dropdown-menu-right',
       MENULEFT: 'dropdown-menu-left',
       // to-do: replace with more advanced template/customization options
-      BUTTONCLASS: version.major === '4' ? 'btn-light' : 'btn-default',
+      BUTTONCLASS: version.major === '4' ? 'btn-sm btn-outline-primary btn-round' : 'btn-sm btn-outline-primary btn-round',
       POPOVERHEADER: version.major === '4' ? 'popover-header' : 'popover-title'
     }
 
@@ -504,10 +504,10 @@
 
     // part of this is duplicated in i18n/defaults-en_US.js. Make sure to update both.
     Selectpicker.DEFAULTS = {
-      noneSelectedText: 'Nothing selected',
-      noneResultsText: 'No results matched {0}',
+      noneSelectedText: 'Nada seleccionado',
+      noneResultsText: 'Sin resultados para {0}',
       countSelectedText: function(numSelected, numTotal) {
-        return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
+        return (numSelected == 1) ? "{0} elemento seleccionado" : "{0} elementos seleccionados";
       },
       maxOptionsText: function(numAll, numGroup) {
         return [
@@ -515,10 +515,10 @@
           (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
         ];
       },
-      selectAllText: 'Select All',
-      deselectAllText: 'Deselect All',
+      selectAllText: 'Seleccionar todos',
+      deselectAllText: 'Deseleccionar todos',
       doneButton: false,
-      doneButtonText: 'Close',
+      doneButtonText: 'Cerrar',
       multipleSeparator: ', ',
       styleBase: 'btn',
       style: 'btn-default',

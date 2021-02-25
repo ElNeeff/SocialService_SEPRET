@@ -4,21 +4,27 @@
 }
 
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
+<style>
+    .card .card-header {
+        z-index: unset !important;
+    }
+</style>
 <div class="card">
     <div class="card-header card-header-primary card-header-icon row">
-        <div class="col-xl-9 col-sm-12">
+        <div class="col-xl-4 col-sm-12">
             <div class="card-icon">
                 <i class="material-icons">receipt</i>
             </div>
             <h4 id="title" class="card-title">Bitácora de pagos | <small class="muted text-primary">Total de pagos: @Model.Total</small></h4>
         </div>
 
-        <div class="col-xl-3 col-sm-12">
-            <div class="row d-flex justify-content-end mr-1">
-                <label class="col-form-label mr-2 mt-2">Establecer fecha:</label>
-                <div class="form-group has-default bmd-form-group">
-                    <input id="xxx" type="text" class="form-control datetimepicker" name="daterange" autocomplete="off" />
+
+        <div class="col-xl-8 col-sm-12">
+            <div class="row d-flex justify-content-end">
+                @Html.DropDownListFor(x => x.SelectedPayments, Model.Payments as SelectList, new { @id = "SelectedPayments", @onChange = "setFilter(this)", @class = "selectpicker col-xl-8 col-lg-8 col-md-8 col-sm-12 mt-2", @data_size = "7", @data_style = "btn btn-sm btn-outline-primary btn-round", @title = "Filtrar por tipo de pago", @multiple = "", @data_live_search = "true", @data_actions_box = "true" })
+
+                <div class="form-group has-default bmd-form-group col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <input type="text" rel="" class="form-control datetimepicker" name="daterange" autocomplete="off" placeholder="Establecer fecha" />
                 </div>
             </div>
         </div>
@@ -174,12 +180,12 @@
     <script>
         let generalChart, progressChart;
         $(() => {
+            $('select').selectpicker();
             const RejectedGeneral = @Html.Raw(Json.Encode(Model.RejectedGeneral));
             const PendingGeneral = @Html.Raw(Json.Encode(Model.PendingGeneral));
             const AcceptedGeneral = @Html.Raw(Json.Encode(Model.AcceptedGeneral));
             const InvoicedGeneral = @Html.Raw(Json.Encode(Model.InvoicedGeneral));
             const Progress = @Html.Raw(Model.Progress);
-
 
             generalChartInit(RejectedGeneral.Phase, RejectedGeneral.Data, PendingGeneral.Phase, PendingGeneral.Data, AcceptedGeneral.Phase, AcceptedGeneral.Data, InvoicedGeneral.Phase, InvoicedGeneral.Data);
             progressChartInit(Progress);
@@ -187,7 +193,6 @@
             $("time.timeago").timeago();
 
             $('input[name="daterange"]').daterangepicker({
-                "showDropdowns": true,
                 ranges: {
                     'Hoy': [moment(), moment()],
                     'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -234,7 +239,6 @@
                 },
                 "alwaysShowCalendars": true,
                 "showCustomRangeLabel": false,
-                autoUpdateInput: false,
                 "opens": "left"
             }, (start, end, label) => {
                     Filter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
@@ -254,12 +258,41 @@
                 $('select').css('all', 'revert');
             });
 
-            $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
-                $(this).val('');
+
+            $('input[name="daterange"]').on('hide.daterangepicker', function (ev, picker) {
+                let date = $(this).attr('rel');
+                $(this).val(date);
             });
+
+            $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+                let date = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+                $(this).val(date).attr('rel', date);
+            });
+
+            $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('').attr('rel', '');
+            });
+
+            $('input[name="daterange"]').val('');
         })
 
-        Filter = (startDate, endDate) => {
+        setFilter = button => {
+            const selectedPayments = jQuery(button).val().map(Number);
+            const date = $('input[name="daterange"]').attr('rel');
+            let startDate = '-';
+            let endDate = '-';
+
+            if (date) {
+                startDate = date.split('-')[0].trim();
+                endDate = date.split('-')[1].trim();
+            }
+
+            Filter(startDate, endDate, selectedPayments);
+        }
+
+        Filter = (startDate, endDate, selectedPayments) => {
+            selectedPayments = selectedPayments ? selectedPayments : $('#SelectedPayments').val().map(Number);
+            console.log(selectedPayments);
             $('.counter, .chartContainer').hide();
             $('.sk-chase, .spinner').show();
 
@@ -268,7 +301,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ startDate: startDate, endDate: endDate })
+                body: JSON.stringify({ startDate: startDate, endDate: endDate, selectedPayments: selectedPayments })
             })
                 .then(response => response.json())
                 .then(({ Rejected, Pending, Accepted, Invoiced, Total, Progress, RejectedGeneral, PendingGeneral, AcceptedGeneral, InvoicedGeneral }) => {
@@ -293,7 +326,7 @@
                     }, {
                         name: InvoicedGeneral.Phase,
                         data: InvoicedGeneral.Data
-                    }]);
+                    }].reverse());
 
                     progressChart.updateSeries([Progress]);
                 })

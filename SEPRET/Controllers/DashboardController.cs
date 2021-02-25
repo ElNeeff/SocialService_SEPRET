@@ -147,22 +147,21 @@ namespace SEPRET.Controllers
 
 
         [HttpPost]
-        public JsonResult SendMail(long idtickt, string Type, bool RequierePDF)
+        public JsonResult SendMail(long ReceiptId, string Type, bool RequierePDF)
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
-                Receipt info = DBC.Receipts.FirstOrDefault(tickt => tickt.Id == idtickt);
-                string correoalumno = info.Person.Email;
+                Receipt receipt = DBC.Receipts.FirstOrDefault(x => x.Id == ReceiptId);
+                string correoalumno = receipt.Person.Email;
 
                 ReceiptVM modelo = new ReceiptVM
                 {
-                    Enrollment = info.Person.Enrollment,
-                    PersonName = string.Concat(info.Person.Name, " ", info.Person.MiddleName, " ", info.Person.LastName),
-                    PaymentName = info.Payment.Name,
-                    Email = info.Person.Email,
-                    RejectDescription = info.Rejections.Select(x => x.Reason.Description).LastOrDefault()
+                    Enrollment = receipt.Person.Enrollment,
+                    PersonName = string.Concat(receipt.Person.Name, " ", receipt.Person.MiddleName, " ", receipt.Person.LastName),
+                    PaymentName = receipt.Payment.Name,
+                    Email = receipt.Person.Email,
+                    RejectDescription = receipt.Rejections.Select(x => x.Reason.Description).LastOrDefault()
                 };
-
 
                 string renderedHTML = string.Empty;
                 string subject = string.Empty;
@@ -178,9 +177,6 @@ namespace SEPRET.Controllers
                         subject = "Pago rechazado";
                         renderedHTML = FakeController.RenderViewToString("EmailReceiptRejected", "Dashboard", modelo);
                         break;
-                    //case "Invoiced":
-                    //    renderedHTML = FakeController.RenderViewToString("EmailReceiptAccepted", "Dashboard", modelo);
-                    //    break;
                     default:
                         break;
                 }
@@ -194,37 +190,41 @@ namespace SEPRET.Controllers
                 smtp.Credentials = new NetworkCredential("itmh@matehuala.tecnm.mx", "Mypassw0rd");
 
                 string body = renderedHTML;
-                using (var message = new MailMessage("itmh@matehuala.tecnm.mx", info.Person.Email))
+                using (var message = new MailMessage("itmh@matehuala.tecnm.mx", receipt.Person.Email))
                 {
                     if (Type == "Invoiced")
                     {
-                        switch (info.Person.CareerId)
+                        if (!receipt.Payment.Name.ToLower().Contains("constancia de estudios"))
                         {
-                            case 3:
-                                coordinatorEmail = "coor_ige @matehuala.tecnm.mx";
-                                break;
-                            case 8:
-                                coordinatorEmail = "coor_contador@matehuala.tecnm.mx";
-                                break;
-                            case 2:
-                                coordinatorEmail = "coor_civil@matehuala.tecnm.mx";
-                                break;
-                            case 5:
-                                coordinatorEmail = "coor_industrial@matehuala.tecnm.mx";
-                                break;
-                            case 6:
-                                coordinatorEmail = "coor_sist@matehuala.tecnm.mx";
-                                break;
-                            default:
-                                break;
+                            switch (receipt.Person.CareerId)
+                            {
+                                case 3:
+                                    coordinatorEmail = "coor_ige @matehuala.tecnm.mx";
+                                    break;
+                                case 8:
+                                    coordinatorEmail = "coor_contador@matehuala.tecnm.mx";
+                                    break;
+                                case 2:
+                                    coordinatorEmail = "coor_civil@matehuala.tecnm.mx";
+                                    break;
+                                case 5:
+                                    coordinatorEmail = "coor_industrial@matehuala.tecnm.mx";
+                                    break;
+                                case 6:
+                                    coordinatorEmail = "coor_sist@matehuala.tecnm.mx";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            MailAddress division = new MailAddress("division@matehuala.tecnm.mx");
+                            message.CC.Add(division);
+                            MailAddress coordinador = new MailAddress(coordinatorEmail);
+                            message.CC.Add(coordinador);
                         }
 
-                        MailAddress division = new MailAddress("division@matehuala.tecnm.mx");
-                        message.CC.Add(division);
                         MailAddress escolares = new MailAddress("escolares@matehuala.tecnm.mx");
                         message.CC.Add(escolares);
-                        MailAddress coordinador = new MailAddress(coordinatorEmail);
-                        message.CC.Add(coordinador);
                     }
 
                     message.Subject = subject;
@@ -232,8 +232,8 @@ namespace SEPRET.Controllers
                     message.IsBodyHtml = true;
                     if (RequierePDF)
                     {
-                        var file = Server.MapPath(info.Invoice);
-                        var imagepath = Server.MapPath(info.Image);
+                        var file = Server.MapPath(receipt.Invoice);
+                        var imagepath = Server.MapPath(receipt.Image);
                         Attachment data = new Attachment(file, MediaTypeNames.Application.Octet);
                         message.Attachments.Add(data);
                         Attachment image = new Attachment(imagepath, MediaTypeNames.Application.Octet);
@@ -259,7 +259,6 @@ namespace SEPRET.Controllers
                 if (modelo.Id > 0 && modelo.File.ContentType.Contains("application/pdf"))
                 {
                     string Folders = string.Concat("/Assets/img/receipts/", modelo.PersonId, "/", modelo.PaymentId + "/");
-                    //string Folders = string.Concat("/Assets/img/receipts/", (long)Session["Id"], "/", modelo.PaymentId + "/", modelo.Id, "/");
                     var Ruta = Server.MapPath(Folders);
                     var NombreArchivo = Path.GetFileName(modelo.File.FileName);
                     Destination = string.Concat(Ruta, NombreArchivo);
