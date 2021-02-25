@@ -194,37 +194,60 @@ namespace SEPRET.Controllers
                 {
                     if (Type == "Invoiced")
                     {
-                        if (!receipt.Payment.Name.ToLower().Contains("constancia de estudios"))
+                        switch (receipt.Payment.Name.ToLower())
                         {
-                            switch (receipt.Person.CareerId)
-                            {
-                                case 3:
-                                    coordinatorEmail = "coor_ige @matehuala.tecnm.mx";
-                                    break;
-                                case 8:
-                                    coordinatorEmail = "coor_contador@matehuala.tecnm.mx";
-                                    break;
-                                case 2:
-                                    coordinatorEmail = "coor_civil@matehuala.tecnm.mx";
-                                    break;
-                                case 5:
-                                    coordinatorEmail = "coor_industrial@matehuala.tecnm.mx";
-                                    break;
-                                case 6:
-                                    coordinatorEmail = "coor_sist@matehuala.tecnm.mx";
-                                    break;
-                                default:
-                                    break;
-                            }
+                            case "inscripción extemporánea":
+                            case "inscripción nuevo ingreso":
+                            case "reinscripcion":
+                            case "tramite de titulo y acto recepcional":
+                                switch (receipt.Person.CareerId)
+                                {
+                                    case 3:
+                                        coordinatorEmail = "coor_ige@matehuala.tecnm.mx";
+                                        break;
+                                    case 8:
+                                        coordinatorEmail = "coor_contador@matehuala.tecnm.mx";
+                                        break;
+                                    case 2:
+                                        coordinatorEmail = "coor_civil@matehuala.tecnm.mx";
+                                        break;
+                                    case 5:
+                                        coordinatorEmail = "coor_industrial@matehuala.tecnm.mx";
+                                        break;
+                                    case 6:
+                                        coordinatorEmail = "coor_sist@matehuala.tecnm.mx";
+                                        break;
+                                    default:
+                                        break;
+                                }
 
-                            MailAddress division = new MailAddress("division@matehuala.tecnm.mx");
-                            message.CC.Add(division);
-                            MailAddress coordinador = new MailAddress(coordinatorEmail);
-                            message.CC.Add(coordinador);
+                                MailAddress division = new MailAddress("division@matehuala.tecnm.mx");
+                                message.CC.Add(division);
+                                MailAddress coordinador = new MailAddress(coordinatorEmail);
+                                message.CC.Add(coordinador);
+                                break;
+                            case "constancia de estudios":
+                            case "preinscripcion":
+                            case "certificado parcial de estudios":
+                            case "certificado final de estudios":
+                            case "duplicado":
+                                MailAddress escolares = new MailAddress("escolares@matehuala.tecnm.mx");
+                                message.CC.Add(escolares);
+                                break;
+                            case "reposición de credencial":
+                                MailAddress biblioteca = new MailAddress("biblioteca@matehuala.tecnm.mx");
+                                message.CC.Add(biblioteca);
+                                break;
+                            case "curso de ingles":
+                            case "examen de ubicación de certificación de ingles":
+                            case "examen general de inglés":
+                            case "examen ubicacion de ingles":
+                                MailAddress ingles = new MailAddress("administrador_lingo@matehuala.tecnm.mx");
+                                message.CC.Add(ingles);
+                                break;
+                            default:
+                                break;
                         }
-
-                        MailAddress escolares = new MailAddress("escolares@matehuala.tecnm.mx");
-                        message.CC.Add(escolares);
                     }
 
                     message.Subject = subject;
