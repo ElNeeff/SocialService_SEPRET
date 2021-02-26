@@ -292,7 +292,6 @@
 
         Filter = (startDate, endDate, selectedPayments) => {
             selectedPayments = selectedPayments ? selectedPayments : $('#SelectedPayments').val().map(Number);
-            console.log(selectedPayments);
             $('.counter, .chartContainer').hide();
             $('.sk-chase, .spinner').show();
 
@@ -305,6 +304,7 @@
             })
                 .then(response => response.json())
                 .then(({ Rejected, Pending, Accepted, Invoiced, Total, Progress, RejectedGeneral, PendingGeneral, AcceptedGeneral, InvoicedGeneral }) => {
+                    $('time.timeago').data('timeago', { datetime: new Date() }).timeago();
                     $('.sk-chase, .spinner').hide();
                     $('.counter, .chartContainer').show();
 

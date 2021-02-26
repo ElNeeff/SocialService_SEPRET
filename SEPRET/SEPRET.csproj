@@ -349,6 +349,7 @@
     <Content Include="Assets\img\projectbank-bg-reverse.jpg" />
     <Content Include="Assets\img\projectbank-bg.jpg" />
     <Content Include="Assets\img\receipts\Empty.png" />
+    <Content Include="Assets\img\receipts\Image404.jpg" />
     <Content Include="Assets\img\sidebar-bg.png" />
     <Content Include="Assets\img\sidebar.jpg" />
     <Content Include="Assets\img\TACM.png" />
