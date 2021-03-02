@@ -194,7 +194,7 @@ namespace SEPRET.Controllers
                 {
                     if (Type == "Invoiced")
                     {
-                        switch (receipt.Payment.Name.ToLower())
+                        switch (receipt.Payment.Name.Trim().ToLower())
                         {
                             case "inscripción extemporánea":
                             case "inscripción nuevo ingreso":
