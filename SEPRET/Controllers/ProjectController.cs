@@ -898,8 +898,6 @@ namespace SEPRET.Controllers
                             TimeCreated = DateTime.Now
                         };
 
-                        var xxx = modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower();
-
                         if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
                         {
                             string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
@@ -932,37 +930,35 @@ namespace SEPRET.Controllers
 
                         DBC.ProjectPersons.Add(projectPerson);
 
-                        if (!string.IsNullOrEmpty(modelo.Member))
+                        string[] members = !string.IsNullOrEmpty(modelo.Member) ? modelo.Member.Split(',') : DBC.People.Where(x => x.Id == UserId).Select(x => x.Enrollment).ToArray();
+
+                        foreach (var integrante in members)
                         {
-                            string[] members = modelo.Member.Split(',');
-                            foreach (var integrante in members)
+                            string member = integrante.Replace(" ", "");
+                            Person person = DBC.People.FirstOrDefault(x => x.Enrollment == member);
+
+                            if (person != null)
                             {
-                                string member = integrante.Replace(" ", "");
-                                Person person = DBC.People.FirstOrDefault(x => x.Enrollment == member);
-
-                                if (person != null)
+                                ProjectPerson newMember = new ProjectPerson
                                 {
-                                    ProjectPerson newMember = new ProjectPerson
-                                    {
-                                        Id_Project = lastProjectId,
-                                        Id_Person = person.Id,
-                                        Id_Dictum = 2,
-                                        Owner = false,
-                                        Active = true,
-                                        TimeCreated = DateTime.Now
-                                    };
-                                    DBC.ProjectPersons.Add(newMember);
+                                    Id_Project = lastProjectId,
+                                    Id_Person = person.Id,
+                                    Id_Dictum = 2,
+                                    Owner = false,
+                                    Active = true,
+                                    TimeCreated = DateTime.Now
+                                };
+                                DBC.ProjectPersons.Add(newMember);
 
-                                    ProjectCareer projectCareer = new ProjectCareer
-                                    {
-                                        Id_Career = person.CareerId,
-                                        Id_Project = lastProjectId,
-                                        Active = true,
-                                        TimeCreated = DateTime.Now
-                                    };
+                                ProjectCareer projectCareer = new ProjectCareer
+                                {
+                                    Id_Career = person.CareerId,
+                                    Id_Project = lastProjectId,
+                                    Active = true,
+                                    TimeCreated = DateTime.Now
+                                };
 
-                                    DBC.ProjectCareers.Add(projectCareer);
-                                }
+                                DBC.ProjectCareers.Add(projectCareer);
                             }
                         }
                         DBC.SaveChanges();
