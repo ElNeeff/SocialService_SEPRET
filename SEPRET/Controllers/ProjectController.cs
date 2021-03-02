@@ -875,19 +875,6 @@ namespace SEPRET.Controllers
 
                         long lastProjectId = newProject.Id;
 
-                        //foreach (var Id_Career in modelo.Id_Carreras)
-                        //{
-                        //    ProjectCareer projectCareer = new ProjectCareer
-                        //    {
-                        //        Id_Career = Id_Career,
-                        //        Id_Project = lastProjectId,
-                        //        Active = true,
-                        //        TimeCreated = DateTime.Now
-                        //    };
-
-                        //    DBC.ProjectCareers.Add(projectCareer);
-                        //}
-
                         ProjectPerson projectPerson = new ProjectPerson
                         {
                             Id_Project = lastProjectId,
@@ -961,6 +948,7 @@ namespace SEPRET.Controllers
                                 DBC.ProjectCareers.Add(projectCareer);
                             }
                         }
+
                         DBC.SaveChanges();
                         success = true;
                     }
