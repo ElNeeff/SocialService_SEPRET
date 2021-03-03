@@ -972,6 +972,7 @@ namespace SEPRET.Controllers
                                 DBC.ProjectCareers.Add(projectCareer);
                             }
                         }
+
                         DBC.SaveChanges();
                         success = true;
                     }
