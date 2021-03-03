@@ -397,6 +397,7 @@
       <DependentUpon>SEPRETDB.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
+    <None Include="Properties\PublishProfiles\Development.pubxml" />
     <None Include="Properties\PublishProfiles\Producción.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\arrive.min.js" />
