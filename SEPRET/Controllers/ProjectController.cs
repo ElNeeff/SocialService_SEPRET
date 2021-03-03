@@ -19,7 +19,7 @@ namespace SEPRET.Controllers
             {
                 long UserId = (long)Session["Id"];
 
-                IEnumerable<ProjectPerson> projects = User.IsInRole("Alumno") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Id_Person == UserId && x.Project.Id_ProjectType == 1 || x.Project.Active == true && x.Project.Id_ProjectType == 2 && x.Id_Dictum == 3 && x.Id_Person == UserId).ToList() : User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
+                IEnumerable<ProjectPerson> projects = User.IsInRole("Alumno") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Id_Dictum == 3 && x.Project.Id_ProjectType == 1 || x.Project.Active && x.Project.Id_ProjectType == 2 && x.Id_Dictum == 3 && x.Id_Person == UserId).ToList() : User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
                 long total = projects.Count();
                 IEnumerable<ProjectVM> projectVMs = Enumerable.Empty<ProjectVM>();
 
@@ -654,7 +654,7 @@ namespace SEPRET.Controllers
                 switch (Dictum)
                 {
                     case "Accept":
-                        project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 5 : project.Id_ProjectPhase is 7 ? 8 : project.Id_ProjectPhase is 10 ? 11 : 12; //la fase 12 aún está por definir;
+                        project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 5 : project.Id_ProjectPhase is 7 ? 8 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir;
                         break;
                     case "Reject":
                         project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
@@ -848,7 +848,7 @@ namespace SEPRET.Controllers
                 {
                     ProjectPerson project = DBC.ProjectPersons.Where(x => x.Id_Person == UserId).OrderByDescending(x => x.Project.Id).FirstOrDefault();
 
-                    bool canCreate = project is null ? true : project.Project.Active ? false : true;
+                    bool canCreate = project is null || (project.Project.Active ? false : true);
 
                     if (canCreate)
                     {
@@ -888,15 +888,27 @@ namespace SEPRET.Controllers
                         //    DBC.ProjectCareers.Add(projectCareer);
                         //}
 
-                        ProjectPerson projectPerson = new ProjectPerson
+                        ProjectPerson projectPersonExists = DBC.ProjectPersons.FirstOrDefault(x => x.Active && x.Id_Person == UserId && x.Id_Dictum == 3 && x.Owner);
+
+                        if (projectPersonExists != null)
                         {
-                            Id_Project = lastProjectId,
-                            Id_Person = UserId,
-                            Id_Dictum = 3,
-                            Owner = true,
-                            Active = true,
-                            TimeCreated = DateTime.Now
-                        };
+                            projectPersonExists.Id_Project = lastProjectId;
+                            projectPersonExists.TimeUpdated = DateTime.Now;
+                        }
+                        else
+                        {
+                            ProjectPerson projectPerson = new ProjectPerson
+                            {
+                                Id_Project = lastProjectId,
+                                Id_Person = UserId,
+                                Id_Dictum = 3,
+                                Owner = true,
+                                Active = true,
+                                TimeCreated = DateTime.Now
+                            };
+
+                            DBC.ProjectPersons.Add(projectPerson);
+                        }
 
                         if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
                         {
@@ -928,7 +940,6 @@ namespace SEPRET.Controllers
                             projectFile.Ruta = RelativePath;
                         }
 
-                        DBC.ProjectPersons.Add(projectPerson);
 
                         string[] members = !string.IsNullOrEmpty(modelo.Member) ? modelo.Member.Split(',') : DBC.People.Where(x => x.Id == UserId).Select(x => x.Enrollment).ToArray();
 
@@ -1147,46 +1158,46 @@ namespace SEPRET.Controllers
 
                 if (modelo.File != null)
                 {
-                    if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
+                    //if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
+                    //{
+                    Project project = DBC.Projects.FirstOrDefault(x => x.Id == modelo.Id);
+                    string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
+                    string NombreArchivo = Path.GetFileName(modelo.File.FileName);
+
+                    ProjectFile projectFile = new ProjectFile
                     {
-                        Project project = DBC.Projects.FirstOrDefault(x => x.Id == modelo.Id);
-                        string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
-                        string NombreArchivo = Path.GetFileName(modelo.File.FileName);
+                        Id_Project = modelo.Id,
+                        Nombre = NombreArchivo,
+                        Tipo = modelo.File.ContentType,
+                        Ruta = "-",
+                        Proyecto = true,
+                        Active = true,
+                        TimeCreated = DateTime.Now
+                    };
 
-                        ProjectFile projectFile = new ProjectFile
-                        {
-                            Id_Project = modelo.Id,
-                            Nombre = NombreArchivo,
-                            Tipo = modelo.File.ContentType,
-                            Ruta = "-",
-                            Proyecto = true,
-                            Active = true,
-                            TimeCreated = DateTime.Now
-                        };
+                    DBC.ProjectFiles.Add(projectFile);
+                    DBC.SaveChanges();
+                    long lastFileId = projectFile.Id;
 
-                        DBC.ProjectFiles.Add(projectFile);
-                        DBC.SaveChanges();
-                        long lastFileId = projectFile.Id;
+                    Folders = string.Concat(Folders, lastFileId, "/");
+                    string Ruta = Server.MapPath(Folders);
+                    string Destination = Ruta + NombreArchivo;
+                    string RelativePath = Folders + NombreArchivo;
+                    Directory.CreateDirectory(Ruta);
+                    modelo.File.SaveAs(Destination);
 
-                        Folders = string.Concat(Folders, lastFileId, "/");
-                        string Ruta = Server.MapPath(Folders);
-                        string Destination = Ruta + NombreArchivo;
-                        string RelativePath = Folders + NombreArchivo;
-                        Directory.CreateDirectory(Ruta);
-                        modelo.File.SaveAs(Destination);
+                    projectFile.Ruta = RelativePath;
+                    project.Id_ProjectPhase = project.Id_ProjectPhase is 5 || project.Id_ProjectPhase is 6 ? 7 : 10;
+                    project.TimeUpdated = DateTime.Now;
 
-                        projectFile.Ruta = RelativePath;
-                        project.Id_ProjectPhase = project.Id_ProjectPhase is 5 || project.Id_ProjectPhase is 6 ? 7 : 10;
-                        project.TimeUpdated = DateTime.Now;
-
-                        success = true;
-                        message = "El anteproyecto se guardó éxitosamente";
-                        DBC.SaveChanges();
-                    }
-                    else
-                    {
-                        message = "El archivo del anteproyecto debe ser formato PDF";
-                    }
+                    success = true;
+                    message = "El anteproyecto se guardó éxitosamente";
+                    DBC.SaveChanges();
+                    //}
+                    //else
+                    //{
+                    //    message = "El archivo del anteproyecto debe ser formato PDF";
+                    //}
                 }
                 else
                 {
