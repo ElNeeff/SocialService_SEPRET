@@ -4,89 +4,91 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="297869af9e0c40348f0ea73258336fa5" Name="Diagram1">
-        <EntityTypeShape EntityType="SEPRETModel.Attempt" Width="1.5" PointX="5.25" PointY="30.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Method" Width="1.5" PointX="0.75" PointY="23" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Payment" Width="1.5" PointX="0.75" PointY="26" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Phase" Width="1.5" PointX="0.75" PointY="29.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Reason" Width="1.5" PointX="12" PointY="28" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Receipt" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Rejection" Width="1.5" PointX="14.25" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Career" Width="1.5" PointX="1.5" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Department" Width="1.5" PointX="1.5" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Permission" Width="1.5" PointX="6.75" PointY="33.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Person" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.PersonPermission" Width="1.5" PointX="9" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Adviser" Width="1.5" PointX="10.5" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.AdviserType" Width="1.5" PointX="8.25" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Agreement" Width="1.5" PointX="5.25" PointY="16.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Ambit" Width="1.5" PointX="6" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Comment" Width="1.5" PointX="13.5" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.CommentType" Width="1.5" PointX="11.25" PointY="24.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Company" Width="1.5" PointX="3" PointY="15" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Dictum" Width="1.5" PointX="0.75" PointY="16.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.FileType" Width="1.5" PointX="11.25" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Kind" Width="1.5" PointX="6" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Nature" Width="1.5" PointX="6" PointY="20.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Project" Width="1.5" PointX="8.25" PointY="14.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectCareer" Width="1.5" PointX="10.5" PointY="12.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectCompany" Width="1.5" PointX="10.5" PointY="20.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectFile" Width="1.5" PointX="13.5" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectPerson" Width="1.5" PointX="13.5" PointY="20.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectPhase" Width="1.5" PointX="6" PointY="23.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectType" Width="1.5" PointX="6" PointY="26.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Sector" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.SpecificObjective" Width="1.5" PointX="10.5" PointY="39" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Instrumentation" Width="1.5" PointX="11.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.InstrumentationType" Width="1.5" PointX="9" PointY="24.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.PersonSubject" Width="1.5" PointX="12" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Scope" Width="1.5" PointX="8.25" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Subject" Width="1.5" PointX="3.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Unit" Width="1.5" PointX="6" PointY="2.75" IsExpanded="true" />
-        <AssociationConnector Association="SEPRETModel.FK__Attempt__Receipt__3B40CD36" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Receipt__MethodI__3C34F16F" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Receipt__Payment__3D2915A8" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Receipt__PhaseId__3F115E1A" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Rejection__Reaso__40058253" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Receipt__PersonI__3E1D39E1" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Rejection__Recei__40F9A68C" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Career__Id_Depar__41EDCAC5" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Person__CareerId__42E1EEFE" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectCa__Id_Ca__55009F39" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Subject__Id_Care__634EBE90" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__PersonPer__Permi__43D61337" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Adviser__Id_Pers__46B27FE2" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Comment__Id_Pers__4A8310C6" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Company__Id_Pers__4D5F7D71" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__PersonPer__Perso__44CA3770" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__PersonSub__Id_Pe__607251E5" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectPe__Id_Pe__5BAD9CC8" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Adviser__Id_Advi__45BE5BA9" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Adviser__Id_Proj__47A6A41B" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Agreement__Id_Co__489AC854" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Ambi__4F47C5E3" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Comment__Id_Comm__498EEC8D" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Comment__Id_Proj__4B7734FF" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Company__Id_Dict__4C6B5938" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Company__Id_Sect__4E53A1AA" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Comp__503BEA1C" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectCo__Id_Co__56E8E7AB" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectPe__Id_Di__5AB9788F" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectFi__Id_Fi__58D1301D" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Kind__51300E55" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Natu__5224328E" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Proj__531856C7" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Proj__540C7B00" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectCa__Id_Pr__55F4C372" ManuallyRouted="false" />
+      <Diagram DiagramId="bddcd889c2654a4eaffa9999978d2a31" Name="Diagram1">
+        <EntityTypeShape EntityType="SEPRETModel.Attempt" Width="1.5" PointX="5.25" PointY="32.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Method" Width="1.5" PointX="0.75" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Payment" Width="1.5" PointX="0.75" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Phase" Width="1.5" PointX="0.75" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Reason" Width="1.5" PointX="12" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Receipt" Width="1.5" PointX="3" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Rejection" Width="1.5" PointX="14.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Career" Width="1.5" PointX="1.5" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Department" Width="1.5" PointX="1.5" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Permission" Width="1.5" PointX="6.75" PointY="39.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Person" Width="1.5" PointX="0.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.PersonPermission" Width="1.5" PointX="9" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Adviser" Width="1.5" PointX="10.5" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.AdviserType" Width="1.5" PointX="8.25" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Agreement" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Ambit" Width="1.5" PointX="6" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Comment" Width="1.5" PointX="13.5" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.CommentType" Width="1.5" PointX="11.25" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Company" Width="1.5" PointX="3" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Dictum" Width="1.5" PointX="0.75" PointY="18.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.FileDictum" Width="1.5" PointX="11.25" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.FileType" Width="1.5" PointX="11.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Kind" Width="1.5" PointX="6" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Nature" Width="1.5" PointX="6" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Project" Width="1.5" PointX="8.25" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectCareer" Width="1.5" PointX="10.5" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectCompany" Width="1.5" PointX="10.5" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectFile" Width="1.5" PointX="13.5" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectPerson" Width="1.5" PointX="13.5" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectPhase" Width="1.5" PointX="6" PointY="25.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectType" Width="1.5" PointX="6" PointY="28.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Sector" Width="1.5" PointX="0.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.SpecificObjective" Width="1.5" PointX="10.5" PointY="41.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Instrumentation" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.InstrumentationType" Width="1.5" PointX="6" PointY="35.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.PersonSubject" Width="1.5" PointX="12" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Scope" Width="1.5" PointX="8.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Subject" Width="1.5" PointX="3.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Unit" Width="1.5" PointX="6" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="SEPRETModel.FK__Attempt__Receipt__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Receipt__MethodI__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Receipt__Payment__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Receipt__PhaseId__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Rejection__Reaso__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Receipt__PersonI__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Rejection__Recei__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Career__Id_Depar__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Person__CareerId__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectCa__Id_Ca__46B27FE2" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Subject__Id_Care__5D95E53A" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__PersonPer__Permi__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Adviser__Id_Pers__395884C4" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Comment__Id_Pers__4E53A1AA" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Company__Id_Pers__7A672E12" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__PersonPer__Perso__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__PersonSub__Id_Pe__625A9A57" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectPe__Id_Pe__40058253" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Adviser__Id_Advi__3A4CA8FD" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Adviser__Id_Proj__3864608B" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Agreement__Id_Co__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Ambi__1F98B2C1" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Comment__Id_Comm__4D5F7D71" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Comment__Id_Proj__4C6B5938" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Company__Id_Dict__7B5B524B" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Company__Id_Sect__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Comp__1DB06A4F" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectCo__Id_Co__58D1301D" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectPe__Id_Di__40F9A68C" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectFi__Id_Fi__2FCF1A8A" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectFi__Id_Fi__2EDAF651" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Kind__208CD6FA" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Natu__1EA48E88" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Proj__1CBC4616" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Project__Id_Proj__2180FB33" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectCa__Id_Pr__47A6A41B" ManuallyRouted="false" />
         <AssociationConnector Association="SEPRETModel.FK__ProjectCo__Id_Pr__57DD0BE4" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectFi__Id_Pr__59C55456" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__ProjectPe__Id_Pr__5CA1C101" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__SpecificO__Id_Pr__5D95E53A" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Instrumen__Id_In__5E8A0973" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Instrumen__Id_Un__5F7E2DAC" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__PersonSub__Id_Su__6166761E" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Scope__Id_Unit__625A9A57" ManuallyRouted="false" />
-        <AssociationConnector Association="SEPRETModel.FK__Unit__Id_Subject__6442E2C9" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectFi__Id_Pr__2DE6D218" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__ProjectPe__Id_Pr__3F115E1A" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__SpecificO__Id_Pr__531856C7" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Instrumen__Id_In__76619304" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Instrumen__Id_Un__756D6ECB" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__PersonSub__Id_Su__634EBE90" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Scope__Id_Unit__70A8B9AE" ManuallyRouted="false" />
+        <AssociationConnector Association="SEPRETModel.FK__Unit__Id_Subject__681373AD" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

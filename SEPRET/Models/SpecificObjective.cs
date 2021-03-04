@@ -15,7 +15,7 @@ namespace SEPRET.Models
     public partial class SpecificObjective
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Project { get; set; }
+        public long Id_Project { get; set; }
         public string Nombre { get; set; }
         public bool Active { get; set; }
         public System.DateTime TimeCreated { get; set; }

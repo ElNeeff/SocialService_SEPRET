@@ -22,7 +22,7 @@ namespace SEPRET.Models
         }
     
         public long Id { get; set; }
-        public Nullable<long> Id_Career { get; set; }
+        public long Id_Career { get; set; }
         public string Nombre { get; set; }
         public string Clave { get; set; }
         public string HorasTeoricas { get; set; }

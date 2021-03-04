@@ -65,7 +65,7 @@ namespace SEPRET.Controllers
                             Email = y.Person.Email
                         }).ToList(),
                         LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Mensaje).LastOrDefault(),
-                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Proyecto && y.Active)
+                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active)
                     }).ToList();
 
                     ViewBag.ProjectList = projectList;
@@ -87,7 +87,7 @@ namespace SEPRET.Controllers
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
-                ProjectFile projectFile = DBC.ProjectFiles.OrderByDescending(x => x.Id).FirstOrDefault(x => x.Id_Project == Id && x.Proyecto && x.Active);
+                ProjectFile projectFile = DBC.ProjectFiles.OrderByDescending(x => x.Id).FirstOrDefault(x => x.Id_Project == Id && x.Id_FileType == 1 && x.Active);
                 var file = Server.MapPath(projectFile.Ruta);
 
                 byte[] bytes = System.IO.File.ReadAllBytes(file);
@@ -654,7 +654,14 @@ namespace SEPRET.Controllers
                 switch (Dictum)
                 {
                     case "Accept":
-                        project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 5 : project.Id_ProjectPhase is 7 ? 8 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir;
+                        if (project.ProjectType.Id == 1)
+                        {
+
+                        }
+                        else
+                        {
+                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 5 : project.Id_ProjectPhase is 7 ? 8 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir
+                        }
                         break;
                     case "Reject":
                         project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
@@ -812,7 +819,7 @@ namespace SEPRET.Controllers
                     if (project.Active)
                     {
                         project.Id_ProjectType = 1;
-                        project.Id_Company = null;
+                        project.Id_Company = 1; // Modificar una vez que el alumno pueda seleccionar la empresa
                         project.Id_Nature = modelo.Id_Nature;
                         project.Id_Ambit = modelo.Id_Ambit;
                         project.Id_Kind = modelo.Id_Kind;
@@ -918,10 +925,11 @@ namespace SEPRET.Controllers
                             ProjectFile projectFile = new ProjectFile
                             {
                                 Id_Project = lastProjectId,
+                                Id_FileType = 1,
+                                Id_FileDictum = 3,
                                 Nombre = NombreArchivo,
                                 Tipo = modelo.File.ContentType,
                                 Ruta = "-",
-                                Proyecto = true,
                                 Active = true,
                                 TimeCreated = DateTime.Now
                             };
@@ -1168,10 +1176,11 @@ namespace SEPRET.Controllers
                     ProjectFile projectFile = new ProjectFile
                     {
                         Id_Project = modelo.Id,
+                        Id_FileType = 1,
+                        Id_FileDictum = 3,
                         Nombre = NombreArchivo,
                         Tipo = modelo.File.ContentType,
                         Ruta = "-",
-                        Proyecto = true,
                         Active = true,
                         TimeCreated = DateTime.Now
                     };
@@ -1374,7 +1383,7 @@ namespace SEPRET.Controllers
                             Enrollment = y.Person.Enrollment,
                             Email = y.Person.Email
                         }).ToList(),
-                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Proyecto && y.Active),
+                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                         //Asesores = x.Project.Advisers.Where(y => y.Id_Project == x.Id && y.Id_AdviserType == 2 && y.Active == true) is null ? "Sin asesor asignado" : string.Join(", ", x.Project.Advisers.Where(y => y.Id_Project == x.Id && y.Id_AdviserType == 2 && y.Active == true).Select(y => string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName)).ToList()),
                         CommentRevisor = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4).Mensaje,
                         Presentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => string.Concat(s.Person.Name, " ", s.Person.MiddleName, " ", s.Person.LastName)).FirstOrDefault(),

@@ -240,6 +240,9 @@
     <Compile Include="Models\Dictum.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FileDictum.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FileType.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>

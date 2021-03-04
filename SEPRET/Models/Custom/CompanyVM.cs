@@ -9,9 +9,9 @@ namespace SEPRET.Models.Custom
     {
 
         public long Id { get; set; }
-        public Nullable<long> Id_Person { get; set; }
-        public Nullable<long> Id_Dictum { get; set; }
-        public Nullable<long> Id_Sector { get; set; }
+        public long Id_Person { get; set; }
+        public long Id_Dictum { get; set; }
+        public long Id_Sector { get; set; }
         public string Nombre { get; set; }
         public string RFC { get; set; }
         public string Lema { get; set; }
