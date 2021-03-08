@@ -19,7 +19,7 @@
         <EntityTypeShape EntityType="SEPRETModel.PersonPermission" Width="1.5" PointX="9" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.Adviser" Width="1.5" PointX="10.5" PointY="18.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.AdviserType" Width="1.5" PointX="8.25" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.Agreement" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.Agreement" Width="1.5" PointX="4.5" PointY="14" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.Ambit" Width="1.5" PointX="6" PointY="12.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.Comment" Width="1.5" PointX="13.5" PointY="18.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.CommentType" Width="1.5" PointX="11.25" PointY="26.75" IsExpanded="true" />
@@ -30,10 +30,10 @@
         <EntityTypeShape EntityType="SEPRETModel.Kind" Width="1.5" PointX="6" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.Nature" Width="1.5" PointX="6" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.Project" Width="1.5" PointX="8.25" PointY="16.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectCareer" Width="1.5" PointX="10.5" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectCareer" Width="1.5" PointX="11.25" PointY="13.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.ProjectCompany" Width="1.5" PointX="10.5" PointY="22.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.ProjectFile" Width="1.5" PointX="13.5" PointY="13" IsExpanded="true" />
-        <EntityTypeShape EntityType="SEPRETModel.ProjectPerson" Width="1.5" PointX="13.5" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SEPRETModel.ProjectPerson" Width="1.5" PointX="5.875" PointY="18" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.ProjectPhase" Width="1.5" PointX="6" PointY="25.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.ProjectType" Width="1.5" PointX="6" PointY="28.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SEPRETModel.Sector" Width="1.5" PointX="0.75" PointY="21.75" IsExpanded="true" />

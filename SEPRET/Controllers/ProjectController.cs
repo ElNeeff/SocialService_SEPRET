@@ -19,7 +19,7 @@ namespace SEPRET.Controllers
             {
                 long UserId = (long)Session["Id"];
 
-                IEnumerable<ProjectPerson> projects = User.IsInRole("Alumno") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Id_Dictum == 3 && x.Project.Id_ProjectType == 1 || x.Project.Active && x.Project.Id_ProjectType == 2 && x.Id_Dictum == 3 && x.Id_Person == UserId).ToList() : User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
+                IEnumerable<ProjectPerson> projects = User.IsInRole("Alumno") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Id_Dictum == 3 && x.Project.Id_ProjectType == 1 || x.Project.Active && x.Project.Id_ProjectType == 2 && x.Id_Dictum == 3 && x.Id_Person == UserId).ToList() : User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList();
                 long total = projects.Count();
                 IEnumerable<ProjectVM> projectVMs = Enumerable.Empty<ProjectVM>();
 
@@ -28,6 +28,7 @@ namespace SEPRET.Controllers
                     List<ProjectVM> projectList = projects.Select(x => new ProjectVM
                     {
                         Id = x.Project.Id,
+                        Id_ProjectType = x.Project.Id_ProjectType,
                         TipoDeProyecto = x.Project.ProjectType.Nombre,
                         Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
                         Caracter = x.Project.Nature.Nombre,
@@ -42,9 +43,11 @@ namespace SEPRET.Controllers
                         Actividades = x.Project.Actividades,
                         Comentarios = x.Project.Comentarios,
                         CommentCC = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3).Mensaje,
+                        CommentRevisor = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4).Mensaje,
                         Active = x.Project.Active,
                         TimeCreated = x.Project.TimeCreated,
                         Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                         Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
                         {
                             UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
@@ -64,8 +67,7 @@ namespace SEPRET.Controllers
                             Enrollment = y.Person.Enrollment,
                             Email = y.Person.Email
                         }).ToList(),
-                        LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Mensaje).LastOrDefault(),
-                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active)
+                        LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Mensaje).LastOrDefault()
                     }).ToList();
 
                     ViewBag.ProjectList = projectList;
@@ -148,6 +150,7 @@ namespace SEPRET.Controllers
                 List<ProjectVM> projectList = projects.Select(x => new ProjectVM
                 {
                     Id = x.Project.Id,
+                    Id_ProjectType = x.Project.Id_ProjectType,
                     Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
                     Caracter = x.Project.Nature.Nombre,
                     Ambito = x.Project.Ambit.Nombre,
@@ -165,6 +168,7 @@ namespace SEPRET.Controllers
                     //EmailPresentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => s.Person.Email).FirstOrDefault(),
                     Active = x.Active,
                     Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                    PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                     //Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Owner != true && y.Id_Dictum == 3).Select(y => new PersonVM
                     //{
                     //    UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
@@ -225,6 +229,7 @@ namespace SEPRET.Controllers
                 List<ProjectVM> projectList = projects.Select(x => new ProjectVM
                 {
                     Id = x.Project.Id,
+                    Id_ProjectType = x.Project.Id_ProjectType,
                     Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
                     Caracter = x.Project.Nature.Nombre,
                     Ambito = x.Project.Ambit.Nombre,
@@ -242,6 +247,7 @@ namespace SEPRET.Controllers
                     //EmailPresentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => s.Person.Email).FirstOrDefault(),
                     Active = x.Active,
                     Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                    PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                     //Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Owner != true && y.Id_Dictum == 3).Select(y => new PersonVM
                     //{
                     //    UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
@@ -528,6 +534,7 @@ namespace SEPRET.Controllers
                     List<ProjectVM> projectList = projects.Select(x => new ProjectVM
                     {
                         Id = x.Project.Id,
+                        Id_ProjectType = x.Project.Id_ProjectType,
                         TipoDeProyecto = x.Project.ProjectType.Nombre,
                         Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
                         Caracter = x.Project.Nature.Nombre,
@@ -590,7 +597,7 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Pending":
-                        TotalRegisters = User.IsInRole("Jefe academia") || User.IsInRole("Jefe departamental") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).Count() : DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
+                        TotalRegisters = User.IsInRole("Jefe academia") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active).Count() : User.IsInRole("Jefe departamental") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).Count() : User.IsInRole("Docente") ? DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && (x.Project.Id_ProjectPhase == 9 || x.Project.Id_ProjectPhase == 10)).Count() : DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
                         break;
                     case "Accepted":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Active == true).Count();
@@ -626,10 +633,14 @@ namespace SEPRET.Controllers
                         TotalRegisters = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && x.Project.Id_ProjectPhase >= 12 && x.Project.Id_ProjectPhase < 16 && x.Id_AdviserType == 2).Count();
                         break;
                     case "AllCC":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase >= 5 && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3) && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
                         break;
                     case "AllTeacher":
-                        TotalRegisters = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active).Count();
+                        long[] advisers = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active).Select(x => x.Id_Project).ToArray();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => advisers.Contains(x.Id_Project) && x.Owner && x.Active && x.Project.Active).Count();
+                        break;
+                    case "PendingJD":
+                        TotalRegisters = DBC.ProjectCareers.Where(x => x.Project.Active && x.Id_Project == x.Project.Id && x.Id_Career == CareerId && x.Project.Id_ProjectPhase == 8 && x.Project.ProjectPersons.Where(r => r.Owner).Select(t => t.Owner).FirstOrDefault()).Count();
                         break;
                     case "PendingAdviserJD":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Owner && x.Project.Id_ProjectPhase == 11 && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
@@ -657,6 +668,7 @@ namespace SEPRET.Controllers
                         if (project.ProjectType.Id == 1)
                         {
 
+                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 8 : project.Id_ProjectPhase is 7 ? 3 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir
                         }
                         else
                         {
@@ -664,7 +676,14 @@ namespace SEPRET.Controllers
                         }
                         break;
                     case "Reject":
-                        project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
+                        if (project.ProjectType.Id == 1)
+                        {
+                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
+                        }
+                        else
+                        {
+                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
+                        }
 
                         Comment comment = new Comment
                         {
@@ -810,6 +829,7 @@ namespace SEPRET.Controllers
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
                 long UserId = (long)Session["Id"];
+                long CareerId = (long)Session["CareerId"];
 
                 bool success = false;
 
@@ -855,14 +875,14 @@ namespace SEPRET.Controllers
                 {
                     ProjectPerson project = DBC.ProjectPersons.Where(x => x.Id_Person == UserId).OrderByDescending(x => x.Project.Id).FirstOrDefault();
 
-                    bool canCreate = project is null || (project.Project.Active ? false : true);
+                    bool canCreate = project is null || (!project.Project.Active);
 
                     if (canCreate)
                     {
                         Project newProject = new Project
                         {
                             Id_ProjectType = 1,
-                            Id_Company = modelo.Id_Company,
+                            Id_Company = 1,// Modificar una vez que el alumno pueda seleccionar la empresa
                             Id_Nature = modelo.Id_Nature,
                             Id_Ambit = modelo.Id_Ambit,
                             Id_Kind = modelo.Id_Kind,
@@ -881,19 +901,6 @@ namespace SEPRET.Controllers
                         DBC.SaveChanges();
 
                         long lastProjectId = newProject.Id;
-
-                        //foreach (var Id_Career in modelo.Id_Carreras)
-                        //{
-                        //    ProjectCareer projectCareer = new ProjectCareer
-                        //    {
-                        //        Id_Career = Id_Career,
-                        //        Id_Project = lastProjectId,
-                        //        Active = true,
-                        //        TimeCreated = DateTime.Now
-                        //    };
-
-                        //    DBC.ProjectCareers.Add(projectCareer);
-                        //}
 
                         ProjectPerson projectPersonExists = DBC.ProjectPersons.FirstOrDefault(x => x.Active && x.Id_Person == UserId && x.Id_Dictum == 3 && x.Owner);
 
@@ -914,6 +921,15 @@ namespace SEPRET.Controllers
                                 TimeCreated = DateTime.Now
                             };
 
+                            ProjectCareer projectCareer = new ProjectCareer
+                            {
+                                Id_Career = CareerId,
+                                Id_Project = lastProjectId,
+                                Active = true,
+                                TimeCreated = DateTime.Now
+                            };
+
+                            DBC.ProjectCareers.Add(projectCareer);
                             DBC.ProjectPersons.Add(projectPerson);
                         }
 
@@ -948,36 +964,38 @@ namespace SEPRET.Controllers
                             projectFile.Ruta = RelativePath;
                         }
 
-
-                        string[] members = !string.IsNullOrEmpty(modelo.Member) ? modelo.Member.Split(',') : DBC.People.Where(x => x.Id == UserId).Select(x => x.Enrollment).ToArray();
-
-                        foreach (var integrante in members)
+                        if (modelo.Member != null)
                         {
-                            string member = integrante.Replace(" ", "");
-                            Person person = DBC.People.FirstOrDefault(x => x.Enrollment == member);
+                            string[] members = modelo.Member.Split(',');
 
-                            if (person != null)
+                            foreach (var integrante in members)
                             {
-                                ProjectPerson newMember = new ProjectPerson
-                                {
-                                    Id_Project = lastProjectId,
-                                    Id_Person = person.Id,
-                                    Id_Dictum = 2,
-                                    Owner = false,
-                                    Active = true,
-                                    TimeCreated = DateTime.Now
-                                };
-                                DBC.ProjectPersons.Add(newMember);
+                                string member = integrante.Replace(" ", "");
+                                Person person = DBC.People.FirstOrDefault(x => x.Enrollment == member);
 
-                                ProjectCareer projectCareer = new ProjectCareer
+                                if (person != null)
                                 {
-                                    Id_Career = person.CareerId,
-                                    Id_Project = lastProjectId,
-                                    Active = true,
-                                    TimeCreated = DateTime.Now
-                                };
+                                    ProjectPerson newMember = new ProjectPerson
+                                    {
+                                        Id_Project = lastProjectId,
+                                        Id_Person = person.Id,
+                                        Id_Dictum = 3,
+                                        Owner = false,
+                                        Active = true,
+                                        TimeCreated = DateTime.Now
+                                    };
+                                    DBC.ProjectPersons.Add(newMember);
 
-                                DBC.ProjectCareers.Add(projectCareer);
+                                    ProjectCareer projectCareer = new ProjectCareer
+                                    {
+                                        Id_Career = person.CareerId,
+                                        Id_Project = lastProjectId,
+                                        Active = true,
+                                        TimeCreated = DateTime.Now
+                                    };
+
+                                    DBC.ProjectCareers.Add(projectCareer);
+                                }
                             }
                         }
 
@@ -1103,7 +1121,7 @@ namespace SEPRET.Controllers
                     modelo.Comentarios = project.Comentarios;
                     modelo.Actividades = project.Actividades;
                     modelo.Id_Carreras = project.ProjectCareers.Where(y => y.Id_Project == Id).Select(y => y.Id_Career).ToList();
-                    modelo.Comments = User.IsInRole("Alumno") ? project.Comments.OrderByDescending(z => z.TimeCreated).Where(z => z.Id_Project == Id && z.Id_CommentType != 1 && z.Id_CommentType != 2).Select(z => new CommentVM
+                    modelo.Comments = User.IsInRole("Alumno") ? project.Comments.OrderByDescending(z => z.TimeCreated).Where(z => z.Id_Project == Id).Select(z => new CommentVM
                     {
                         Id_CommentType = z.Id_CommentType,
                         CommentType = z.CommentType.Nombre,
@@ -1167,47 +1185,47 @@ namespace SEPRET.Controllers
 
                 if (modelo.File != null)
                 {
-                    //if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
-                    //{
-                    Project project = DBC.Projects.FirstOrDefault(x => x.Id == modelo.Id);
-                    string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
-                    string NombreArchivo = Path.GetFileName(modelo.File.FileName);
-
-                    ProjectFile projectFile = new ProjectFile
+                    if (modelo.File.ContentType.Contains("pdf"))
                     {
-                        Id_Project = modelo.Id,
-                        Id_FileType = 1,
-                        Id_FileDictum = 3,
-                        Nombre = NombreArchivo,
-                        Tipo = modelo.File.ContentType,
-                        Ruta = "-",
-                        Active = true,
-                        TimeCreated = DateTime.Now
-                    };
+                        Project project = DBC.Projects.FirstOrDefault(x => x.Id == modelo.Id);
+                        string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
+                        string NombreArchivo = Path.GetFileName(modelo.File.FileName);
 
-                    DBC.ProjectFiles.Add(projectFile);
-                    DBC.SaveChanges();
-                    long lastFileId = projectFile.Id;
+                        ProjectFile projectFile = new ProjectFile
+                        {
+                            Id_Project = modelo.Id,
+                            Id_FileType = 1,
+                            Id_FileDictum = 3,
+                            Nombre = NombreArchivo,
+                            Tipo = modelo.File.ContentType,
+                            Ruta = "-",
+                            Active = true,
+                            TimeCreated = DateTime.Now
+                        };
 
-                    Folders = string.Concat(Folders, lastFileId, "/");
-                    string Ruta = Server.MapPath(Folders);
-                    string Destination = Ruta + NombreArchivo;
-                    string RelativePath = Folders + NombreArchivo;
-                    Directory.CreateDirectory(Ruta);
-                    modelo.File.SaveAs(Destination);
+                        DBC.ProjectFiles.Add(projectFile);
+                        DBC.SaveChanges();
+                        long lastFileId = projectFile.Id;
 
-                    projectFile.Ruta = RelativePath;
-                    project.Id_ProjectPhase = project.Id_ProjectPhase is 5 || project.Id_ProjectPhase is 6 ? 7 : 10;
-                    project.TimeUpdated = DateTime.Now;
+                        Folders = string.Concat(Folders, lastFileId, "/");
+                        string Ruta = Server.MapPath(Folders);
+                        string Destination = Ruta + NombreArchivo;
+                        string RelativePath = Folders + NombreArchivo;
+                        Directory.CreateDirectory(Ruta);
+                        modelo.File.SaveAs(Destination);
 
-                    success = true;
-                    message = "El anteproyecto se guardó éxitosamente";
-                    DBC.SaveChanges();
-                    //}
-                    //else
-                    //{
-                    //    message = "El archivo del anteproyecto debe ser formato PDF";
-                    //}
+                        projectFile.Ruta = RelativePath;
+                        project.Id_ProjectPhase = project.Id_ProjectPhase is 4 ? 3 : project.Id_ProjectPhase is 5 || project.Id_ProjectPhase is 6 ? 7 : 10;
+                        project.TimeUpdated = DateTime.Now;
+
+                        success = true;
+                        message = "El anteproyecto se guardó éxitosamente";
+                        DBC.SaveChanges();
+                    }
+                    else
+                    {
+                        message = "El archivo del anteproyecto debe ser formato PDF";
+                    }
                 }
                 else
                 {
@@ -1241,6 +1259,8 @@ namespace SEPRET.Controllers
                 long UserId = (long)Session["Id"];
                 long CareerId = (long)Session["CareerId"];
                 IEnumerable<Adviser> projects = Enumerable.Empty<Adviser>();
+                IEnumerable<ProjectPerson> projectPersons = Enumerable.Empty<ProjectPerson>();
+                List<ProjectVM> projectList = new List<ProjectVM>();
 
                 #region Filtro
                 switch (Filter)
@@ -1252,73 +1272,142 @@ namespace SEPRET.Controllers
                         projects = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && x.Project.Id_ProjectPhase >= 12 && x.Project.Id_ProjectPhase < 16 && x.Id_AdviserType == 2).Take(12).ToList();
                         break;
                     case "AllTeacher":
-                        projects = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active).Take(12).ToList();
+                        long[] advisers = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active).Select(x => x.Id_Project).ToArray();
+                        projectPersons = DBC.ProjectPersons.Where(x => advisers.Contains(x.Id_Project) && x.Owner && x.Active && x.Project.Active).Take(12).ToList();
                         break;
                     default:
                         break;
                 }
                 #endregion
-
-                long TotalRecords = projects.Count();
-
-                #region Búsqueda
-                if (!string.IsNullOrEmpty(Keyword))
+                if (Filter == "AllTeacher")
                 {
-                    Keyword = Keyword.ToLower();
+                    long TotalRecords = projectPersons.Count();
 
-                    projects = projects.Where(x => x.Project.Titulo.ToLower().Contains(Keyword) ||
-                    x.TimeCreated.ToString().ToLower().Contains(Keyword)
-                    );
+                    #region Búsqueda
+                    if (!string.IsNullOrEmpty(Keyword))
+                    {
+                        Keyword = Keyword.ToLower();
+
+                        projectPersons = projectPersons.Where(x => x.Project.Titulo.ToLower().Contains(Keyword) ||
+                        x.TimeCreated.ToString().ToLower().Contains(Keyword)
+                        );
+                    }
+                    #endregion
+
+                    // PAGINADO
+                    int skip = 12 * Skip;
+                    projectPersons = projectPersons.Skip(skip).Take(12);
+                    #region Lista
+                    projectList = projectPersons.Select(x => new ProjectVM
+                    {
+                        Id = x.Project.Id,
+                        Id_ProjectType = x.Project.Id_ProjectType,
+                        TipoDeProyecto = x.Project.ProjectType.Nombre,
+                        Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
+                        Caracter = x.Project.Nature.Nombre,
+                        Ambito = x.Project.Ambit.Nombre,
+                        Tipo = x.Project.ProjectType.Nombre,
+                        Id_ProjectPhase = x.Project.Id_ProjectPhase,
+                        Etapa = x.Project.ProjectPhase.Nombre,
+                        Titulo = x.Project.Titulo,
+                        ObjetivoGeneral = x.Project.ObjetivoGeneral,
+                        ObjetivosEspecificos = x.Project.ObjetivosEspecificos,
+                        Justificacion = x.Project.Justificacion,
+                        Actividades = x.Project.Actividades,
+                        Comentarios = x.Project.Comentarios,
+                        CommentCC = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3).Mensaje,
+                        Active = x.Project.Active,
+                        TimeCreated = x.Project.TimeCreated,
+                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
+                        Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
+                        {
+                            UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
+                            Enrollment = y.Person.Enrollment,
+                            Email = y.Person.Email,
+                            ProjectOwner = y.Owner
+                        }).ToList(),
+                        Revisores = x.Project.Advisers.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_AdviserType == 1).Select(y => new PersonVM
+                        {
+                            UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
+                            Enrollment = y.Person.Enrollment,
+                            Email = y.Person.Email
+                        }).ToList(),
+                        Asesores = x.Project.Advisers.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_AdviserType == 2).Select(y => new PersonVM
+                        {
+                            UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
+                            Enrollment = y.Person.Enrollment,
+                            Email = y.Person.Email
+                        }).ToList(),
+                        LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Id).Select(y => y.Mensaje).LastOrDefault()
+                    }).ToList();
+                    #endregion
                 }
-                #endregion
-
-                // PAGINADO
-                int skip = 12 * Skip;
-                projects = projects.Skip(skip).Take(12);
-
-                #region Lista
-                List<ProjectVM> projectList = projects.Select(x => new ProjectVM
+                else
                 {
-                    Id = x.Project.Id,
-                    TipoDeProyecto = x.Project.ProjectType.Nombre,
-                    Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
-                    Caracter = x.Project.Nature.Nombre,
-                    Ambito = x.Project.Ambit.Nombre,
-                    Tipo = x.Project.ProjectType.Nombre,
-                    Id_ProjectPhase = x.Project.Id_ProjectPhase,
-                    Etapa = x.Project.ProjectPhase.Nombre,
-                    Titulo = x.Project.Titulo,
-                    ObjetivoGeneral = x.Project.ObjetivoGeneral,
-                    ObjetivosEspecificos = x.Project.ObjetivosEspecificos,
-                    Justificacion = x.Project.Justificacion,
-                    Actividades = x.Project.Actividades,
-                    Comentarios = x.Project.Comentarios,
-                    CommentCC = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3).Mensaje,
-                    Active = x.Project.Active,
-                    TimeCreated = x.Project.TimeCreated,
-                    Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
-                    Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
+                    long TotalRecords = projects.Count();
+
+                    #region Búsqueda
+                    if (!string.IsNullOrEmpty(Keyword))
                     {
-                        UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
-                        Enrollment = y.Person.Enrollment,
-                        Email = y.Person.Email,
-                        ProjectOwner = y.Owner
-                    }).ToList(),
-                    Revisores = x.Project.Advisers.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_AdviserType == 1).Select(y => new PersonVM
+                        Keyword = Keyword.ToLower();
+
+                        projects = projects.Where(x => x.Project.Titulo.ToLower().Contains(Keyword) ||
+                        x.TimeCreated.ToString().ToLower().Contains(Keyword)
+                        );
+                    }
+                    #endregion
+
+                    // PAGINADO
+                    int skip = 12 * Skip;
+                    projects = projects.Skip(skip).Take(12);
+                    #region Lista
+                    projectList = projects.Select(x => new ProjectVM
                     {
-                        UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
-                        Enrollment = y.Person.Enrollment,
-                        Email = y.Person.Email
-                    }).ToList(),
-                    Asesores = x.Project.Advisers.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_AdviserType == 2).Select(y => new PersonVM
-                    {
-                        UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
-                        Enrollment = y.Person.Enrollment,
-                        Email = y.Person.Email
-                    }).ToList(),
-                    LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Id).Select(y => y.Mensaje).LastOrDefault()
-                }).ToList();
-                #endregion
+                        Id = x.Project.Id,
+                        Id_ProjectType = x.Project.Id_ProjectType,
+                        TipoDeProyecto = x.Project.ProjectType.Nombre,
+                        Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
+                        Caracter = x.Project.Nature.Nombre,
+                        Ambito = x.Project.Ambit.Nombre,
+                        Tipo = x.Project.ProjectType.Nombre,
+                        Id_ProjectPhase = x.Project.Id_ProjectPhase,
+                        Etapa = x.Project.ProjectPhase.Nombre,
+                        Titulo = x.Project.Titulo,
+                        ObjetivoGeneral = x.Project.ObjetivoGeneral,
+                        ObjetivosEspecificos = x.Project.ObjetivosEspecificos,
+                        Justificacion = x.Project.Justificacion,
+                        Actividades = x.Project.Actividades,
+                        Comentarios = x.Project.Comentarios,
+                        CommentCC = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3).Mensaje,
+                        Active = x.Project.Active,
+                        TimeCreated = x.Project.TimeCreated,
+                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                        PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
+                        Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
+                        {
+                            UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
+                            Enrollment = y.Person.Enrollment,
+                            Email = y.Person.Email,
+                            ProjectOwner = y.Owner
+                        }).ToList(),
+                        Revisores = x.Project.Advisers.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_AdviserType == 1).Select(y => new PersonVM
+                        {
+                            UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
+                            Enrollment = y.Person.Enrollment,
+                            Email = y.Person.Email
+                        }).ToList(),
+                        Asesores = x.Project.Advisers.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_AdviserType == 2).Select(y => new PersonVM
+                        {
+                            UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
+                            Enrollment = y.Person.Enrollment,
+                            Email = y.Person.Email
+                        }).ToList(),
+                        LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Id).Select(y => y.Mensaje).LastOrDefault()
+                    }).ToList();
+                    #endregion
+                }
+
 
                 return PartialView("~/Views/Project/_SearchCC.cshtml", projectList);
             }
@@ -1356,6 +1445,7 @@ namespace SEPRET.Controllers
                     List<ProjectVM> projectList = myProject.Select(x => new ProjectVM
                     {
                         Id = x.Project.Id,
+                        Id_ProjectType = x.Project.Id_ProjectType,
                         TipoDeProyecto = x.Project.ProjectType.Nombre,
                         Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
                         Caracter = x.Project.Nature.Nombre,
@@ -1421,6 +1511,7 @@ namespace SEPRET.Controllers
                     List<ProjectVM> projectList = projects.Select(x => new ProjectVM
                     {
                         Id = x.Project.Id,
+                        Id_ProjectType = x.Project.Id_ProjectType,
                         TipoDeProyecto = x.Project.ProjectType.Nombre,
                         Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
                         Caracter = x.Project.Nature.Nombre,
@@ -1478,7 +1569,7 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Pending":
-                        projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
+                        projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList();
                         break;
                     case "AcceptedJD":
                         projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase == 3 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
@@ -1508,7 +1599,10 @@ namespace SEPRET.Controllers
                         projects = DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Owner && x.Project.Id_ProjectPhase == 7 && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
                         break;
                     case "AllCC":
-                        projects = DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Project.Id_ProjectPhase >= 5 && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
+                        projects = DBC.ProjectPersons.Where(x => x.Project.Active == true && (x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3)) && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
+                        break;
+                    case "AllCareer":
+                        projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
                         break;
                     case "PendingJD":
                         projects = DBC.ProjectPersons.Where(x => x.Project.Active == true && x.Owner && x.Project.Id_ProjectPhase == 8 && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
@@ -1542,6 +1636,7 @@ namespace SEPRET.Controllers
                 List<ProjectVM> projectList = projects.Select(x => new ProjectVM
                 {
                     Id = x.Project.Id,
+                    Id_ProjectType = x.Project.Id_ProjectType,
                     TipoDeProyecto = x.Project.ProjectType.Nombre,
                     Empresa = x.Project.Company is null ? "-" : x.Project.Company.Nombre,
                     Caracter = x.Project.Nature.Nombre,
@@ -1561,6 +1656,7 @@ namespace SEPRET.Controllers
                     //Presentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => string.Concat(s.Person.Name, " ", s.Person.MiddleName, " ", s.Person.LastName)).FirstOrDefault(),
                     //EmailPresentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => s.Person.Email).FirstOrDefault(),
                     Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                    PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                     Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
                     {
                         UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),

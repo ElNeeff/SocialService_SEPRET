@@ -31,5 +31,7 @@ namespace SEPRET.Models.Custom
         public string TimeCreatedFormatted { get; set; }
         public bool IsAdmin { get; set; }
         public string Dictamen { get; set; }
+        //public string CreatedBy { get; set; }
+        public PersonVM CreatedBy { get; set; }
     }
 }

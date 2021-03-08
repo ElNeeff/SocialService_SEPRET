@@ -47,8 +47,8 @@
                                         <th>RFC</th>
                                         <th>Nombre</th>
                                         <th>Teléfono</th>
-                                        <th>Creado el</th>
-                                        <th>Dictamen</th>
+                                        <th>Creado</th>
+                                        <th>Propuesta por</th>
                                         <th>Activo</th>
                                     </tr>
                                 </thead>
@@ -57,8 +57,8 @@
                                         <th>RFC</th>
                                         <th>Nombre</th>
                                         <th>Teléfono</th>
-                                        <th>Creado el</th>
-                                        <th>Dictamen</th>
+                                        <th>Creado</th>
+                                        <th>Propuesta por</th>
                                         <th>Activo</th>
                                     </tr>
                                 </tfoot>
@@ -115,7 +115,7 @@
                 .then(response => {
                     if (response.ok) {
                         Table.draw();
-                        $('#AddEditModal').modal('hide');
+                        $('#AddEditCompanyModal').modal('hide');
                         Site.OkNotification('La empresa se guardó exitosamente');
                     } else {
                         Site.ErrorNotification();
@@ -160,7 +160,7 @@
                     $('#ModalContainer').html(data);
 
                     $('.moving-tab').hide();
-                    $('#AddEditModal').on('shown.bs.modal', function () {
+                    $('#AddEditCompanyModal').on('shown.bs.modal', function () {
                         Site.initMaterialWizard();
                         $('.moving-tab').show();
                         $('.btn-next').removeClass('disabled');
@@ -168,7 +168,7 @@
                     if (ReadOnly) {
                         $('form :input').prop("disabled", true);
                     }
-                    $('#AddEditModal').modal('show');
+                    $('#AddEditCompanyModal').modal('show');
                 })
                 .catch(error => console.error(error))
         }
@@ -191,8 +191,13 @@
                 .catch(error => console.error(error))
         }
 
+        InitMisc = () => {
+            $('[rel="tooltip"]').tooltip();
+            $("time.timeago").timeago();
+        }
+
         DT = Filter => {
-            Table = $('#DT').DataTable({
+            Table = $('#DT').on( 'draw.dt', () => InitMisc()).DataTable({
                 destroy: true,
                 responsive: true,
                 autoWidth: true,
@@ -243,8 +248,14 @@
                     },
                     { data: 'Nombre' },
                     { data: 'Telefono' },
-                    { data: 'TimeCreatedFormatted' },
-                    { data: 'Dictamen' },
+                    {
+                        data: 'TimeCreatedFormatted',
+                        render: (data, type, full, meta) => `<time class="timeago" datetime="${data}" rel="tooltip" data-placement="left" title="${data}"></time>`
+                    },
+                    {
+                        data: 'CreatedBy',
+                        render: ({ Id, UserFullName, Email }, type, full, meta) => `<a class="text-primary" rel="tooltip" data-placement="left" title="Clic para enviar email" href="mailto:${Email}?subject=ITMH - Gestión Tecnológica y Vinculación">${UserFullName}</a>`
+                    },
                     {
                         render: (data, type, row) => {
                             if (row['IsAdmin']) {
@@ -276,6 +287,8 @@
                     $('select').selectpicker();
                     Site.StyleDropdownDT();
                     $('.material-datatables').show();
+                    $('[rel="tooltip"]').tooltip();
+                    $("time.timeago").timeago();
                 }
             })
         }
