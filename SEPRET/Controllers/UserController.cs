@@ -182,12 +182,11 @@ namespace SEPRET.Controllers
                 {
                     searchBy = searchBy.ToLower();
 
-                    Users = Users.Where(x => x.Person.Name.ToLower().Contains(searchBy) ||
+                    Users = Users.Where(x => string.Concat(x.Person.Name, " ", x.Person.MiddleName, " ", x.Person.LastName).ToLower().Contains(searchBy) ||
                                              x.Person.Enrollment.ToLower().Contains(searchBy) ||
-                                             x.Person.MiddleName.ToLower().Contains(searchBy) ||
-                                             x.Person.LastName.ToLower().Contains(searchBy) ||
                                              x.Person.Email.ToLower().Contains(searchBy) ||
                                              x.Person.Career.Name.ToLower().Contains(searchBy) ||
+                                             x.Person.TimeCreated.ToString().ToLower().Contains(searchBy) ||
                                              x.Permission.Name.ToLower().Contains(searchBy)
                                              );
                 }

@@ -661,64 +661,70 @@ namespace SEPRET.Controllers
             {
                 Project project = DBC.Projects.FirstOrDefault(x => x.Id == Id);
                 long UserId = (long)Session["Id"];
+                bool success = false;
 
-                switch (Dictum)
+                if (!string.IsNullOrEmpty(Comment.Trim()))
                 {
-                    case "Accept":
-                        if (project.ProjectType.Id == 1)
-                        {
+                    switch (Dictum)
+                    {
+                        case "Accept":
+                            if (project.ProjectType.Id == 1)
+                            {
 
-                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 8 : project.Id_ProjectPhase is 7 ? 3 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir
-                        }
-                        else
-                        {
-                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 5 : project.Id_ProjectPhase is 7 ? 8 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir
-                        }
-                        break;
-                    case "Reject":
-                        if (project.ProjectType.Id == 1)
-                        {
-                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
-                        }
-                        else
-                        {
-                            project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
-                        }
+                                project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 8 : project.Id_ProjectPhase is 7 ? 3 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir
+                            }
+                            else
+                            {
+                                project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 3 : project.Id_ProjectPhase is 3 ? 5 : project.Id_ProjectPhase is 7 ? 8 : project.Id_ProjectPhase is 10 || project.Id_ProjectPhase is 9 ? 11 : 12; //la fase 12 aún está por definir
+                            }
+                            break;
+                        case "Reject":
+                            if (project.ProjectType.Id == 1)
+                            {
+                                project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
+                            }
+                            else
+                            {
+                                project.Id_ProjectPhase = project.Id_ProjectPhase is 2 ? 1 : project.Id_ProjectPhase is 3 ? 4 : 6;
+                            }
 
-                        Comment comment = new Comment
-                        {
-                            Id_CommentType = User.IsInRole("Jefe academia") || User.IsInRole("Jefe departamental") && project.Id_ProjectType == 2 ? 2 : User.IsInRole("Coordinador de carrera") ? 3 : 4,
-                            Id_Person = UserId,
-                            Id_Project = Id,
-                            Mensaje = Comment,
-                            Active = true,
-                            TimeCreated = DateTime.Now
-                        };
-                        DBC.Comments.Add(comment);
-                        break;
-                    case "Unpublish":
-                        project.Active = false;
+                            Comment comment = new Comment
+                            {
+                                Id_CommentType = User.IsInRole("Jefe academia") || User.IsInRole("Jefe departamental") && project.Id_ProjectType == 2 ? 2 : User.IsInRole("Coordinador de carrera") ? 3 : 4,
+                                Id_Person = UserId,
+                                Id_Project = Id,
+                                Mensaje = Comment,
+                                Active = true,
+                                TimeCreated = DateTime.Now
+                            };
+                            DBC.Comments.Add(comment);
+                            break;
+                        case "Unpublish":
+                            project.Active = false;
 
-                        Comment commentU = new Comment
-                        {
-                            Id_CommentType = 5,
-                            Id_Person = UserId,
-                            Id_Project = Id,
-                            Mensaje = Comment,
-                            Active = true,
-                            TimeCreated = DateTime.Now
-                        };
-                        DBC.Comments.Add(commentU);
-                        break;
-                    default:
-                        break;
+                            Comment commentU = new Comment
+                            {
+                                Id_CommentType = 5,
+                                Id_Person = UserId,
+                                Id_Project = Id,
+                                Mensaje = Comment,
+                                Active = true,
+                                TimeCreated = DateTime.Now
+                            };
+                            DBC.Comments.Add(commentU);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    project.TimeUpdated = DateTime.Now;
+
+                    DBC.SaveChanges();
+
+                    success = true;
                 }
 
-                project.TimeUpdated = DateTime.Now;
-
-                DBC.SaveChanges();
-
-                return Json(true, JsonRequestBehavior.AllowGet);
+                return Json(success, JsonRequestBehavior.AllowGet);
             }
         }
 
