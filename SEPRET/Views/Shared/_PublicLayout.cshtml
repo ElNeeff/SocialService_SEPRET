@@ -36,6 +36,15 @@
                             Inicio
                         </a>
                     </li>
+
+                    <li class="nav-item @(ViewBag.currentView == "FAQ" ? "active" : string.Empty)">
+                        <a href="@Url.Action("FAQ", "Home")" class="nav-link text-black">
+                            <i class="material-icons"> person_search </i>
+                            FAQ
+                        </a>
+                    </li>
+
+
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">

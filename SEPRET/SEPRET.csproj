@@ -397,6 +397,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\Producción.pubxml" />
+    <None Include="Properties\PublishProfiles\Pruebas.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\arrive.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -635,6 +636,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\_AddEditUser.cshtml" />
     <Content Include="Views\PaymentDB\Index.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
