@@ -344,15 +344,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\img\project-bg.jpg" />
     <Content Include="Assets\img\dust_scratches.png" />
     <Content Include="Assets\img\favicon.png" />
     <Content Include="Assets\img\login.jpg" />
     <Content Include="Assets\img\login.png" />
     <Content Include="Assets\img\office.jpg" />
     <Content Include="Assets\img\pattern.png" />
-    <Content Include="Assets\img\project-bg.jpg" />
-    <Content Include="Assets\img\projectbank-bg-reverse.jpg" />
-    <Content Include="Assets\img\projectbank-bg.jpg" />
+    <Content Include="Assets\img\project-bg3.jpg" />
+    <Content Include="Assets\img\project-bg2.jpg" />
     <Content Include="Assets\img\receipts\Empty.png" />
     <Content Include="Assets\img\sidebar-bg.png" />
     <Content Include="Assets\img\sidebar.jpg" />

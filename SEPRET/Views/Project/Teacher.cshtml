@@ -152,7 +152,7 @@
                             @if (item.PDFExists)
                             {
                                 <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ReviewPDF(@item.Id, this);">
-                                    <i class="material-icons">description</i> Ver reporte preliminar
+                                    <i class="material-icons">description</i> Revisar reporte preliminar
                                 </button>
                             }
                             @if (item.Id_ProjectPhase == 10)
@@ -258,6 +258,7 @@
                         $('#Review').val('');
                         $('#response').html('El comentario se ha enviado exitosamente').addClass('text-success').show();
                         jQuery(button).attr('disabled', true);
+                        ProjectList('Pending');
                     } else {
                         $('#response').html('Ocurrió un error al procesar la solicitud').addClass('text-danger').show();
                     }
@@ -276,7 +277,6 @@
                 .then(response => response.json())
                 .then(({ success, base64 }) => {
                     if (success) {
-                        //y = '<div class="form-group bmd-form-group is-filled w-100"> <label class="bmd-label-floating">Comentarios de revisión</label> <textarea class="form-control" cols="20" id="Review" name="Comentarios" required="" rows="3"></textarea> </div> <div class="align-self-center"> <button onclick="SendReview(this);" class="btn btn-primary btn-round btn-sm"><i class="material-icons">send</i> Enviar </button> </div>';
                         //Site.OpenVisor(base64);
                         $('#Viewer').children().remove();
                         $('#Comments').show();

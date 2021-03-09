@@ -239,14 +239,12 @@
 }
 
 /*BANDAS DE COLORES*/
-
-
-/* common */
 .ribbon {
     width: 150px;
     height: 150px;
     overflow: hidden;
     position: absolute;
+    z-index: 2;
 }
 
     .ribbon::before,
@@ -307,12 +305,12 @@
     }
 
     .ribbon span.orange {
-        background-color: orange;
+        background-color: darkorange;
     }
 
     .ribbon.orange::before,
     .ribbon.orange::after {
-        border: 5px solid orange;
+        border: 5px solid darkorange;
     }
 
     .ribbon span.multi {

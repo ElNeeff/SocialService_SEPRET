@@ -418,7 +418,7 @@ namespace SEPRET.Controllers
             {
                 return RedirectToAction("Index", "Project");
             }
-            else if (roles.Contains("Coordinador de carrera"))
+            else if (roles.Contains("Coordinador de carrera") || roles.Contains("División de estudios profesionales"))
             {
                 return RedirectToAction("Administrative", "Project");
             }

@@ -140,7 +140,7 @@
                                 <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa</h6>
                                 break;
                         }
-                        <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                        <h3 class="card-title mb-0 text-warning" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
                         <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
                         <div class="card-description mt-0">
 
@@ -205,7 +205,7 @@
                                     case 4:
                                         <div class="progress" style="height: 20px;">
                                             <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
-                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="@item.Etapa:<br><b>@item.LastComment</b>">Etapa 2</div>
                                             <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
                                             <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de reporte preliminar">Etapa 4</div>
                                             <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
@@ -239,7 +239,8 @@
 
                                         switch (rol)
                                         {
-                                            case "coordinador de carrera":
+                                            case "Coordinador de carrera":
+case "División de estudios profesionales":
                                             case "super administrador":
                                             case "administrador":
                                                 <br />
@@ -455,7 +456,8 @@
                                         </div>
                                         switch (rol)
                                         {
-                                            case "coordinador de carrera":
+                                            case "Coordinador de carrera":
+case "División de estudios profesionales":
                                             case "super administrador":
                                             case "administrador":
                                                 <br />
@@ -809,9 +811,9 @@
                 .then(respones => respones.json())
                 .then(success => {
                     if (success) {
-                        ProjectList('Pending');
                         $('#CommentModal').modal('hide');
                         $('#' + Id + ', div.tooltip').hide('slow', () => { $('#' + Id + ', div.tooltip').remove(); });
+                        ProjectList('Pending');
                         Site.OkNotification('La acción se procesó correctamente');
                     } else {
                         Site.ErrorNotification();

@@ -60,11 +60,18 @@
                                 }
                             }
                         </p>
-                        @if (item.PDFExists)
+                        @if (item.PDFExists && rol.Contains("docente"))
+                        {
+                            <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ReviewPDF(@item.Id, this);">
+                                <i class="material-icons">description</i> Revisar reporte preliminar
+                            </button>
+                        }
+                        else
                         {
                             <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ViewPDF(@item.Id, this);">
                                 <i class="material-icons">description</i> Ver reporte preliminar
                             </button>
+
                         }
                         @if (item.Id_ProjectType == 1)
                         {
@@ -100,7 +107,7 @@
                                 case 4:
                                     <div class="progress" style="height: 20px;">
                                         <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 2</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="@item.Etapa:<br><b>@item.LastComment</b>">Etapa 2</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de reporte preliminar">Etapa 4</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
@@ -133,7 +140,8 @@
                                 case 7:
                                     switch (rol)
                                     {
-                                        case "coordinador de carrera":
+                                        case "Coordinador de carrera":
+case "División de estudios profesionales":
                                         case "super administrador":
                                         case "administrador":
                                             <br />
@@ -424,7 +432,8 @@
                                 case 7:
                                     switch (rol)
                                     {
-                                        case "coordinador de carrera":
+                                        case "Coordinador de carrera":
+case "División de estudios profesionales":
                                         case "super administrador":
                                         case "administrador":
                                             <br />
@@ -614,8 +623,8 @@
                         @if ((rol == "docente" || rol.Contains("administrador")) && item.Active && ((long)item.Id_ProjectPhase == 1 || (long)item.Id_ProjectPhase == 2 || (long)item.Id_ProjectPhase == 4 || (long)item.Id_ProjectPhase == 5))
                         {
                             @*<a href="javascript:;" class="btn btn-primary btn-just-icon btn-fill btn-round" onclick="ManageMembers(@item.Id);" rel="tooltip" data-placement="top" title="Gestionar residentes">
-                                    <i class="material-icons">groups</i>
-                                </a>*@
+                <i class="material-icons">groups</i>
+            </a>*@
                             <a href="javascript:;" class="btn btn-warning btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Unpublish');" rel="tooltip" data-placement="top" title="Dar de baja">
                                 <i class="material-icons">unpublished</i>
                             </a>
