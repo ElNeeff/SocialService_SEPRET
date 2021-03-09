@@ -15,16 +15,17 @@ namespace SEPRET.Models
     public partial class ProjectFile
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Project { get; set; }
-        public Nullable<long> Id_FileType { get; set; }
+        public long Id_Project { get; set; }
+        public long Id_FileType { get; set; }
+        public long Id_FileDictum { get; set; }
         public string Nombre { get; set; }
         public string Tipo { get; set; }
         public string Ruta { get; set; }
-        public bool Proyecto { get; set; }
         public bool Active { get; set; }
         public System.DateTime TimeCreated { get; set; }
         public Nullable<System.DateTime> TimeUpdated { get; set; }
     
+        public virtual FileDictum FileDictum { get; set; }
         public virtual FileType FileType { get; set; }
         public virtual Project Project { get; set; }
     }

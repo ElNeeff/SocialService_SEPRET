@@ -50,7 +50,7 @@
                                             foreach (var comentario in Model.Comments)
                                             {
                                                 <li class="timeline-inverted">
-                                                    <div class="timeline-badge @(comentario.Id_CommentType is 3 ? "danger" : comentario.Id_CommentType is 4 ? "warning" : "info")" rel="tooltip" data-placement="top" title="@comentario.CommentType">
+                                                    <div class="timeline-badge @(comentario.Id_CommentType is 3 || comentario.Id_CommentType is 2  ? "danger" : comentario.Id_CommentType is 4 ? "warning" : "info")" rel="tooltip" data-placement="top" title="@comentario.CommentType">
                                                         <i class="material-icons">comment</i>
                                                     </div>
                                                     <div class="timeline-panel">
@@ -78,7 +78,7 @@
                                                         <span class="badge badge-pill badge-primary">Mensaje del sistema</span>
                                                     </div>
                                                     <div class="timeline-body">
-                                                        <p>Cuando este proyecto tenga comentarios de rechazo aquí los podrás ver.</p>
+                                                        <p>Cuando este proyecto tenga comentarios aquí los podrás ver.</p>
                                                     </div>
                                                     <h6>
                                                         <small><i class="ti-time"></i><time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time></small>

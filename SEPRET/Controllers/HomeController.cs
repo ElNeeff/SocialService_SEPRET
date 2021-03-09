@@ -96,9 +96,10 @@ namespace SEPRET.Controllers
         public JsonResult PaswordRecovery(string Enrollment)
         {
             string resetCode = Guid.NewGuid().ToString();
-            var verifyUrl = "/Home/ResetPassword/" + resetCode;
+            var verifyUrl = "Home/ResetPassword/" + resetCode;
             //var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
-            var link = string.Concat("http://matehuala.tecnm.mx:800/Home/ResetPassword/", resetCode);
+            //var link = string.Concat("http://matehuala.tecnm.mx:800/Home/ResetPassword/", resetCode);
+            var link = string.Concat(new UriBuilder(Request.Url.Scheme, Request.Url.Host), verifyUrl);
             string Message = string.Empty;
 
             using (SEPRETEntities DBC = new SEPRETEntities())

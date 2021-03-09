@@ -145,6 +145,7 @@
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DictumController.cs" />
     <Compile Include="Controllers\FakeController.cs" />
+    <Compile Include="Controllers\FileDictumController.cs" />
     <Compile Include="Controllers\FileTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstrumentationTypeController.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Models\Company.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Custom\FileDictumVM.cs" />
     <Compile Include="Models\Custom\PaymentDBGeneral.cs" />
     <Compile Include="Models\Custom\PaymentDBVM.cs" />
     <Compile Include="Models\Custom\ReceiptCounter.cs" />
@@ -238,6 +240,9 @@
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Dictum.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FileDictum.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FileType.cs">
@@ -564,7 +569,6 @@
     <Content Include="Views\Dictum\Index.cshtml" />
     <Content Include="Views\Dictum\_AddEdit.cshtml" />
     <Content Include="Views\FileType\Index.cshtml" />
-    <Content Include="Views\FileType\_AddEdit.cshtml" />
     <Content Include="Views\Home\EmailPasswordRecovery.cshtml" />
     <Content Include="Views\Home\PaswordRecovery.cshtml" />
     <Content Include="Views\Home\Privacy.cshtml" />
@@ -636,6 +640,9 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\_AddEditUser.cshtml" />
     <Content Include="Views\PaymentDB\Index.cshtml" />
+    <Content Include="Views\FileDictum\_AddEdit.cshtml" />
+    <Content Include="Views\FileDictum\Index.cshtml" />
+    <Content Include="Views\FileType\_AddEdit.cshtml" />
     <Content Include="Views\Home\FAQ.cshtml" />
   </ItemGroup>
   <ItemGroup>

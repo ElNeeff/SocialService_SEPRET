@@ -90,7 +90,7 @@
     {
         foreach (var item in ViewBag.Binnacle)
         {
-            <div class="col-md-4 col-sm-12 col-lg-3 col-xl-3 d-flex align-items-stretch" id="@item.Id">
+            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-3 d-flex align-items-stretch" id="@item.Id">
                 <div class="card card-product" data-count="0">
                     <div onclick="Zoom('@item.Image', '@item.Voucher');" class="card-header card-header-image" data-header-animation="true" style="cursor:pointer;">
                         <img class="img" src="@item.Image">

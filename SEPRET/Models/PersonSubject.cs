@@ -15,8 +15,8 @@ namespace SEPRET.Models
     public partial class PersonSubject
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Person { get; set; }
-        public Nullable<long> Id_Subject { get; set; }
+        public long Id_Person { get; set; }
+        public long Id_Subject { get; set; }
         public bool Active { get; set; }
         public System.DateTime TimeCreated { get; set; }
         public Nullable<System.DateTime> TimeUpdated { get; set; }

@@ -40,8 +40,8 @@
                             <div class="row justify-content-center">
                                 <div class="col-lg-8 col-md-12 col-sm-12 text-center">
                                     <div class="form-group">
-                                        @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "" })
-                                        <small class="form-text text-muted">¿La empresa que búscas no está en la lista? @Html.ActionLink("Da clic aquí", "Index", "Company")</small>
+                                        @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @id = "CompaniesList", @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "" })
+                                        <small class="form-text text-muted">¿La empresa que búscas no está en la lista? <a href="#" onclick="AddCompany();">Da clic aquí</a></small>
                                     </div>
                                 </div>
                             </div>
@@ -167,8 +167,46 @@
         $('.bootstrap-tagsinput').find('input').eq(0).css('width', 'auto');
         var IdCarreras = @Html.Raw(Json.Encode(Model.Id_Carreras));
         $('#Id_Carreras').selectpicker('val', IdCarreras);
-    })
+    });
 
     $('select').selectpicker();
 
+    @*AddCompany = () => {
+        fetch('@Url.Action("AddEdit", "Company")')
+            .then(response => response.text())
+            .then(data => {
+                $('#AddEditModal').modal('hide');
+                $('#ModalContainer').html(data);
+                $('#AddEditCompanyModal').modal('show');
+            })
+            .catch(error => console.error(error))
+    }*@
+
+
+    @*AddCompany = (Id = 0, ReadOnly = false) => {
+        fetch('@Url.Action("AddEdit", "Company")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;'
+            },
+            body: JSON.stringify({Id: Id, ReadOnly: ReadOnly})
+        })
+            .then(response => response.text())
+            .then(data => {
+                $('#AddEditModal').modal('hide');
+                $('#ModalCompanyContainer').html(data);
+
+                $('.moving-tab').hide();
+                $('#AddEditCompanyModal').on('shown.bs.modal', function () {
+                    Site.initMaterialWizard();
+                    $('.moving-tab').show();
+                    $('.btn-next').removeClass('disabled');
+                });
+                if (ReadOnly) {
+                    $('form :input').prop("disabled", true);
+                }
+                $('#AddEditCompanyModal').modal('show');
+            })
+            .catch(error => console.error(error))
+    }*@
 </script>
