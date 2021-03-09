@@ -402,6 +402,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\Producción.pubxml" />
+    <None Include="Properties\PublishProfiles\Pruebas.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\arrive.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -642,6 +643,7 @@
     <Content Include="Views\FileDictum\_AddEdit.cshtml" />
     <Content Include="Views\FileDictum\Index.cshtml" />
     <Content Include="Views\FileType\_AddEdit.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

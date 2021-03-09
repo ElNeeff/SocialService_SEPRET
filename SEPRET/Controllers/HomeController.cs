@@ -40,10 +40,17 @@ namespace SEPRET.Controllers
             return View();
         }
 
+        public ActionResult FAQ()
+        {
+            ViewBag.currentView = "FAQ";
+            return View();
+        }
+
         public ActionResult PaswordRecovery()
         {
             return View();
         }
+        
 
         public JsonResult sybase()
         {
