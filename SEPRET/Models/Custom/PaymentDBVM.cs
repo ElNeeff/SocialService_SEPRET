@@ -17,5 +17,7 @@ namespace SEPRET.Models.Custom
         public PaymentDBGeneral PendingGeneral { get; set; }
         public PaymentDBGeneral AcceptedGeneral { get; set; }
         public PaymentDBGeneral InvoicedGeneral { get; set; }
-    }
+        public System.Web.Mvc.SelectList Payments { get; set; }
+        public long[] SelectedPayments { get; set; }
+}
 }

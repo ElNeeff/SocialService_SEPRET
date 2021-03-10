@@ -354,6 +354,7 @@
     <Content Include="Assets\img\project-bg3.jpg" />
     <Content Include="Assets\img\project-bg2.jpg" />
     <Content Include="Assets\img\receipts\Empty.png" />
+    <Content Include="Assets\img\receipts\Image404.jpg" />
     <Content Include="Assets\img\sidebar-bg.png" />
     <Content Include="Assets\img\sidebar.jpg" />
     <Content Include="Assets\img\TACM.png" />
@@ -401,6 +402,7 @@
       <DependentUpon>SEPRETDB.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
+    <None Include="Properties\PublishProfiles\Development.pubxml" />
     <None Include="Properties\PublishProfiles\Producción.pubxml" />
     <None Include="Properties\PublishProfiles\Pruebas.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
