@@ -19,13 +19,18 @@
                         <div class="col-md-6 col-sm-12">
                             <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="DT('Active');" style="cursor: pointer;">
+                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="CompanyDT('Active');" style="cursor: pointer;">
                                         Activas
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="DT('Inactive');" style="cursor: pointer;">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="CompanyDT('Inactive');" style="cursor: pointer;">
                                         Inactivas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectDT('Projects');" style="cursor: pointer;">
+                                        Proyectos
                                     </a>
                                 </li>
                             </ul>
@@ -38,10 +43,49 @@
                     </div>
                 </div>
 
-                <div class="material-datatables" style="display: none;">
+                <div class="sk-chase" style="display: none;">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+
+                <div id="CompaniesDTContainer" class="material-datatables" style="display: none;">
                     <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="col-sm-12">
-                            <table id="DT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                            <table id="CompanyDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>RFC</th>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                        <th>Creado</th>
+                                        <th>Propuesta por</th>
+                                        <th>Activo</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>RFC</th>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                        <th>Creado</th>
+                                        <th>Propuesta por</th>
+                                        <th>Activo</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ProjectsDTContainer" class="material-datatables" style="display: none;">
+                    <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="col-sm-12">
+                            <table id="ProjectDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
                                 <thead>
                                     <tr>
                                         <th>RFC</th>
@@ -83,7 +127,7 @@
 @section scripts{
     <script>
         $(() => {
-            DT('Active');
+            CompanyDT('Active');
         })
 
         Action = (Action, Id) => {
@@ -196,8 +240,10 @@
             $("time.timeago").timeago();
         }
 
-        DT = Filter => {
-            Table = $('#DT').on( 'draw.dt', () => InitMisc()).DataTable({
+        ProjectDT = Filter => {
+            $('#CompaniesDTContainer').hide();
+            $('.sk-chase').show();
+            ProjectTable = $('#ProjectDT').on( 'draw.dt', () => InitMisc()).DataTable({
                 destroy: true,
                 responsive: true,
                 autoWidth: true,
@@ -205,46 +251,14 @@
                 serverSide: true,
                 ajax: {
                     type: 'POST',
-                    url: '@Url.Action("DT", "Company")',
+                    url: '@Url.Action("ProjectDT", "Company")',
                     data: data => {
                         data.Filter = Filter
                     }
                 },
                 columns: [
                     {
-                        render: (data, type, row) => {
-                            var menu = '<div class="dropdown"> <button class="btn btn-link btn-round btn-primary dropdown-toggle" type = "button" id = "dropdownMenuButton-' + row['Id'] + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > ' + row['RFC'] + ' </button> <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-' + row['Id'] + '">';
-
-                            if (row['IsAdmin']) {
-                                switch (row['Id_Dictum']) {
-                                    case 0:
-                                        menu += '<a class="dropdown-item text-primary" href="javascript:;"  onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
-                                        break;
-                                    case 1:
-                                        menu += '<a class="dropdown-item text-success" href="javascript:;" onClick="Action(\'Accept\', ' + row['Id'] + ');">Autorizar</a>' +
-                                            '<a class="dropdown-item text-danger" href="javascript:;" onClick = "Action(\'Reject\', ' + row['Id'] + ');" >Rechazar</a>' +
-                                            '<a class="dropdown-item text-primary" href="javascript:;" onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
-                                        break;
-                                    case 2:
-                                        menu += '<a class="dropdown-item" href="javascript:;" onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            } else {
-                                switch (row['Id_Dictum']) {
-                                    case 0: case 1:
-                                        menu += '<a class="dropdown-item text-primary" href="javascript:;"  onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                            menu += '<div class="dropdown-divider"></div> <a class="dropdown-item text-info" href="javascript:;" onClick="AddEdit(' + row['Id'] + ', true);">Ver detalles</a></div></div>';
-
-                            return menu;
-                        }
+                        render: (data, type, { Id, RFC }) => `<a href="javascript:;" onClick="AddEdit(${Id}, false);" rel="tooltip" data-toggle="tooltip" data-placement="right" title="Ver detalles y editar">${RFC}</a>`
                     },
                     { data: 'Nombre' },
                     { data: 'Telefono' },
@@ -284,9 +298,109 @@
                     url: '/Assets/json/SpanishDT.json'
                 },
                 initComplete: () => {
+                    $('.sk-chase, #CompaniesDTContainer').hide();
                     $('select').selectpicker();
                     Site.StyleDropdownDT();
-                    $('.material-datatables').show();
+                    $('#ProjectsDTContainer').show();
+                    $('[rel="tooltip"]').tooltip();
+                    $("time.timeago").timeago();
+                }
+            })
+        }
+        CompanyDT = Filter => {
+            $('.sk-chase').show();
+            CompanyTable = $('#CompanyDT').on( 'draw.dt', () => InitMisc()).DataTable({
+                destroy: true,
+                responsive: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    type: 'POST',
+                    url: '@Url.Action("DT", "Company")',
+                    data: data => {
+                        data.Filter = Filter
+                    }
+                },
+                columns: [
+                    {
+                        render: (data, type, { Id, RFC }) => `<a href="javascript:;" onClick="AddEdit(${Id}, false);" rel="tooltip" data-toggle="tooltip" data-placement="right" title="Ver detalles y editar">${RFC}</a>`
+                        //render: (data, type, row) => {
+                        //    var menu = '<div class="dropdown"> <button class="btn btn-link btn-round btn-primary dropdown-toggle" type = "button" id = "dropdownMenuButton-' + row['Id'] + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > ' + row['RFC'] + ' </button> <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-' + row['Id'] + '">';
+
+                        //    if (row['IsAdmin']) {
+                        //        switch (row['Id_Dictum']) {
+                        //            case 0:
+                        //                menu += '<a class="dropdown-item text-primary" href="javascript:;"  onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
+                        //                break;
+                        //            case 1:
+                        //                menu += '<a class="dropdown-item text-success" href="javascript:;" onClick="Action(\'Accept\', ' + row['Id'] + ');">Autorizar</a>' +
+                        //                    '<a class="dropdown-item text-danger" href="javascript:;" onClick = "Action(\'Reject\', ' + row['Id'] + ');" >Rechazar</a>' +
+                        //                    '<a class="dropdown-item text-primary" href="javascript:;" onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
+                        //                break;
+                        //            case 2:
+                        //                menu += '<a class="dropdown-item" href="javascript:;" onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
+                        //                break;
+                        //            default:
+                        //                break;
+                        //        }
+                        //    } else {
+                        //        switch (row['Id_Dictum']) {
+                        //            case 0: case 1:
+                        //                menu += '<a class="dropdown-item text-primary" href="javascript:;"  onClick="AddEdit(' + row['Id'] + ', false);">Editar</a>';
+                        //                break;
+                        //            default:
+                        //                break;
+                        //        }
+                        //    }
+
+                        //    menu += '<div class="dropdown-divider"></div> <a class="dropdown-item text-info" href="javascript:;" onClick="AddEdit(' + row['Id'] + ', true);">Ver detalles</a></div></div>';
+
+                        //    return menu;
+                        //}
+                    },
+                    { data: 'Nombre' },
+                    { data: 'Telefono' },
+                    {
+                        data: 'TimeCreatedFormatted',
+                        render: (data, type, full, meta) => `<time class="timeago" datetime="${data}" rel="tooltip" data-placement="left" title="${data}"></time>`
+                    },
+                    {
+                        data: 'CreatedBy',
+                        render: ({ Id, UserFullName, Email }, type, full, meta) => `<a class="text-primary" rel="tooltip" data-placement="left" title="Clic para enviar email" href="mailto:${Email}?subject=ITMH - Gestión Tecnológica y Vinculación">${UserFullName}</a>`
+                    },
+                    {
+                        render: (data, type, row) => {
+                            if (row['IsAdmin']) {
+                                if (row['Active']) {
+                                    return '<div class="togglebutton"><label><input type="checkbox" checked="" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                                }
+                                else {
+                                    return '<div class="togglebutton"><label><input type="checkbox" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
+                                }
+                            }
+                            else {
+                                if (row['Active']) {
+                                    return '<div class="togglebutton"><label><input type="checkbox" checked="" disabled><span class="toggle"></span></label></div>';
+                                }
+                                else {
+                                    return '<div class="togglebutton"><label><input type="checkbox" disabled><span class="toggle"></span></label></div>';
+                                }
+                            }
+                        }
+                    }
+                ],
+                columnDefs: [
+                    { className: 'text-center', targets: [5] }
+                ],
+                language: {
+                    url: '/Assets/json/SpanishDT.json'
+                },
+                initComplete: () => {
+                    $('.sk-chase, #ProjectsDTContainer').hide();
+                    $('select').selectpicker();
+                    Site.StyleDropdownDT();
+                    $('#CompaniesDTContainer').show();
                     $('[rel="tooltip"]').tooltip();
                     $("time.timeago").timeago();
                 }
