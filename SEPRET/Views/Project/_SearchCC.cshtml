@@ -81,6 +81,7 @@
                                     switch (rol)
                                     {
                                         case "jefe academia":
+                                        case "Subdirección académica":
                                         case "super administrador":
                                         case "administrador":
                                             <br />
@@ -141,7 +142,7 @@
                                     switch (rol)
                                     {
                                         case "Coordinador de carrera":
-case "División de estudios profesionales":
+                                        case "División de estudios profesionales":
                                         case "super administrador":
                                         case "administrador":
                                             <br />
@@ -364,6 +365,7 @@ case "División de estudios profesionales":
                                     switch (rol)
                                     {
                                         case "jefe academia":
+                                        case "Subdirección académica":
                                         case "super administrador":
                                         case "administrador":
                                             <br />
@@ -433,7 +435,7 @@ case "División de estudios profesionales":
                                     switch (rol)
                                     {
                                         case "Coordinador de carrera":
-case "División de estudios profesionales":
+                                        case "División de estudios profesionales":
                                         case "super administrador":
                                         case "administrador":
                                             <br />
@@ -623,8 +625,8 @@ case "División de estudios profesionales":
                         @if ((rol == "docente" || rol.Contains("administrador")) && item.Active && ((long)item.Id_ProjectPhase == 1 || (long)item.Id_ProjectPhase == 2 || (long)item.Id_ProjectPhase == 4 || (long)item.Id_ProjectPhase == 5))
                         {
                             @*<a href="javascript:;" class="btn btn-primary btn-just-icon btn-fill btn-round" onclick="ManageMembers(@item.Id);" rel="tooltip" data-placement="top" title="Gestionar residentes">
-                <i class="material-icons">groups</i>
-            </a>*@
+                                    <i class="material-icons">groups</i>
+                                </a>*@
                             <a href="javascript:;" class="btn btn-warning btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Unpublish');" rel="tooltip" data-placement="top" title="Dar de baja">
                                 <i class="material-icons">unpublished</i>
                             </a>

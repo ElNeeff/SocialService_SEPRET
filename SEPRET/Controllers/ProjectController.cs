@@ -18,8 +18,9 @@ namespace SEPRET.Controllers
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
                 long UserId = (long)Session["Id"];
+                long CareerId = (long)Session["CareerId"];
 
-                IEnumerable<ProjectPerson> projects = User.IsInRole("Alumno") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Id_Dictum == 3 && x.Project.Id_ProjectType == 1 || x.Project.Active && x.Project.Id_ProjectType == 2 && x.Id_Dictum == 3 && x.Id_Person == UserId).ToList() : User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList();
+                IEnumerable<ProjectPerson> projects = User.IsInRole("Alumno") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Id_Dictum == 3 && x.Project.Id_ProjectType == 1 || x.Project.Active && x.Project.Id_ProjectType == 2 && x.Id_Dictum == 3 && x.Id_Person == UserId).ToList() : User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
                 long total = projects.Count();
                 IEnumerable<ProjectVM> projectVMs = Enumerable.Empty<ProjectVM>();
 
@@ -600,7 +601,7 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Pending":
-                        TotalRegisters = User.IsInRole("Jefe academia") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active).Count() : User.IsInRole("Jefe departamental") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).Count() : User.IsInRole("Docente") ? DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && (x.Project.Id_ProjectPhase == 9 || x.Project.Id_ProjectPhase == 10)).Count() : DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
+                        TotalRegisters = User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active).Count() : User.IsInRole("Jefe departamental") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).Count() : User.IsInRole("Docente") ? DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && (x.Project.Id_ProjectPhase == 9 || x.Project.Id_ProjectPhase == 10)).Count() : DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
                         break;
                     case "Accepted":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Active).Count();
@@ -700,7 +701,7 @@ namespace SEPRET.Controllers
 
                             Comment comment = new Comment
                             {
-                                Id_CommentType = User.IsInRole("Jefe academia") || User.IsInRole("Jefe departamental") && project.Id_ProjectType == 2 ? 2 : User.IsInRole("Coordinador de carrera") || User.IsInRole("División de estudios profesionales") ? 3 : 4,
+                                Id_CommentType = User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica") || User.IsInRole("Jefe departamental") && project.Id_ProjectType == 2 ? 2 : User.IsInRole("Coordinador de carrera") || User.IsInRole("División de estudios profesionales") ? 3 : 4,
                                 Id_Person = UserId,
                                 Id_Project = Id,
                                 Mensaje = Comment,
@@ -1588,7 +1589,7 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Pending":
-                        projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList();
+                        projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
                         break;
                     case "AcceptedJD":
                         projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 3 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
@@ -1709,7 +1710,7 @@ namespace SEPRET.Controllers
                 }).ToList();
                 #endregion
 
-                return Filter.Contains("BankDocente") ? PartialView("~/Views/Project/_SearchBank.cshtml", projectList) : User.IsInRole("Coordinador de carrera") || User.IsInRole("División de estudios profesionales") || User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") || User.IsInRole("Docente") ? PartialView("~/Views/Project/_SearchCC.cshtml", projectList) : PartialView("~/Views/Project/_Search.cshtml", projectList);
+                return Filter.Contains("BankDocente") ? PartialView("~/Views/Project/_SearchBank.cshtml", projectList) : User.IsInRole("Coordinador de carrera") || User.IsInRole("División de estudios profesionales") || User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica") || User.IsInRole("Docente") ? PartialView("~/Views/Project/_SearchCC.cshtml", projectList) : PartialView("~/Views/Project/_Search.cshtml", projectList);
             }
         }
         #endregion

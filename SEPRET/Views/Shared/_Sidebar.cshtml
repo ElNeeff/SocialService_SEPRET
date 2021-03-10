@@ -356,7 +356,7 @@
             </div>
         </li>
     }
-    else if (User.IsInRole("Jefe academia"))
+    else if (User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica"))
     {
         <li class="nav-item">
             <a class="nav-link" href="@Url.Action("Index", "Project")">

@@ -39,7 +39,7 @@ namespace SEPRET.Controllers
                 {
                     Permission permission = new Permission
                     {
-                        Name = modelo.Name.ToTitleCase(),
+                        Name = modelo.Name,
                         Active = true,
                         TimeCreated = DateTime.Now
                     };
