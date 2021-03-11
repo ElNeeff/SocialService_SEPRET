@@ -10,6 +10,12 @@ namespace SEPRET.Controllers
 {
     public class PDFGeneratorController : Controller
     {
+        public ActionResult SolicitudRP()
+        {
+            return new ViewAsPdf();
+            //return View();
+        }
+
         [HttpPost]
         public ActionResult AsignacionAsesor(long ProjectId)
         {
