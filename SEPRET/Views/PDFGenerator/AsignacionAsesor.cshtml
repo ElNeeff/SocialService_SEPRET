@@ -1,0 +1,145 @@
+﻿@model SEPRET.Models.Custom.PDFGeneratorVM
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="es">
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <style>
+
+        input {
+            font-size: 15px;
+            border-top-width: 0px;
+            border-right-width: 0px;
+            border-bottom-width: 0px;
+            border-left-width: 0px;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 14px;
+        }
+
+        .header {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            margin-bottom: 4rem;
+        }
+
+        .ccp {
+            margin-top: 13rem;
+            font-size: 9px;
+        }
+
+        .footer {
+            margin-top: 5rem;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <table style="width: 100%;" border="1" cellspacing="0">
+            <tbody>
+                <tr style="height: 2rem;">
+                    <td style="width: 15%; text-align: center;" rowspan="3"><img src="@Server.MapPath("/Assets/img/itmh-logo.png")" width="100" /></td>
+                    <td style="width: 60%;" rowspan="2"><b>Formato para Asignación de Asesor (a) Interno (a) de Residencias Profesionales por competencias.</b></td>
+                    <td style="width: 25%;"><b>Código: AC-RP-FOR02</b></td>
+                </tr>
+                <tr style="height: 2rem;">
+                    <td style="width: 25%;"><b>Revisión: 2</b></td>
+                </tr>
+                <tr style="height: 2rem;">
+                    <td style="width: 60%;"><b>Referencia a la Norma ISO 9001:2015 8.1, 8.2, 8.2.1, 8.2.2, 8.2.3, 8.2.4, 8.5.1, 8.5.2, 8.6</b></td>
+                    <td style="width: 25%;"><b>Página: 1 de 1</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+
+        <p align="right">
+            <label style="font-size: 15px;">No. de Oficio: CEA-195/@DateTime.Now.Year</label><br>
+            <label style="font-size: 15px;">Departamento: @Model.JefedeDepartamento.Career</label><br>
+            <label style=" font-size: 15px; ">ASUNTO: <b>Asesor interno de  Residencias Profesionales.</b> </label><br />
+            <label style=" font-size: 15px; ">Matehuala, S.L.P. A @Model.Fecha</label><br />
+        </p><br>
+
+        <label style="font-weight: bold;  "> @Model.Asesor </label> <br>
+        <label style="font-weight: bold;"> CATEDRATICO DEL I.T. DE MATEHUALA </label> <br>
+        <label style="font-weight: bold;">P R E S E N T E. </label> <br>
+
+        <P class="text-primary">
+            Por este conducto informo a usted que ha sido asignado para fungir como Asesor Interno del Proyecto de Residencias Profesionales que a continuación se describe:
+        </P><br>
+
+        <table width="100%" border="1" cellspacing="0">
+            <tr>
+                <td width="300">a) Nombre del (la) Residente:</td>
+                <td>
+                    @foreach (var alumno in Model.Residentes)
+                    {
+                        <p>@alumno.UserFullName @alumno.Enrollment</p>
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td width="300">b) Carrera:</td>
+                <td>
+                    @foreach (var alumno in Model.Residentes)
+                    {
+                        <p>@alumno.CareerName</p>
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td width="300">c) Nombre del Proyecto:</td>
+                <td>"@Model.Proyect.Titulo"</td>
+            </tr>
+
+            <tr>
+                <td width="300">d) Periodo de Realización   </td>
+                <td>@Model.Periodo</td>
+            </tr>
+
+            <tr>
+                <td width="300">e) Empresa </td>
+                <td>@(Model.Empresa is null ? "Indefinida" : Model.Empresa.Nombre)</td>
+            </tr>
+        </table><br>
+
+        <p> Así mismo, le solicito dar el seguimiento pertinente a la realización del proyecto aplicando los lineamientos establecidos para ello, en el procedimiento del SGC para Residencias Profesionales.</p>
+        <p>Agradezco de antemano su valioso apoyo en esta importante actividad para la formación profesional de nuestro estudiantado.</p><br>
+
+
+        <p align="left">
+        <p align="left" style="font-size: 15px; font-weight: 600;">A T E N T A M E N T E.</p>
+        <p align="left" style="font-size: 15px; font-style: italic; font-weight: 600;">"Ingenio y Tecnología al Servicio de la Patria"</p><br><br><br>
+        <p align="left">
+            <label name="nombre_asesor" style="font-size: 15px; font-weight: 600; ">@Model.JefedeDepartamento.UserFullName</label><br>
+            <label name="nombre_asesor" style="font-size: 15px; font-weight: 600; ">JEFA DEL DEPARTAMENTO DE @Model.JefedeDepartamento.Career</label>
+        </p>
+        </p>
+
+    </div>
+
+    <div class="ccp">
+        <p align="left">c.c.p. Coordinación de Carrera</p>
+        <p align="left">c.c.p. Residente</p>
+        <p align="left">c.c.p. Expediente</p>
+    </div>
+
+    <div class="footer">
+        <label>AC-RP-FOR02      Toda copia en PAPEL es un “Documento No Controlado” a excepción del original.</label>
+        <label style="float: right;">Rev. 2</label>
+    </div>
+
+</body>
+</html>

@@ -29,7 +29,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectDT('Projects');" style="cursor: pointer;">
+                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectDT();" style="cursor: pointer;">
                                         Proyectos
                                     </a>
                                 </li>
@@ -88,22 +88,16 @@
                             <table id="ProjectDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
                                 <thead>
                                     <tr>
-                                        <th>RFC</th>
-                                        <th>Nombre</th>
-                                        <th>Teléfono</th>
+                                        <th>Proyecto</th>
+                                        <th>Empresa</th>
                                         <th>Creado</th>
-                                        <th>Propuesta por</th>
-                                        <th>Activo</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>RFC</th>
-                                        <th>Nombre</th>
-                                        <th>Teléfono</th>
+                                        <th>Proyecto</th>
+                                        <th>Empresa</th>
                                         <th>Creado</th>
-                                        <th>Propuesta por</th>
-                                        <th>Activo</th>
                                     </tr>
                                 </tfoot>
                                 <tbody></tbody>
@@ -235,12 +229,49 @@
                 .catch(error => console.error(error))
         }
 
+        CartaPresentacion = ProjectId => {
+            fetch('@Url.Action("AsignacionAsesor", "PDFGenerator")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({ ProjectId: ProjectId })
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    // It is necessary to create a new blob object with mime-type explicitly set
+                    // otherwise only Chrome works like it should
+                    var newBlob = new Blob([blob], { type: "application/pdf" });
+
+                    // IE doesn't allow using a blob object directly as link href
+                    // instead it is necessary to use msSaveOrOpenBlob
+                    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(newBlob);
+                        return;
+                    }
+
+                    // For other browsers:
+                    // Create a link pointing to the ObjectURL containing the blob.
+                    const data = window.URL.createObjectURL(newBlob);
+                    var link = document.createElement('a');
+                    link.href = data;
+                    //link.setAttribute('target', '_blank');
+                    link.download = 'Carta presentación.pdf';
+                    link.click();
+                    setTimeout(function () {
+                        // For Firefox it is necessary to delay revoking the ObjectURL
+                        window.URL.revokeObjectURL(data);
+                    }, 100);
+                })
+                .catch(error => console.error(error))
+        }
+
         InitMisc = () => {
             $('[rel="tooltip"]').tooltip();
             $("time.timeago").timeago();
         }
 
-        ProjectDT = Filter => {
+        ProjectDT = () => {
             $('#CompaniesDTContainer').hide();
             $('.sk-chase').show();
             ProjectTable = $('#ProjectDT').on( 'draw.dt', () => InitMisc()).DataTable({
@@ -251,48 +282,20 @@
                 serverSide: true,
                 ajax: {
                     type: 'POST',
-                    url: '@Url.Action("ProjectDT", "Company")',
-                    data: data => {
-                        data.Filter = Filter
-                    }
+                    url: '@Url.Action("ProjectDT", "Company")'
                 },
                 columns: [
                     {
-                        render: (data, type, { Id, RFC }) => `<a href="javascript:;" onClick="AddEdit(${Id}, false);" rel="tooltip" data-toggle="tooltip" data-placement="right" title="Ver detalles y editar">${RFC}</a>`
+                        render: (data, type, { Id, ProjectName }) => `<a href="javascript:;" onClick="CartaPresentacion(${Id});" rel="tooltip" data-toggle="tooltip" data-placement="right" title="Clic para descargar cartas de presentación">${ProjectName}</a>`
                     },
-                    { data: 'Nombre' },
-                    { data: 'Telefono' },
+                    { data: 'Company' },
                     {
                         data: 'TimeCreatedFormatted',
                         render: (data, type, full, meta) => `<time class="timeago" datetime="${data}" rel="tooltip" data-placement="left" title="${data}"></time>`
-                    },
-                    {
-                        data: 'CreatedBy',
-                        render: ({ Id, UserFullName, Email }, type, full, meta) => `<a class="text-primary" rel="tooltip" data-placement="left" title="Clic para enviar email" href="mailto:${Email}?subject=ITMH - Gestión Tecnológica y Vinculación">${UserFullName}</a>`
-                    },
-                    {
-                        render: (data, type, row) => {
-                            if (row['IsAdmin']) {
-                                if (row['Active']) {
-                                    return '<div class="togglebutton"><label><input type="checkbox" checked="" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
-                                }
-                                else {
-                                    return '<div class="togglebutton"><label><input type="checkbox" onClick="UpdateStatus(' + row['Id'] + ');"><span class="toggle"></span></label></div>';
-                                }
-                            }
-                            else {
-                                if (row['Active']) {
-                                    return '<div class="togglebutton"><label><input type="checkbox" checked="" disabled><span class="toggle"></span></label></div>';
-                                }
-                                else {
-                                    return '<div class="togglebutton"><label><input type="checkbox" disabled><span class="toggle"></span></label></div>';
-                                }
-                            }
-                        }
                     }
                 ],
                 columnDefs: [
-                    { className: 'text-center', targets: [5] }
+                    { className: 'text-center', targets: [2] }
                 ],
                 language: {
                     url: '/Assets/json/SpanishDT.json'
@@ -307,6 +310,7 @@
                 }
             })
         }
+
         CompanyDT = Filter => {
             $('.sk-chase').show();
             CompanyTable = $('#CompanyDT').on( 'draw.dt', () => InitMisc()).DataTable({

@@ -180,7 +180,7 @@ namespace SEPRET.Controllers
         }
 
         [HttpPost]
-        public JsonResult ProjectDT(DataTablesParameters param, string Filter)
+        public JsonResult ProjectDT(DataTablesParameters param)
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
@@ -225,8 +225,9 @@ namespace SEPRET.Controllers
                 #region DataTable
                 List<ProjectPersonVM> data = projectPeople.Select(x => new ProjectPersonVM
                 {
-                    Id = x.Id,
+                    Id = x.Project.Id,
                     ProjectName = x.Project.Titulo,
+                    Company = x.Project.Company.Nombre,
                     TimeCreatedFormatted = x.TimeCreated.ToString()
                 }).ToList();
                 #endregion
