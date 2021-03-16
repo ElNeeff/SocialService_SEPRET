@@ -17,6 +17,18 @@ namespace SEPRET.Controllers
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetCompanies()
+        {
+            using (SEPRETEntities DBC = new SEPRETEntities())
+            {
+                DBC.Configuration.LazyLoadingEnabled = false;
+                List<Company> companies = DBC.Companies.Where(x => x.Active && x.Id_Dictum == 3).ToList();
+
+                return Json(companies, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         public JsonResult Action(string Action, long Id)
         {
@@ -75,7 +87,7 @@ namespace SEPRET.Controllers
                     Company Company = new Company
                     {
                         Id_Person = UserId,
-                        Id_Dictum = User.IsInRole("Gestión Tecnológica y Vinculación") ? 3 : 2,
+                        Id_Dictum = 3,
                         Id_Sector = modelo.Id_Sector,
                         Nombre = modelo.Nombre,
                         RFC = modelo.RFC,
@@ -107,7 +119,7 @@ namespace SEPRET.Controllers
             {
                 CompanyVM modelo = new CompanyVM();
 
-                List<Sector> sectors = DBC.Sectors.Where(x => x.Active == true).ToList();
+                List<Sector> sectors = DBC.Sectors.Where(x => x.Active).ToList();
                 ViewBag.SectorList = new SelectList(sectors, "Id", "Nombre");
 
                 if (Id > 0)
@@ -168,6 +180,69 @@ namespace SEPRET.Controllers
         }
 
         [HttpPost]
+        public JsonResult ProjectDT(DataTablesParameters param)
+        {
+            using (SEPRETEntities DBC = new SEPRETEntities())
+            {
+                IEnumerable<ProjectPerson> projectPeople = DBC.ProjectPersons.Where(x => x.Active && x.Project.Active && x.Owner).ToList();
+
+                long total = projectPeople.Count();
+
+                #region Búsqueda
+                string keyword = param.search.value;
+
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    keyword = keyword.ToLower();
+
+                    projectPeople = projectPeople.Where(x => x.Project.Titulo.ToLower().Contains(keyword) ||
+                    x.Project.Company.Nombre.ToLower().Contains(keyword) ||
+                    x.TimeCreated.ToString().ToLower().Contains(keyword));
+                }
+
+                long totalFiltered = projectPeople.Count();
+                #endregion
+
+                #region Ordenamiento
+                int columnId = param.order[0].column;
+
+                Func<ProjectPerson, string> orderFunction = (x => columnId == 0 ? x.Project.Titulo : columnId == 1 ? x.Project.Company.Nombre : x.TimeCreated.ToString());
+
+                if (param.order[0].dir == "asc")
+                {
+                    projectPeople = projectPeople.OrderBy(orderFunction);
+                }
+                else
+                {
+                    projectPeople = projectPeople.OrderByDescending(orderFunction);
+                }
+                #endregion
+
+                #region Paginado
+                projectPeople.Skip(param.start).Take(param.length);
+                #endregion
+
+                #region DataTable
+                List<ProjectPersonVM> data = projectPeople.Select(x => new ProjectPersonVM
+                {
+                    Id = x.Project.Id,
+                    ProjectName = x.Project.Titulo,
+                    Company = x.Project.Company.Nombre,
+                    TimeCreatedFormatted = x.TimeCreated.ToString()
+                }).ToList();
+                #endregion
+
+                return Json(new
+                {
+                    aaData = data,
+                    param.draw,
+                    iTotalRecords = total,
+                    iTotalDisplayRecords = totalFiltered
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public JsonResult DT(DataTablesParameters param, string Filter)
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
@@ -177,7 +252,7 @@ namespace SEPRET.Controllers
                 long UserId = (long)Session["Id"];
 
                 bool admin = false;
-                if (User.IsInRole("Super Administrador") || User.IsInRole("Administrador") || User.IsInRole("Gestión Tecnológica y Vinculación"))
+                if (User.IsInRole("Super Administrador") || User.IsInRole("Administrador") || User.IsInRole("Gestión Tecnológica Y Vinculación"))
                 {
                     admin = true;
                 }
@@ -185,7 +260,7 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Active":
-                        Company = admin is true ? DBC.Companies.Where(x => x.Active == true).ToList() : DBC.Companies.Where(x => x.Active == true && x.Id_Person == UserId).ToList();
+                        Company = admin is true ? DBC.Companies.Where(x => x.Active).ToList() : DBC.Companies.Where(x => x.Active && x.Id_Person == UserId).ToList();
                         break;
                     case "Inactive":
                         Company = admin is true ? DBC.Companies.Where(x => x.Active == false).ToList() : DBC.Companies.Where(x => x.Active == false && x.Id_Person == UserId).ToList();
@@ -203,9 +278,9 @@ namespace SEPRET.Controllers
                 {
                     keyword = keyword.ToLower();
 
-                    Company = Company.Where(x => x.Nombre.Contains(keyword) ||
-                    x.RFC.Contains(keyword) || x.Telefono.Contains(keyword) ||
-                    x.Dictum.Nombre.Contains(keyword) ||
+                    Company = Company.Where(x => x.Nombre.ToLower().Contains(keyword) ||
+                    x.RFC.ToLower().Contains(keyword) || x.Telefono.ToLower().Contains(keyword) ||
+                    string.Concat(x.Person.Name, " ", x.Person.MiddleName, " ", x.Person.LastName).ToLower().Contains(keyword) ||
                     x.TimeCreated.ToString().ToLower().Contains(keyword));
                 }
 
@@ -242,7 +317,13 @@ namespace SEPRET.Controllers
                     TimeCreatedFormatted = x.TimeCreated.ToString(),
                     Dictamen = x.Dictum.Nombre,
                     Active = x.Active,
-                    IsAdmin = admin
+                    IsAdmin = admin,
+                    CreatedBy = new PersonVM
+                    {
+                        Id = x.Person.Id,
+                        UserFullName = string.Concat(x.Person.Name, " ", x.Person.MiddleName, " ", x.Person.LastName),
+                        Email = x.Person.Email
+                    }
                 }).ToList();
                 #endregion
 

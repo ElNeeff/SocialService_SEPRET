@@ -145,6 +145,7 @@
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DictumController.cs" />
     <Compile Include="Controllers\FakeController.cs" />
+    <Compile Include="Controllers\FileDictumController.cs" />
     <Compile Include="Controllers\FileTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstrumentationTypeController.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Controllers\NatureController.cs" />
     <Compile Include="Controllers\PaymentDBController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\PDFGeneratorController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\PersonSubjectController.cs" />
     <Compile Include="Controllers\PhaseController.cs" />
@@ -199,8 +201,10 @@
     <Compile Include="Models\Company.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Custom\FileDictumVM.cs" />
     <Compile Include="Models\Custom\PaymentDBGeneral.cs" />
     <Compile Include="Models\Custom\PaymentDBVM.cs" />
+    <Compile Include="Models\Custom\PDFGeneratorVM.cs" />
     <Compile Include="Models\Custom\ReceiptCounter.cs" />
     <Compile Include="Models\Custom\AdviserTypeVM.cs" />
     <Compile Include="Models\Custom\AmbitVM.cs" />
@@ -238,6 +242,9 @@
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Dictum.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FileDictum.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FileType.cs">
@@ -339,15 +346,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\img\itmh-logo.png" />
+    <Content Include="Assets\img\project-bg.jpg" />
     <Content Include="Assets\img\dust_scratches.png" />
     <Content Include="Assets\img\favicon.png" />
     <Content Include="Assets\img\login.jpg" />
     <Content Include="Assets\img\login.png" />
     <Content Include="Assets\img\office.jpg" />
     <Content Include="Assets\img\pattern.png" />
-    <Content Include="Assets\img\project-bg.jpg" />
-    <Content Include="Assets\img\projectbank-bg-reverse.jpg" />
-    <Content Include="Assets\img\projectbank-bg.jpg" />
+    <Content Include="Assets\img\project-bg3.jpg" />
+    <Content Include="Assets\img\project-bg2.jpg" />
     <Content Include="Assets\img\receipts\Empty.png" />
     <Content Include="Assets\img\receipts\Image404.jpg" />
     <Content Include="Assets\img\sidebar-bg.png" />
@@ -399,6 +407,7 @@
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\Development.pubxml" />
     <None Include="Properties\PublishProfiles\Producción.pubxml" />
+    <None Include="Properties\PublishProfiles\Pruebas.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\arrive.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -565,7 +574,6 @@
     <Content Include="Views\Dictum\Index.cshtml" />
     <Content Include="Views\Dictum\_AddEdit.cshtml" />
     <Content Include="Views\FileType\Index.cshtml" />
-    <Content Include="Views\FileType\_AddEdit.cshtml" />
     <Content Include="Views\Home\EmailPasswordRecovery.cshtml" />
     <Content Include="Views\Home\PaswordRecovery.cshtml" />
     <Content Include="Views\Home\Privacy.cshtml" />
@@ -637,6 +645,13 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\_AddEditUser.cshtml" />
     <Content Include="Views\PaymentDB\Index.cshtml" />
+    <Content Include="Views\FileDictum\_AddEdit.cshtml" />
+    <Content Include="Views\FileDictum\Index.cshtml" />
+    <Content Include="Views\FileType\_AddEdit.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
+    <Content Include="Views\PDFGenerator\AsignacionAsesor.cshtml" />
+    <Content Include="Views\PDFGenerator\SolicitudRP.cshtml" />
+    <Content Include="Views\PDFGenerator\EvaluacionRP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

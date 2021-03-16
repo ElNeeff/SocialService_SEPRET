@@ -39,7 +39,7 @@
                             }
                         </p>
 
-                        @if (User.IsInRole("Super Administrador") || User.IsInRole("Administrador") || User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia"))
+                        @if (User.IsInRole("Super Administrador") || User.IsInRole("Administrador") || User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica"))
                         {
                             switch ((long)item.Id_ProjectPhase)
                             {
@@ -59,7 +59,7 @@
                                     }
                                     break;
                                 case 3:
-                                    if (User.IsInRole("Super Administrador") || User.IsInRole("Administrador") || User.IsInRole("Jefe Academia"))
+                                    if (User.IsInRole("Super Administrador") || User.IsInRole("Administrador") || User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica"))
                                     {
                                         <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="top" title="Aceptar">
                                             <i class="material-icons">assignment_turned_in</i>

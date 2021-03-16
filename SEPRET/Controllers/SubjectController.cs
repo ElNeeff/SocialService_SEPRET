@@ -518,12 +518,15 @@ namespace SEPRET.Controllers
 
                 switch (Rol)
                 {
+                    case "super administrador":
                     case "administrador":
+                        subjects = DBC.Subjects.Where(x => x.Active && x.Id_Career == CareerId).ToList();
+                        break;
                     case "jefe departamental":
                         subjects = DBC.Subjects.Where(x => x.Active && x.Id_Career == CareerId).ToList();
                         break;
                     case "docente":
-                        long?[] asignaturas = DBC.PersonSubjects.Where(x => x.Id_Person == UserId && x.Active).Select(x => x.Id_Subject).ToArray();
+                        long[] asignaturas = DBC.PersonSubjects.Where(x => x.Id_Person == UserId && x.Active).Select(x => x.Id_Subject).ToArray();
                         subjects = DBC.Subjects.Where(x => x.Active && asignaturas.Contains(x.Id)).ToList();
                         break;
                     default:

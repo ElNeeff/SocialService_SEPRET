@@ -8,12 +8,12 @@ namespace SEPRET.Models.Custom
     public class ProjectVM
     {
         public long Id { get; set; }
-        public Nullable<long> Id_ProjectType { get; set; }
-        public Nullable<long> Id_Company { get; set; }
-        public Nullable<long> Id_Nature { get; set; }
-        public Nullable<long> Id_Ambit { get; set; }
-        public Nullable<long> Id_Kind { get; set; }
-        public Nullable<long> Id_ProjectPhase { get; set; }
+        public long Id_ProjectType { get; set; }
+        public long Id_Company { get; set; }
+        public long Id_Nature { get; set; }
+        public long Id_Ambit { get; set; }
+        public long Id_Kind { get; set; }
+        public long Id_ProjectPhase { get; set; }
         public string Titulo { get; set; }
         public string ObjetivoGeneral { get; set; }
         public string ObjetivosEspecificos { get; set; }
@@ -49,6 +49,6 @@ namespace SEPRET.Models.Custom
         public bool PDFExists { get; set; }
 
         // PROJECTCAREER ATTRIBUTES
-        public Nullable<long> Id_Career { get; set; }
+        public long Id_Career { get; set; }
     }
 }

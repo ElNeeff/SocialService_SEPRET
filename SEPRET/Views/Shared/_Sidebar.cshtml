@@ -135,6 +135,38 @@
                                         <span class="sidebar-normal">Tipos de asesor</span>
                                     </a>
                                 </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "FileType")">
+                                        <span class="sidebar-mini"> <i class="material-icons">note_add</i> </span>
+                                        <span class="sidebar-normal"> Tipos de archivo </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "FileDictum")">
+                                        <span class="sidebar-mini"> <i class="material-icons">gavel</i> </span>
+                                        <span class="sidebar-normal"> Dictámenes de archivos </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a class="nav-link collapsed" data-toggle="collapse" href="#sicsaSettings" aria-expanded="false">
+                            <span class="sidebar-mini"> <i class="material-icons">school</i> </span>
+                            <span class="sidebar-normal">
+                                SICSA
+                                <b class="caret"></b>
+                            </span>
+                        </a>
+                        <div class="collapse" id="sicsaSettings" style="">
+                            <ul class="nav">
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="@Url.Action("Index", "InstrumentationType")">
+                                        <span class="sidebar-mini"> <i class="material-icons">category</i> </span>
+                                        <span class="sidebar-normal"> Tipos de instrumentación </span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -302,7 +334,7 @@
             <a class="nav-link" data-toggle="collapse" href="#System">
                 <i class="material-icons">engineering</i>
                 <p>
-                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    Residencias <span class="badge badge-pill badge-warning">Beta</span>
                     <b class="caret"></b>
                 </p>
             </a>
@@ -324,24 +356,24 @@
             </div>
         </li>
     }
-    else if (User.IsInRole("Jefe academia"))
+    else if (User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica"))
     {
         <li class="nav-item">
             <a class="nav-link" href="@Url.Action("Index", "Project")">
                 <i class="material-icons">engineering</i>
                 <p>
-                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    Residencias <span class="badge badge-pill badge-warning">Beta</span>
                 </p>
             </a>
         </li>
     }
-    else if (User.IsInRole("Coordinador de carrera"))
+    else if (User.IsInRole("Coordinador de carrera") || User.IsInRole("División de estudios profesionales"))
     {
         <li class="nav-item">
             <a class="nav-link" href="@Url.Action("Administrative", "Project")">
                 <i class="material-icons">engineering</i>
                 <p>
-                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    Residencias <span class="badge badge-pill badge-warning">Beta</span>
                 </p>
             </a>
         </li>
@@ -352,7 +384,7 @@
             <a class="nav-link" data-toggle="collapse" href="#System">
                 <i class="material-icons">engineering</i>
                 <p>
-                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    Residencias <span class="badge badge-pill badge-warning">Beta</span>
                     <b class="caret"></b>
                 </p>
             </a>
@@ -374,6 +406,28 @@
             </div>
         </li>
     }
+    else if (User.IsInRole("Gestión tecnológica y vinculación"))
+    {
+        <li class="nav-item ">
+            <a class="nav-link" data-toggle="collapse" href="#System">
+                <i class="material-icons">engineering</i>
+                <p>
+                    Residencias <span class="badge badge-pill badge-warning">Beta</span>
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse" id="System">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action("Index", "Company")">
+                            <span class="sidebar-mini"> <i class="material-icons">business</i> </span>
+                            <span class="sidebar-normal"> Empresas </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    }
     else
     {
         <li class="nav-item">
@@ -386,7 +440,7 @@
             <a class="nav-link" href="@Url.Action("Index", "Project")">
                 <i class="material-icons">engineering</i>
                 <p>
-                    Residencias <span class="badge badge-pill badge-info">Alfa</span>
+                    Residencias <span class="badge badge-pill badge-warning">Beta</span>
                 </p>
             </a>
         </li>

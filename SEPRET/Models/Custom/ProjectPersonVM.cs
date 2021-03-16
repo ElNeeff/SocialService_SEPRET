@@ -21,6 +21,7 @@ namespace SEPRET.Models.Custom
         public string PersonEmail { get; set; }
         public string PersonCareer { get; set; }
         public string ProjectName { get; set; }
+        public string Company { get; set; }
         public string TimeCreatedFormatted { get; set; }
     }
 }

@@ -27,7 +27,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#method" data-toggle="tab" role="tab">
-                                Carácter y carrera
+                                Carácter
                             </a>
                         </li>
                     </ul>
@@ -36,6 +36,15 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="image">
                             @Html.HiddenFor(x => x.Id)
+
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 col-md-12 col-sm-12 text-center">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @id = "CompaniesList", @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "" })
+                                        <small class="form-text text-muted">¿La empresa que búscas no está en la lista? <a href="#" onclick="AddCompany();">Da clic aquí</a></small>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="d-flex flex-column">
                                 <div class="col-12">
@@ -62,8 +71,8 @@
                                 {
                                     <div class="bootstrap-tagsinput primary-badge" style="padding: 4px 15px;">
                                         <div class="form-group">
-                                            <label>Integrantes del equipo (opcional)</label>
-                                            @Html.TextBoxFor(x => x.Member, new { @class = "form-control", @data_role = "tagsinput", @placeholder = "Número de control" })
+                                            <label class="text-success">Integrantes del equipo (opcional)</label>
+                                            @Html.TextBoxFor(x => x.Member, new { @id = "teamtag", @class = "form-control", @placeholder = "Número de control" })
                                             <small class="form-text text-muted text-rose mt-0">Nota: Los integrantes deben estar registrados en esta plataforma para poder ser agregados al equipo</small>
                                         </div>
                                     </div>
@@ -85,10 +94,6 @@
                             <div class="d-flex flex-column">
                                 <div class="form-group">
                                     @Html.DropDownListFor(x => x.Id_Nature, ViewBag.NatureList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Carácter", @required = "" })
-                                </div>
-                                <div class="form-group">
-                                    @Html.DropDownListFor(x => x.Id_Carreras, ViewBag.CareerList as MultiSelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Carrera", @required = "", @multiple = "" })
-                                    <small class="form-text text-muted text-rose mt-0 ml-3">*En caso de que un integrante de tu equipo sea de una carrera diferente a la tuya, selecciona tu carrera y la carrera de tu compañero</small>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +128,12 @@
         Site.initWizardForms();
         $('.moving-tab').show();
         $('.btn-next').removeClass('disabled');
-        $('.bootstrap-tagsinput').find('input').eq(0).css('width', 'auto');
+        //$('.bootstrap-tagsinput').find('input').eq(0).css('width', 'auto').attr('type', 'number');
+        $('input[placeholder="Número de control"]').eq(0).tagsinput({
+            maxChars: 8,
+            trimValue: true
+        });
+        $('input[placeholder="Número de control"]').eq(0).css('width', 'auto').attr('type', 'number');
         var IdCarreras = @Html.Raw(Json.Encode(Model.Id_Carreras));
         $('#Id_Carreras').selectpicker('val', IdCarreras);
     })

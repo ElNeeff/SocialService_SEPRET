@@ -15,8 +15,8 @@ namespace SEPRET.Models
     public partial class Instrumentation
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Unit { get; set; }
-        public Nullable<long> Id_InstrumentationType { get; set; }
+        public long Id_Unit { get; set; }
+        public long Id_InstrumentationType { get; set; }
         public string Indice { get; set; }
         public string Descripcion { get; set; }
         public bool Preset { get; set; }

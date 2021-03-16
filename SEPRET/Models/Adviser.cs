@@ -15,9 +15,9 @@ namespace SEPRET.Models
     public partial class Adviser
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Project { get; set; }
-        public Nullable<long> Id_Person { get; set; }
-        public Nullable<long> Id_AdviserType { get; set; }
+        public long Id_Project { get; set; }
+        public long Id_Person { get; set; }
+        public long Id_AdviserType { get; set; }
         public bool Active { get; set; }
         public System.DateTime TimeCreated { get; set; }
         public Nullable<System.DateTime> TimeUpdated { get; set; }

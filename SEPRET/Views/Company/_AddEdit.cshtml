@@ -1,6 +1,6 @@
 ﻿@model SEPRET.Models.Custom.CompanyVM
 
-<div class="wizard-container modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-labelledby="AddEditModal" aria-hidden="true" style="margin-top: -50px">
+<div class="wizard-container modal fade" id="AddEditCompanyModal" tabindex="-1" role="dialog" aria-labelledby="AddEditCompanyModal" aria-hidden="true" style="margin-top: -50px">
     <div class="card card-wizard modal-dialog modal-lg" role="document" data-color="rose" id="wizardProfile">
         <div class="modal-content">
             <form id="Form">
@@ -16,17 +16,17 @@
                 <div class="wizard-navigation">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#image" data-toggle="tab" role="tab">
+                            <a class="nav-link active" href="#BasicInfo" data-toggle="tab" role="tab">
                                 Información básica
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#voucher" data-toggle="tab" role="tab">
+                            <a class="nav-link" href="#CompanyMission" data-toggle="tab" role="tab">
                                 Lema y misión
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#method" data-toggle="tab" role="tab">
+                            <a class="nav-link" href="#CompanyValues" data-toggle="tab" role="tab">
                                 Valores
                             </a>
                         </li>
@@ -35,7 +35,7 @@
                 <div class="card-body">
                     <div class="tab-content">
 
-                        <dliv class="tab-pane active" id="image">
+                        <dliv class="tab-pane active" id="BasicInfo">
                             @Html.HiddenFor(x => x.Id)
 
                             <div class="row justify-content-center">
@@ -111,7 +111,7 @@
 
 
                         </dliv>
-                        <div class="tab-pane" id="voucher">
+                        <div class="tab-pane" id="CompanyMission">
                             <div class="row justify-content-center">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="method">
+                        <div class="tab-pane" id="CompanyValues">
 
                             <div class="bootstrap-tagsinput info-badge">
                                 <div class="form-group">

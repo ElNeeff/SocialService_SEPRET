@@ -5,8 +5,8 @@
 }
 
 <div class="panel-wrap">
-    <div class="panel">
-        <button type="button" class="close toggleSidePanel" aria-label="Close">
+    <div class="panel d-flex flex-row-reverse">
+        <button class="btn btn-primary btn-fab btn-fab btn-round btn-danger float-right toggleSidePanel">
             <span aria-hidden="true">&times;</span>
         </button>
         <div id="Viewer" style="overflow-y: scroll;">
@@ -46,12 +46,12 @@
                     <div class="row">
                         <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" role="tablist" onclick="ProjectList('PendingCC');" style="cursor: pointer;">
+                                <a class="nav-link active" data-toggle="tab" role="tablist" onclick="@(User.IsInRole("Coordinador de carrera") ? "ProjectList('PendingCC');" : "ProjectList('PendingDivision');")" style="cursor: pointer;">
                                     Pendientes de autorización
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectList('AllCC');" style="cursor: pointer;">
+                                <a class="nav-link" data-toggle="tab" role="tablist" onclick="@(User.IsInRole("Coordinador de carrera") ? "ProjectList('AllCC');" : "ProjectList('AllDivision');")" style="cursor: pointer;">
                                     Todos los proyectos
                                 </a>
                             </li>
@@ -66,7 +66,7 @@
     <!-- end col-md-12 -->
 </div>
 
-<nav>
+<nav id="PagesContainer">
     <ul class="pagination justify-content-end" id="Pages"></ul>
 </nav>
 
@@ -75,8 +75,18 @@
     {
         foreach (var item in Model)
         {
-            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
+            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 d-flex" id="@item.Id">
                 <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg')">
+                    @if (item.Carrera.Split(',').Count() > 1)
+                    {
+                        <div class="ribbon ribbon-top-left multi"><span class="multi font-weight-light">interdisciplinaria</span></div>
+                    }
+                    else
+                    {
+                        string Color = item.Carrera.Contains("CIVIL") ? "red" : item.Carrera.Contains("EMPRESARIAL") ? "blue" : item.Carrera.Contains("INDUSTRIAL") ? "orange" : item.Carrera.Contains("SISTEMAS") ? "green" : "pink";
+                        string Career = item.Carrera.Contains("CIVIL") ? "Civil" : item.Carrera.Contains("EMPRESARIAL") ? "Gestión" : item.Carrera.Contains("INDUSTRIAL") ? "Industrial" : item.Carrera.Contains("SISTEMAS") ? "Sistemas" : "Contador";
+                        <div class="ribbon ribbon-top-left @Color"><span class="@Color">@Career</span></div>
+                    }
                     <div class="card-body w-100">
                         @if (item.Empresa != "-")
                         {
@@ -96,7 +106,7 @@
                                 <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa</h6>
                                 break;
                         }
-                        <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                        <h3 class="card-title mb-0 text-warning" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
                         <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
                         <div class="card-description mt-0">
 
@@ -111,13 +121,24 @@
                             <p class="text-rose mb-0 mt-0">
                                 @foreach (var miembro in item.Miembros)
                                 {
-                                    <a class="text-success" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@miembro.Email?subject=Proyecto: @item.Titulo">@miembro.UserFullName (@miembro.Enrollment)</a>
+                                    if (miembro.ProjectOwner)
+                                    {
+                                        <a class="text-warning" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@miembro.Email?subject=Proyecto: @item.Titulo">@(item.Tipo.Contains("Propuesta propia") ? miembro.UserFullName + " (" + miembro.Enrollment + ")" : miembro.UserFullName)</a>
+                                    }
+                                    else
+                                    {
+                                        <br />
+                                        <a class="text-success" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@miembro.Email?subject=Proyecto: @item.Titulo">@miembro.UserFullName (@miembro.Enrollment)</a>
+                                    }
                                 }
                             </p>
 
-                            <a href="javascript:;" class="btn btn-social btn-link btn-info btn-sm mb-2" onclick="ViewPDF(@item.Id, this);" rel="tooltip" data-placement="right" title="Ver anteproyecto">
-                                <i class="material-icons">description</i>
-                            </a>
+                            @if (item.PDFExists)
+                            {
+                                <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ViewPDF(@item.Id, this);">
+                                    <i class="material-icons">description</i> Ver reporte preliminar
+                                </button>
+                            }
 
                             @if ((int)item.Id_ProjectPhase != 5 && item.Id_ProjectPhase != 7)
                             {
@@ -234,10 +255,6 @@
                 var keyword = $(this).val();
                 ProjectList(filter, keyword);
             });
-            $('.filter').click(function () {
-                var filter = $(this).attr('id');
-                Paginate(filter);
-            });
             $("time.timeago").timeago();
             $('[rel="tooltip"]').tooltip();
             Site.initSidePanel();
@@ -343,6 +360,17 @@
         }
 
         ProjectList = (Filter, Keyword, Skip) => {
+            $('#PagesContainer').hide();
+            $('#Container').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+            );
             Paginate(Filter);
             fetch('@Url.Action("ProjectList", "Project")', {
                 method: 'POST',
@@ -352,7 +380,10 @@
                 body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
             })
                 .then(response => response.text())
-                .then(data => $('#Container').html(data))
+                .then(data => {
+                    $('#PagesContainer').show();
+                    $('#Container').html(data)
+                })
                 .catch(error => console.error(error))
         }
     </script>

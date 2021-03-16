@@ -1,0 +1,289 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EvaluacionRP</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="http://fonts.cdnfonts.com/css/soberana-sans" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 14px;
+        }
+
+        .header {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            margin-bottom: 4rem;
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: bolder;
+            font-family: 'Soberana Sans Light', sans-serif;
+        }
+
+            .titulo p {
+                margin: 0;
+                padding: 0;
+            }
+
+        .nombres td {
+            width: 50%;
+        }
+
+        .AsesorExternoContainer {
+            /*font-family: 'Soberana Sans', sans-serif;*/
+        }
+
+        .AsesorExternoTable {
+            border-collapse: collapse;
+            border: 1px solid black;
+            width: 100%;
+        }
+
+            .AsesorExternoTable td {
+                border: 1px solid black;
+            }
+
+        .rotate {
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+            -o-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+            font-weight: bold;
+            font-family: 'Soberana Sans Light', sans-serif;
+            font-size: 12px;
+            text-align: center;
+        }
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+            padding-right: .5rem;
+        }
+
+        .bold {
+            font-weight: bold;
+            font-size: 12px;
+            font-family: 'Soberana Sans Light', sans-serif;
+        }
+
+        .padding {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .p-2 {
+            padding-top: 1rem;
+        }
+
+        .footer {
+            font-family: 'Soberana Sans Light', sans-serif;
+            font-weight: bold;
+            margin-top: 14rem;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <table style="width: 100%;" border="1" cellspacing="0">
+            <tbody>
+                <tr style="height: 2rem;">
+                    <td style="width: 15%; text-align: center;" rowspan="3"><img src="@Server.MapPath("/Assets/img/itmh-logo.png")" width="100" /></td>
+                    <td style="width: 60%;" rowspan="2"><b>Formato de evaluación y seguimiento de residencias profesionales por competencias</b></td>
+                    <td style="width: 25%;"><b>Código: AC-RP-FOR08</b></td>
+                </tr>
+                <tr style="height: 2rem;">
+                    <td style="width: 25%;"><b>Revisión: 2</b></td>
+                </tr>
+                <tr style="height: 2rem;">
+                    <td style="width: 60%;"><b>Referencia a la Norma ISO 9001:2015 8.1, 8.2, 8.2.1, 8.2.2, 8.2.3, 8.2.4, 8.5.1, 8.5.2, 8.6</b></td>
+                    <td style="width: 25%;"><b>Página: 1 de 1</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="titulo">
+        <p>FORMATO DE EVALUACIÓN Y SEGUIMIENTO DE RESIDENCIA PROFESIONAL</p>
+    </div>
+
+    <table class="nombres" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td>Nombre del Residente:</td>
+                <td>Número de control:</td>
+            </tr>
+            <tr>
+                <td colspan="2">Nombre del proyecto:</td>
+            </tr>
+            <tr>
+                <td colspan="2">Programa educativo:</td>
+            </tr>
+            <tr>
+                <td colspan="2">Periodo de realización de la Residencia Profesional:</td>
+            </tr>
+            <tr>
+                <td colspan="2">Calificación Final (promedio de ambas evaluaciones):</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="AsesorExternoContainer">
+        <table class="AsesorExternoTable">
+            <tbody>
+                <tr>
+                    <td colspan="4" class="text-center bold">En qué medida el residente cumple con lo siguiente</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-center bold">Criterios a evaluar</td>
+                    <td class="text-center bold padding">Valor</td>
+                    <td class="text-center bold padding">Evaluacion</td>
+                </tr>
+                <tr>
+                    <td rowspan="12" class="rotate nowrap">Evaluación por el asesor externo</td>
+                    <td>Asiste puntualmente en el horario establecido</td>
+                    <td class="text-center">5</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Trabaja en equipo y se comunica de forma efectiva (oral y escrita)</td>
+                    <td class="text-center">10</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Tiene iniciativa para colaborar</td>
+                    <td class="text-center">5</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Propone mejoras al proyecto</td>
+                    <td class="text-center">10</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Cumple con los objetivos correspondientes al proyecto</td>
+                    <td class="text-center">15</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Es ordenado y cumple satisfactoriamente con las actividades encomendadas en los tiempos establecidos del cronograma</td>
+                    <td class="text-center">15</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Demuestra liderazgo en su actuar</td>
+                    <td class="text-center">10</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Demuestra conocimiento en el área de su especialidad</td>
+                    <td class="text-center">20</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Demuestra un comportamiento ético (es disciplinado, acata órdenes, respeta a sus compañeros de trabajo, entre otros)</td>
+                    <td class="text-center">10</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="bold text-right">Calificacion total</td>
+                    <td class="text-center">100</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <p><b>Observaciones: </b><u></u></p>
+        <table class="AsesorExternoTable">
+            <tbody>
+                <tr>
+                    <td class="text-center"><p></p>Nombre y firma del asesor externo</td>
+                    <td class="text-center" style="padding-top:2.99rem;">Sello de la empresa, organismo o dependencia</td>
+                    <td class="text-center"><p></p>Fecha de evauación</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <table class="AsesorExternoTable">
+            <tbody>
+                <tr>
+                    <td colspan="4" class="text-center bold">En qué medida el residente cumple con lo siguiente</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-center bold">Criterios a evaluar</td>
+                    <td class="text-center bold padding">Valor</td>
+                    <td class="text-center bold padding">Evaluacion</td>
+                </tr>
+                <tr>
+                    <td rowspan="12" class="rotate">Evaluación por el asesor interno</td>
+                    <td>Asiste puntualmente a las reuniones de asesoría</td>
+                    <td class="text-center">10</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Demuestra conocimiento en el área de su especialidad</td>
+                    <td class="text-center">20</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Trabaja en equipo y se comunica de forma efectiva (oral y escrita)</td>
+                    <td class="text-center">15</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Es dedicado y proactivo en las actividades encomendadas</td>
+                    <td class="text-center">20</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Es ordenado y cumple satisfactoriamente con las actividades encomendadas en los tiempos establecidos del cronograma</td>
+                    <td class="text-center">20</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Propone mejoras al proyecto</td>
+                    <td class="text-center">15</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="bold text-right">Calificacion total</td>
+                    <td class="text-center">100</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <p><b>Observaciones: </b><u></u></p>
+        <table class="AsesorExternoTable">
+            <tbody>
+                <tr>
+                    <td class="text-center"><p></p>Nombre y firma del asesor interno</td>
+                    <td class="text-center" style="padding-top:2.99rem;">Sello de la empresa, organismo o dependencia</td>
+                    <td class="text-center"><p></p>Fecha de evauación</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="footer">
+        <label>AC-RP-FOR08 Toda copia en PAPEL es un “Documento No Controlado” a excepción del original.</label>
+        <label style="float: right;">Rev. 2</label>
+    </footer>
+</body>
+</html>

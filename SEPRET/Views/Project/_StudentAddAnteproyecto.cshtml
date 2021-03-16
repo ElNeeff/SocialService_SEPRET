@@ -50,10 +50,10 @@
             .then(({ success, message }) => {
                 if (success) {
                     ProjectList('MyProject');
-                    $('#Modal').modal('hide');
+                    $('#ModalAddPDF').modal('hide');
                     Site.OkNotification(message);
                 } else {
-                    $('#Modal').modal('hide');
+                    $('#ModalAddPDF').modal('hide');
                     Site.ErrorNotification(message);
                 }
                 jQuery(button).attr('disabled', false);

@@ -6,14 +6,14 @@
 
 <div class="panel-wrap">
     <div class="panel">
-        <button type="button" class="close toggleSidePanel row" aria-label="Close">
+        <button class="btn btn-primary btn-fab btn-fab btn-round btn-danger float-right toggleSidePanel">
             <span aria-hidden="true">&times;</span>
         </button>
         <div id="Comments" style="display:none;">
             <form class="d-flex mb-0 flex-column" id="FormReview">
                 @Html.Hidden("Id")
                 <div class="form-group bmd-form-group is-filled w-100">
-                    <label class="bmd-label-floating">Comentarios de revisión</label>
+                    <label class="bmd-label-floating text-success">Escribe aquí tus observaciones de revisión (de preferencia todas en un solo mensaje)</label>
                     <textarea class="form-control" cols="20" id="Review" name="Review" required="" rows="3"></textarea>
                 </div>
                 <div class="align-self-center">
@@ -84,7 +84,7 @@
     <!-- end col-md-12 -->
 </div>
 
-<nav>
+<nav id="PagesContainer">
     <ul class="pagination justify-content-end" id="Pages"></ul>
 </nav>
 
@@ -95,6 +95,16 @@
         {
             <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
                 <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg')">
+                    @if (item.Carrera.Split(',').Count() > 1)
+                    {
+                        <div class="ribbon ribbon-top-left multi"><span class="multi font-weight-light">interdisciplinaria</span></div>
+                    }
+                    else
+                    {
+                        string Color = item.Carrera.Contains("CIVIL") ? "red" : item.Carrera.Contains("EMPRESARIAL") ? "blue" : item.Carrera.Contains("INDUSTRIAL") ? "orange" : item.Carrera.Contains("SISTEMAS") ? "green" : "pink";
+                        string Career = item.Carrera.Contains("CIVIL") ? "Civil" : item.Carrera.Contains("EMPRESARIAL") ? "Gestión" : item.Carrera.Contains("INDUSTRIAL") ? "Industrial" : item.Carrera.Contains("SISTEMAS") ? "Sistemas" : "Contador";
+                        <div class="ribbon ribbon-top-left @Color"><span class="@Color">@Career</span></div>
+                    }
                     <div class="card-body">
                         @if (item.Empresa != "-")
                         {
@@ -115,7 +125,7 @@
                                 <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa</h6>
                                 break;
                         }
-                        <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                        <h3 class="card-title text-warning mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
                         <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
                         <div class="card-description mt-0">
 
@@ -139,9 +149,12 @@
                                 }
                             </p>
 
-                            <a href="javascript:;" class="btn btn-social btn-link btn-info btn-sm mb-2" onclick="ReviewPDF(@item.Id, this);" rel="tooltip" data-placement="right" title="Ver anteproyecto">
-                                <i class="material-icons">description</i>
-                            </a>
+                            @if (item.PDFExists)
+                            {
+                                <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ReviewPDF(@item.Id, this);">
+                                    <i class="material-icons">description</i> Revisar reporte preliminar
+                                </button>
+                            }
                             @if (item.Id_ProjectPhase == 10)
                             {
                                 <br />
@@ -211,10 +224,6 @@
                 var keyword = $(this).val();
                 ProjectList(filter, keyword);
             });
-            $('.filter').click(function () {
-                var filter = $(this).attr('id');
-                Paginate(filter);
-            });
             $("time.timeago").timeago();
             $('[rel="tooltip"]').tooltip();
             Site.initSidePanel();
@@ -248,7 +257,8 @@
                     if (response.ok) {
                         $('#Review').val('');
                         $('#response').html('El comentario se ha enviado exitosamente').addClass('text-success').show();
-                        jQuery(button).attr('disabled', false);
+                        jQuery(button).attr('disabled', true);
+                        ProjectList('Pending');
                     } else {
                         $('#response').html('Ocurrió un error al procesar la solicitud').addClass('text-danger').show();
                     }
@@ -267,7 +277,6 @@
                 .then(response => response.json())
                 .then(({ success, base64 }) => {
                     if (success) {
-                        //y = '<div class="form-group bmd-form-group is-filled w-100"> <label class="bmd-label-floating">Comentarios de revisión</label> <textarea class="form-control" cols="20" id="Review" name="Comentarios" required="" rows="3"></textarea> </div> <div class="align-self-center"> <button onclick="SendReview(this);" class="btn btn-primary btn-round btn-sm"><i class="material-icons">send</i> Enviar </button> </div>';
                         //Site.OpenVisor(base64);
                         $('#Viewer').children().remove();
                         $('#Comments').show();
@@ -410,6 +419,17 @@
         }
 
         ProjectList = (Filter, Keyword, Skip) => {
+            $('#PagesContainer').hide();
+            $('#Container').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+            );
             Paginate(Filter);
             fetch('@Url.Action("ProjectListTeacher", "Project")', {
                 method: 'POST',
@@ -419,7 +439,10 @@
                 body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
             })
                 .then(response => response.text())
-                .then(data => $('#Container').html(data))
+                .then(data => {
+                    $('#PagesContainer').show();
+                    $('#Container').html(data)
+                })
                 .catch(error => console.error(error))
         }
     </script>

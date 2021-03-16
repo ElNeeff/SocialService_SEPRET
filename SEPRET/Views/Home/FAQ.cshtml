@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "FAQ";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<div id="accordion" role="tablist">
+    <div class="card card-collapse">
+        <div class="card-header" role="tab" id="headingOne">
+            <h5 class="mb-0">
+                <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <span class="material-icons"> question_answer</span>No puedo ingresar a la platforma.
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+            </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                Normalmente este error, se debe a que, no se esta ingresando de manera correcta los datos de acceso como son correo y contraseña.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card card-collapse">
+        <div class="card-header" role="tab" id="headingTwo">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <span class="material-icons"> question_answer</span>¿Como recupero mi usuario y contraseña?
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                Para estos casos, se creo un apartado para reestablecer tu contraseña, en este al terminar el proceso de reestablecimiento te indica a que correo se te enviará el reestablecimiento de contraseña.
+                Enlace para reestablecimiento de contraseña: <a style="color: seagreen" href="http://matehuala.tecnm.mx:800/Home/PaswordRecovery"> Contraseña olvidada</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card card-collapse">
+        <div class="card-header" role="tab" id="headingThree">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <span class="material-icons"> question_answer</span>¿Cual es el proceso para darme de alta en la plataforma?
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+            </h5>
+        </div>
+        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+                Tendras que ingresar al apartado de <a class="text-success" href="@Url.Action("SignUp","Home")"> Crea una cuenta. </a> Aqui deberas seguir los pasos que son,
+                ingresar los datos que se te van solicitando, de preferencia usar tu correo institucional.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card card-collapse">
+        <div class="card-header" role="tab" id="headingFour">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    <span class="material-icons"> question_answer</span>¿Cual es mi correo institucional?
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+            </h5>
+        </div>
+        <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" data-parent="#accordion">
+            <div class="card-body">
+                El correo institucional se compone de ser tu numero de control, ejemplo: L20660000@matehuala.tecnm.mx
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card card-collapse">
+        <div class="card-header" role="tab" id="headingFive">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    <span class="material-icons"> question_answer</span> No tengo acceso a mi correo institucional. Olvide mi contraseña.
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+            </h5>
+        </div>
+        <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive" data-parent="#accordion">
+            <div class="card-body">
+                Para este caso tendras que ingresar a la plataforma o pagina de <a style="color: seagreen" href="https://outlook.live.com/"> outlook.live.com</a> Deberas ingresar al apartado
+                de "He olvidado mi contraseña". Y seguir los pasos que se te van indicando.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card card-collapse">
+        <div class="card-header" role="tab" id="headingSix">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                    <span class="material-icons"> question_answer</span> En mi correo institucional no me permite reestablecer mi contraseña. No tengo el numero de telefono que di de alta. No tengo acceso al correo de autentificación.
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+            </h5>
+        </div>
+        <div id="collapseSix" class="collapse" role="tabpanel" aria-labelledby="headingSix" data-parent="#accordion">
+            <div class="card-body">
+                Si, ninguna de estas opciones te funciono, podras mandarnos un correo a <a style="color: seagreen" href="mailto:comentarios@matehuala.tecnm.mx?Subject=Cuenta%20de%20correo%20institucioanl">comentarios@matehuala.tecnm.mx</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

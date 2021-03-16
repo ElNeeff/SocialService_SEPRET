@@ -489,7 +489,7 @@
                     file: archivo64
                 },
                 width: '100%',
-                height: '96.5%'
+                height: '99%'
                 //render: function (e) {
                 //    if (firstRender) {
                 //        e.sender.toolbar.zoom.combobox.value("fitToWidth");

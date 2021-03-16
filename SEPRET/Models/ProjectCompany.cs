@@ -15,8 +15,8 @@ namespace SEPRET.Models
     public partial class ProjectCompany
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Project { get; set; }
-        public Nullable<long> Id_Company { get; set; }
+        public long Id_Project { get; set; }
+        public long Id_Company { get; set; }
         public string Nombre { get; set; }
         public bool Active { get; set; }
         public System.DateTime TimeCreated { get; set; }

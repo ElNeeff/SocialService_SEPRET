@@ -17,8 +17,6 @@
             </div>
             <h4 id="title" class="card-title">Bitácora de pagos | <small class="muted text-primary">Total de pagos: @Model.Total</small></h4>
         </div>
-
-
         <div class="col-xl-8 col-sm-12">
             <div class="row d-flex justify-content-end">
                 @Html.DropDownListFor(x => x.SelectedPayments, Model.Payments as SelectList, new { @id = "SelectedPayments", @onChange = "setFilter(this)", @class = "selectpicker col-xl-8 col-lg-8 col-md-8 col-sm-12 mt-2", @data_size = "7", @data_style = "btn btn-sm btn-outline-primary btn-round", @title = "Filtrar por tipo de pago", @multiple = "", @data_live_search = "true", @data_actions_box = "true" })
@@ -186,7 +184,7 @@
             const AcceptedGeneral = @Html.Raw(Json.Encode(Model.AcceptedGeneral));
             const InvoicedGeneral = @Html.Raw(Json.Encode(Model.InvoicedGeneral));
             const Progress = @Html.Raw(Model.Progress);
-
+          
             generalChartInit(RejectedGeneral.Phase, RejectedGeneral.Data, PendingGeneral.Phase, PendingGeneral.Data, AcceptedGeneral.Phase, AcceptedGeneral.Data, InvoicedGeneral.Phase, InvoicedGeneral.Data);
             progressChartInit(Progress);
 

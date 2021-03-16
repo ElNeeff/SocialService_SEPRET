@@ -3,6 +3,17 @@
     ViewBag.Title = "View";
 }
 
+<div class="panel-wrap">
+    <div class="panel d-flex flex-row-reverse">
+        <button class="btn btn-primary btn-fab btn-fab btn-round btn-danger float-right toggleSidePanel">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div id="Viewer" style="overflow-y: scroll; width: -webkit-fill-available;">
+
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -42,7 +53,7 @@
                     <div class="row">
                         <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link filter active" data-toggle="tab" role="tablist" id="Pending" onclick="ProjectList('Pending');" style="cursor: pointer;">
+                                <a class="nav-link filter active" data-toggle="tab" role="tablist" onclick="ProjectList('Pending');" style="cursor: pointer;">
                                     En proceso de evaluación
                                 </a>
                             </li>
@@ -67,8 +78,13 @@
                                     </a>
                                 </li>*@
                             <li class="nav-item">
-                                <a class="nav-link filter" data-toggle="tab" role="tablist" id="AcceptedA" onclick="ProjectList('AcceptedA');" style="cursor: pointer;">
+                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('AcceptedA');" style="cursor: pointer;">
                                     Públicados en banco de proyectos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('AllCC');" style="cursor: pointer;">
+                                    Todos los proyectos
                                 </a>
                             </li>
                         </ul>
@@ -82,7 +98,7 @@
     <!-- end col-md-12 -->
 </div>
 
-<nav>
+<nav id="PagesContainer">
     <ul class="pagination justify-content-end" id="Pages"></ul>
 </nav>
 
@@ -94,6 +110,16 @@
         {
             <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
                 <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg')">
+                    @if (item.Carrera.Split(',').Count() > 1)
+                    {
+                        <div class="ribbon ribbon-top-left multi"><span class="multi font-weight-light">interdisciplinaria</span></div>
+                    }
+                    else
+                    {
+                        string Color = item.Carrera.Contains("CIVIL") ? "red" : item.Carrera.Contains("EMPRESARIAL") ? "blue" : item.Carrera.Contains("INDUSTRIAL") ? "orange" : item.Carrera.Contains("SISTEMAS") ? "green" : "pink";
+                        string Career = item.Carrera.Contains("CIVIL") ? "Civil" : item.Carrera.Contains("EMPRESARIAL") ? "Gestión" : item.Carrera.Contains("INDUSTRIAL") ? "Industrial" : item.Carrera.Contains("SISTEMAS") ? "Sistemas" : "Contador";
+                        <div class="ribbon ribbon-top-left @Color"><span class="@Color">@Career</span></div>
+                    }
                     <div class="card-body w-100">
                         @if (item.Empresa != "-")
                         {
@@ -114,7 +140,7 @@
                                 <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa</h6>
                                 break;
                         }
-                        <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                        <h3 class="card-title mb-0 text-warning" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
                         <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
                         <div class="card-description mt-0">
 
@@ -122,7 +148,7 @@
                                 @item.Tipo
                             </p>
 
-                            <p class="text-rose mt-0">
+                            <p class="text-rose mt-0 mb-0">
 
                                 @foreach (var miembro in item.Miembros)
                                 {
@@ -137,321 +163,498 @@
                                     }
                                 }
                             </p>
-                            @if ((int)item.Id_ProjectPhase > 5)
+
+                            @if (item.PDFExists)
                             {
-                                <a href="javascript:;" class="btn btn-social btn-link btn-info btn-sm mb-2" onclick="ViewPDF(@item.Id, this);" rel="tooltip" data-placement="right" title="Ver anteproyecto">
-                                    <i class="material-icons">description</i>
-                                </a>
+                                <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ViewPDF(@item.Id, this);">
+                                    <i class="material-icons">description</i> Ver reporte preliminar
+                                </button>
                             }
 
-                            @switch ((int)item.Id_ProjectPhase)
+                            @if (item.Id_ProjectType == 1)
                             {
-                                case 1:
-                                    <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Rechazado por jefe departamental <br> <em> Motivo de rechazo: </em> <b>@item.LastComment</b>">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
-                                    </div>
-                                    switch (rol)
-                                    {
-                                        case "docente":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <br />
-                                            <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round btn-wd" onclick="AddEdit(@item.Id, false);" rel="tooltip" data-placement="top" title="Editar">
-                                                <i class="material-icons">mode_edit</i>
-                                            </a>
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
-                                case 2:
-                                    <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
-                                    </div>
-                                    switch (rol)
-                                    {
-                                        case "jefe departamental":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <br />
-                                            <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="top" title="Aceptar">
-                                                <i class="material-icons">assignment_turned_in</i>
-                                            </a>
-                                            <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="top" title="Rechazar">
-                                                <i class="material-icons">assignment_return</i>
-                                            </a>
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
-                                case 3:
-                                    <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
-                                    </div>
-                                    switch (rol)
-                                    {
-                                        case "jefe academia":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <br />
-                                            <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="top" title="Aceptar">
-                                                <i class="material-icons">assignment_turned_in</i>
-                                            </a>
-                                            <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="top" title="Rechazar">
-                                                <i class="material-icons">assignment_return</i>
-                                            </a>
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
-                                case 4:
-                                    <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Rechazado por academia <br> <em> Motivo de rechazo: </em> <b>@item.LastComment</b>">Etapa 2</div>
-                                    </div>
-                                    switch (rol)
-                                    {
-                                        case "docente":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <br />
-                                            <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round btn-wd" onclick="AddEdit(@item.Id, false);" rel="tooltip" data-placement="top" title="Editar">
-                                                <i class="material-icons">mode_edit</i>
-                                            </a>
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
-                                case 5:
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                    </div>
-                                    break;
-                                case 6:
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa<br><em>Motivo:</em><br><b>@item.CommentCC</b>">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                    </div>
-                                    break;
-                                case 7:
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 1</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                        <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                    </div>
-                                    switch (rol)
-                                    {
-                                        case "coordinador de carrera":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <br />
-                                            <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Aceptar">
-                                                <i class="material-icons">assignment_turned_in</i>
-                                            </a>
-                                            <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="bottom" title="Rechazar">
-                                                <i class="material-icons">assignment_return</i>
-                                            </a>
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
-                                case 8:
-                                    switch (rol)
-                                    {
-                                        case "jefe departamental":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <p>
-                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="AddEditAdviser(@item.Id);" rel="tooltip" data-placement="bottom" title="Asignar revisor">
-                                                    <i class="material-icons">person_add</i>
+                                switch ((int)item.Id_ProjectPhase)
+                                {
+                                    case 3:
+                                        switch (rol)
+                                        {
+                                            case "jefe academia":
+                                            case "Subdirección académica":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Aceptar">
+                                                    <i class="material-icons">assignment_turned_in</i>
                                                 </a>
-                                            </p>
-                                            break;
-                                        default:
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                            </div>
-                                            break;
-                                    }
-                                    break;
-                                case 9:
-                                    switch (rol)
-                                    {
-                                        case "docente":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <p class="text-rose font-weight-bold mb-0 mt-0">
-                                                En espera de correcciones por parte del alumno
-                                            </p>
-                                            break;
-                                        default:
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa por @item.Revisores">Etapa 2</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                            </div>
-                                            break;
-                                    }
-                                    break;
-                                case 10:
-                                    switch (rol)
-                                    {
-                                        case "docente":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <br />
-                                            <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Dar visto bueno">
-                                                <i class="material-icons">assignment_turned_in</i>
-                                            </a>
-                                            break;
-                                        default:
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa por @foreach (var revisor in item.Revisores)
-                                            {
-                                                @revisor.UserFullName
-                                            }
-                                            ">Etapa 3</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                            </div>
-                                            break;
-                                    }
-                                    break;
-                                case 11:
-                                    switch (rol)
-                                    {
-                                        case "jefe departamental":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <p>
-                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="AddEditAdviser(@item.Id);" rel="tooltip" data-placement="right" title="Asignar asesor interno">
-                                                    <i class="material-icons">person_add</i>
+                                                <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="bottom" title="Rechazar">
+                                                    <i class="material-icons">assignment_return</i>
                                                 </a>
-                                            </p>
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
-                                            {
-                                                @revisor.UserFullName
-                                            }
-                                            ">Etapa 3</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 4</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                            </div>
-                                            break;
-                                        default:
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 4</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                            </div>
-                                            break;
-                                    }
-                                    break;
-                                case 12:
-                                    switch (rol)
-                                    {
-                                        case "jefe departamental":
-                                        case "super administrador":
-                                        case "administrador":
-                                            <p>
-                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="AddEditAdviser(@item.Id);" rel="tooltip" data-placement="right" title="Asignar/editar asesor interno">
-                                                    <i class="material-icons">person_add</i>
+                                                break;
+                                            default:
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de reporte preliminar">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                                </div>
+                                                break;
+                                        }
+                                        break;
+                                    case 4:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="@item.Etapa:<br><b>@item.LastComment</b>">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de reporte preliminar">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    case 5:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de reporte preliminar">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    case 6:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="@item.Etapa:<br><b>@item.CommentCC</b>">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de anteproyecto">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    case 7:
+
+                                        switch (rol)
+                                        {
+                                            case "Coordinador de carrera":
+                                            case "División de estudios profesionales":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Aceptar">
+                                                    <i class="material-icons">assignment_turned_in</i>
                                                 </a>
-                                            </p>
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
-                                            {
-                                                @revisor.UserFullName
-                                            }
-                                            ">Etapa 3</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En asesoría por @foreach (var revisor in item.Asesores)
+                                                <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="bottom" title="Rechazar">
+                                                    <i class="material-icons">assignment_return</i>
+                                                </a>
+                                                break;
+                                            default:
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de reporte preliminar">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                                </div>
+                                                break;
+                                        }
+                                        break;
+                                    case 8:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En revisión de anteproyecto">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    case 9:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="@item.Etapa<br><em></em><b>@item.CommentRevisor</b>">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    case 10:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="@item.Etapa por @foreach (var revisor in item.Revisores)
                                             {
                                                 @revisor.UserFullName
                                             }
                                             ">Etapa 4</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 5</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                            </div>
-                                            break;
-                                        default:
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
-                                            {
-                                                @revisor.UserFullName
-                                            }
-                                            ">Etapa 3</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En asesoría por @foreach (var revisor in item.Asesores)
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En espera de asignación de asesor interno">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    case 11:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
                                             {
                                                 @revisor.UserFullName
                                             }
                                             ">Etapa 4</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 5</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
-                                            </div>
-                                            break;
-                                    }
-                                    break;
-                                default:
-                                    break;
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de documentos">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    case 12:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Envio de reporte preliminar">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Revisión por academia">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="En asignación de revisor">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" data-html="true" title="En asesoría por @foreach (var revisor in item.Asesores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 6</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
+                                        </div>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch ((int)item.Id_ProjectPhase)
+                                {
+                                    case 1:
+                                        <div class="progress" style="height: 15px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Rechazado por jefe departamental <br> <em> Motivo de rechazo: </em> <b>@item.LastComment</b>">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
+                                        </div>
+                                        switch (rol)
+                                        {
+                                            case "docente":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round btn-wd" onclick="AddEdit(@item.Id, false);" rel="tooltip" data-placement="top" title="Editar">
+                                                    <i class="material-icons">mode_edit</i>
+                                                </a>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    case 2:
+                                        <div class="progress" style="height: 15px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
+                                        </div>
+                                        switch (rol)
+                                        {
+                                            case "jefe departamental":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="left" title="Aceptar">
+                                                    <i class="material-icons">assignment_turned_in</i>
+                                                </a>
+                                                <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="top" title="Rechazar">
+                                                    <i class="material-icons">assignment_return</i>
+                                                </a>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    case 3:
+                                        <div class="progress" style="height: 15px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
+                                        </div>
+                                        switch (rol)
+                                        {
+                                            case "jefe academia":
+                                            case "Subdirección académica":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="left" title="Aceptar">
+                                                    <i class="material-icons">assignment_turned_in</i>
+                                                </a>
+                                                <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="top" title="Rechazar">
+                                                    <i class="material-icons">assignment_return</i>
+                                                </a>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    case 4:
+                                        <div class="progress" style="height: 15px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Rechazado por academia <br> <em> Motivo de rechazo: </em> <b>@item.LastComment</b>">Etapa 2</div>
+                                        </div>
+                                        switch (rol)
+                                        {
+                                            case "docente":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round btn-wd" onclick="AddEdit(@item.Id, false);" rel="tooltip" data-placement="top" title="Editar">
+                                                    <i class="material-icons">mode_edit</i>
+                                                </a>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    case 5:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                        </div>
+                                        break;
+                                    case 6:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa<br><em>Motivo:</em><br><b>@item.CommentCC</b>">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                        </div>
+                                        break;
+                                    case 7:
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 1</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                            <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                        </div>
+                                        switch (rol)
+                                        {
+                                            case "Coordinador de carrera":
+                                            case "División de estudios profesionales":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Aceptar">
+                                                    <i class="material-icons">assignment_turned_in</i>
+                                                </a>
+                                                <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="bottom" title="Rechazar">
+                                                    <i class="material-icons">assignment_return</i>
+                                                </a>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    case 8:
+                                        switch (rol)
+                                        {
+                                            case "jefe departamental":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <p>
+                                                    <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="AddEditAdviser(@item.Id);" rel="tooltip" data-placement="bottom" title="Asignar revisor">
+                                                        <i class="material-icons">person_add</i>
+                                                    </a>
+                                                </p>
+                                                break;
+                                            default:
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                                </div>
+                                                break;
+                                        }
+                                        break;
+                                    case 9:
+                                        switch (rol)
+                                        {
+                                            case "docente":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <p class="text-rose font-weight-bold mb-0 mt-0">
+                                                    En espera de correcciones por parte del alumno
+                                                </p>
+                                                break;
+                                            default:
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de envio de anteproyecto">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa por @item.Revisores">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                                </div>
+                                                break;
+                                        }
+                                        break;
+                                    case 10:
+                                        switch (rol)
+                                        {
+                                            case "docente":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <br />
+                                                <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Dar visto bueno">
+                                                    <i class="material-icons">assignment_turned_in</i>
+                                                </a>
+                                                break;
+                                            default:
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="@item.Etapa por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En espera de asignación de asesor interno">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                                </div>
+                                                break;
+                                        }
+                                        break;
+                                    case 11:
+                                        switch (rol)
+                                        {
+                                            case "jefe departamental":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <p>
+                                                    <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="AddEditAdviser(@item.Id);" rel="tooltip" data-placement="right" title="Asignar asesor interno">
+                                                        <i class="material-icons">person_add</i>
+                                                    </a>
+                                                </p>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                                </div>
+                                                break;
+                                            default:
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En revisión de anteproyecto">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de documentos">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                                </div>
+                                                break;
+                                        }
+                                        break;
+                                    case 12:
+                                        switch (rol)
+                                        {
+                                            case "jefe departamental":
+                                            case "super administrador":
+                                            case "administrador":
+                                                <p>
+                                                    <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="AddEditAdviser(@item.Id);" rel="tooltip" data-placement="right" title="Asignar/editar asesor interno">
+                                                        <i class="material-icons">person_add</i>
+                                                    </a>
+                                                </p>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En asesoría por @foreach (var revisor in item.Asesores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                                </div>
+                                                break;
+                                            default:
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Envio de anteproyecto">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="En asignación de revisor">Etapa 2</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En revisión por @foreach (var revisor in item.Revisores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 3</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" data-html="true" title="En asesoría por @foreach (var revisor in item.Asesores)
+                                            {
+                                                @revisor.UserFullName
+                                            }
+                                            ">Etapa 4</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="@item.Etapa">Etapa 5</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="bottom" title="Informe técnico">Etapa 6</div>
+                                                </div>
+                                                break;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                if ((rol == "docente" || rol.Contains("administrador")) && item.Active && ((long)item.Id_ProjectPhase == 1 || (long)item.Id_ProjectPhase == 2 || (long)item.Id_ProjectPhase == 4 || (long)item.Id_ProjectPhase == 5))
+                                {
+                                    @*<a href="javascript:;" class="btn btn-primary btn-just-icon btn-fill btn-round" onclick="ManageMembers(@item.Id);" rel="tooltip" data-placement="top" title="Gestionar residentes">
+                                            <i class="material-icons">groups</i>
+                                        </a>*@
+                                    <a href="javascript:;" class="btn btn-warning btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Unpublish');" rel="tooltip" data-placement="top" title="Dar de baja">
+                                        <i class="material-icons">unpublished</i>
+                                    </a>
+                                }
+
                             }
 
-                            @if ((rol == "docente" || rol.Contains("administrador")) && item.Active && ((long)item.Id_ProjectPhase == 1 || (long)item.Id_ProjectPhase == 2 || (long)item.Id_ProjectPhase == 4 || (long)item.Id_ProjectPhase == 5))
-                            {
-                                @*<a href="javascript:;" class="btn btn-primary btn-just-icon btn-fill btn-round" onclick="ManageMembers(@item.Id);" rel="tooltip" data-placement="top" title="Gestionar residentes">
-                                        <i class="material-icons">groups</i>
-                                    </a>*@
-                                <a href="javascript:;" class="btn btn-warning btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Unpublish');" rel="tooltip" data-placement="top" title="Dar de baja">
-                                    <i class="material-icons">unpublished</i>
-                                </a>
-                            }
                         </div>
                     </div>
                 </div>
             </div>
+            <script>
+                document.getElementById('Pages').style.display = 'none';
+            </script>
         }
-        <script>
-            $('#Pages').show();
-        </script>
     }
     else
     {
@@ -472,6 +675,10 @@
 
 </div>
 
+<div id="ModalCompanyContainer" style="margin-top: -50px">
+
+</div>
+
 
 <div class="modal fade" id="CommentModal" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -488,6 +695,12 @@
 </div>
 
 @section scripts{
+    <script src="~/Scripts/kendo-pdf.js"></script>
+    <script>
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
+    </script>
+    <script src="~/Scripts/kendo.all.min.js"></script>
+
     <script>
         $(() => {
             Paginate('Pending');
@@ -496,12 +709,9 @@
                 var keyword = $(this).val();
                 ProjectList(filter, keyword);
             });
-            $('.filter').click(function () {
-                var filter = $(this).attr('id');
-                Paginate(filter);
-            });
             $("time.timeago").timeago();
             $('[rel="tooltip"]').tooltip();
+            Site.initSidePanel();
         })
 
         ViewPDF = Id => {
@@ -523,6 +733,39 @@
                     }
                 })
                 .catch(error => Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor'))
+        }
+
+        AddCompany = (Id = 0, ReadOnly = false) => {
+            fetch('@Url.Action("AddEdit", "Company")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id, ReadOnly: ReadOnly})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#AddEditModal').modal('hide');
+                    $('#ModalCompanyContainer').html(data);
+
+                    $('.moving-tab').hide();
+                    $('#AddEditCompanyModal').on('shown.bs.modal', function () {
+                        Site.initMaterialWizard();
+                        $('.moving-tab').show();
+                        $('.btn-next').removeClass('disabled');
+                    });
+                    if (ReadOnly) {
+                        $('form :input').prop("disabled", true);
+                    }
+                    $('#AddEditCompanyModal').modal('show');
+                    $('#AddEditCompanyModal').on('hidden.bs.modal', function () {
+                        $('#AddEditModal').modal('show');
+                        //Site.initMaterialWizard();
+                        //$('.moving-tab').show();
+                        //$('.btn-next').removeClass('disabled');
+                    });
+                })
+                .catch(error => console.error(error))
         }
 
         ManageMembers = Id => {
@@ -569,9 +812,9 @@
                 .then(respones => respones.json())
                 .then(success => {
                     if (success) {
-                        ProjectList('Pending');
                         $('#CommentModal').modal('hide');
-                        //$('#' + Id + ', div.tooltip').hide('slow', () => { $('#' + Id + ', div.tooltip').remove(); });
+                        $('#' + Id + ', div.tooltip').hide('slow', () => { $('#' + Id + ', div.tooltip').remove(); });
+                        ProjectList('Pending');
                         Site.OkNotification('La acción se procesó correctamente');
                     } else {
                         Site.ErrorNotification();
@@ -683,6 +926,17 @@
         }
 
         ProjectList = (Filter, Keyword, Skip) => {
+            $('#PagesContainer').hide();
+            $('#Container').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+            );
             Paginate(Filter);
             fetch('@Url.Action("ProjectList", "Project")', {
                 method: 'POST',
@@ -692,7 +946,10 @@
                 body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
             })
                 .then(response => response.text())
-                .then(data => $('#Container').html(data))
+                .then(data => {
+                    $('#PagesContainer').show();
+                    $('#Container').html(data)
+                })
                 .catch(error => console.error(error))
         }
     </script>

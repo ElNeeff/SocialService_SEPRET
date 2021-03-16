@@ -15,7 +15,7 @@ namespace SEPRET.Models
     public partial class Agreement
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Company { get; set; }
+        public long Id_Company { get; set; }
         public System.DateTime Inicio { get; set; }
         public System.DateTime Fin { get; set; }
         public bool Active { get; set; }

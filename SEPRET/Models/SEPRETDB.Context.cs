@@ -45,6 +45,7 @@ namespace SEPRET.Models
         public virtual DbSet<CommentType> CommentTypes { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Dictum> Dicta { get; set; }
+        public virtual DbSet<FileDictum> FileDictums { get; set; }
         public virtual DbSet<FileType> FileTypes { get; set; }
         public virtual DbSet<Kind> Kinds { get; set; }
         public virtual DbSet<Nature> Natures { get; set; }

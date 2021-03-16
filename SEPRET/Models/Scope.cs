@@ -15,7 +15,7 @@ namespace SEPRET.Models
     public partial class Scope
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Unit { get; set; }
+        public long Id_Unit { get; set; }
         public string Indicador { get; set; }
         public int Valor { get; set; }
         public bool Active { get; set; }

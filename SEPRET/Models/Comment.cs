@@ -15,9 +15,9 @@ namespace SEPRET.Models
     public partial class Comment
     {
         public long Id { get; set; }
-        public Nullable<long> Id_Project { get; set; }
-        public Nullable<long> Id_CommentType { get; set; }
-        public Nullable<long> Id_Person { get; set; }
+        public long Id_Project { get; set; }
+        public long Id_CommentType { get; set; }
+        public long Id_Person { get; set; }
         public string Mensaje { get; set; }
         public bool Active { get; set; }
         public System.DateTime TimeCreated { get; set; }

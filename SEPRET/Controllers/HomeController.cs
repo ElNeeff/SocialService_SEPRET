@@ -40,10 +40,17 @@ namespace SEPRET.Controllers
             return View();
         }
 
+        public ActionResult FAQ()
+        {
+            ViewBag.currentView = "FAQ";
+            return View();
+        }
+
         public ActionResult PaswordRecovery()
         {
             return View();
         }
+        
 
         public JsonResult sybase()
         {
@@ -89,9 +96,10 @@ namespace SEPRET.Controllers
         public JsonResult PaswordRecovery(string Enrollment)
         {
             string resetCode = Guid.NewGuid().ToString();
-            var verifyUrl = "/Home/ResetPassword/" + resetCode;
+            var verifyUrl = "Home/ResetPassword/" + resetCode;
             //var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
-            var link = string.Concat("http://matehuala.tecnm.mx:800/Home/ResetPassword/", resetCode);
+            //var link = string.Concat("http://matehuala.tecnm.mx:800/Home/ResetPassword/", resetCode);
+            var link = string.Concat(new UriBuilder(Request.Url.Scheme, Request.Url.Host), verifyUrl);
             string Message = string.Empty;
 
             using (SEPRETEntities DBC = new SEPRETEntities())
@@ -413,17 +421,21 @@ namespace SEPRET.Controllers
             {
                 return RedirectToAction("Administrative", "Project");
             }
-            else if (roles.Contains("Jefe academia"))
+            else if (roles.Contains("Jefe academia") || roles.Contains("Subdirección académica"))
             {
                 return RedirectToAction("Index", "Project");
             }
-            else if (roles.Contains("Coordinador de carrera"))
+            else if (roles.Contains("Coordinador de carrera") || roles.Contains("División de estudios profesionales"))
             {
                 return RedirectToAction("Administrative", "Project");
             }
             else if (roles.Contains("Docente"))
             {
                 return RedirectToAction("Teacher", "Project");
+            }
+            else if (roles.Contains("Gestión Tecnológica Y Vinculación"))
+            {
+                return RedirectToAction("Index", "Company");
             }
             else
             {

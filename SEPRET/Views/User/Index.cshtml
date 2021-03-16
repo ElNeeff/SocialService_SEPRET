@@ -200,9 +200,15 @@
                 })
                 .catch(error => console.error(error))
         }
+
+        InitMisc = () => {
+            $('[rel="tooltip"]').tooltip();
+            $("time.timeago").timeago();
+        }
+
         UserDT = Filter => {
             $('.material-datatables').hide();
-            Table = $('#UserDT').DataTable({
+            Table = $('#UserDT').on('draw.dt', () => InitMisc()).DataTable({
                 'bDestroy': true,
                 responsive: true,
                 autoWidth: true,

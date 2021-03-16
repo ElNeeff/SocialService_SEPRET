@@ -1,0 +1,415 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="es">
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="http://fonts.cdnfonts.com/css/soberana-sans" rel="stylesheet">
+
+    <style>
+        .column-10 {
+            float: left;
+            width: 100%;
+        }
+
+        .column-7 {
+            float: left;
+            width: 70%;
+        }
+
+        .column-3 {
+            float: left;
+            width: 30%;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 14px;
+        }
+
+        .header {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            margin-bottom: 4rem;
+        }
+
+        .ccp {
+            margin-top: 13rem;
+            font-size: 9px;
+        }
+
+        .footer {
+            margin-top: 5rem;
+            font-size: 11px;
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: bolder;
+            font-family: 'Soberana Sans Light', sans-serif;
+        }
+
+            .titulo p {
+                margin: 0;
+                padding: 0;
+            }
+
+        .nombres td {
+            width: 50%;
+        }
+
+        .campoTable {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+
+            .campoTable td {
+                background-color: #f2f2f2;
+                font-weight: bolder;
+                font-family: 'Soberana Sans Light', sans-serif;
+            }
+
+            .campoTable tr {
+                height: 2.5rem;
+            }
+
+        .nombreProyecto {
+            width: 97.5%;
+            border-collapse: collapse;
+            border: 1px solid black;
+            margin-left: 1rem;
+        }
+
+            .nombreProyecto td {
+                font-family: 'Soberana Sans', sans-serif;
+                border: 1px solid black;
+            }
+
+            .nombreProyecto tr {
+                height: 2.5rem;
+                border: 1px solid black;
+            }
+
+        .renglon {
+            margin-bottom: 1rem;
+        }
+
+        .tableDiv {
+            margin-left: 1rem;
+            display: table;
+            width: 97.5%;
+        }
+
+        .cellSeperator {
+            display: table-cell;
+            width: 1rem;
+        }
+
+        .cellTitle {
+            height: 2.5rem;
+            border: 1px solid black;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            padding-right: 1rem;
+        }
+
+        .cellData {
+            height: 2.5rem;
+            display: table-cell;
+            width: 3rem;
+            vertical-align: middle;
+            text-align: center;
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+            border-top: 1px solid black;
+        }
+
+        .DatosEmpresaContainer {
+            font-family: 'Soberana Sans', sans-serif;
+        }
+
+            .DatosEmpresaContainer p {
+                font-family: 'Soberana Sans Light', sans-serif;
+            }
+
+        .DatosEmpresaTable {
+            border-collapse: collapse;
+            border: 1px solid black;
+            width: 100%;
+        }
+
+            .DatosEmpresaTable td {
+                height: 3rem;
+                border: 1px solid black;
+            }
+
+        .DatosResidenteContainer {
+            font-family: 'Soberana Sans', sans-serif;
+        }
+
+            .DatosResidenteContainer p {
+                font-family: 'Soberana Sans Light', sans-serif;
+            }
+
+        .DatosResidenteTable {
+            border-collapse: collapse;
+            border: 1px solid black;
+            width: 100%;
+        }
+
+            .DatosResidenteTable td {
+                height: 3rem;
+                border: 1px solid black;
+            }
+
+        .breakhere {
+            page-break-after: always
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <table style="width: 100%;" border="1" cellspacing="0">
+            <tbody>
+                <tr style="height: 2rem;">
+                    <td style="width: 15%; text-align: center;" rowspan="3"><img src="@Server.MapPath("/Assets/img/itmh-logo.png")" width="100" /></td>
+                    <td style="width: 60%;" rowspan="2"><b>Formato para Asignación de Asesor (a) Interno (a) de Residencias Profesionales por competencias.</b></td>
+                    <td style="width: 25%;"><b>Código: AC-RP-FOR02</b></td>
+                </tr>
+                <tr style="height: 2rem;">
+                    <td style="width: 25%;"><b>Revisión: 2</b></td>
+                </tr>
+                <tr style="height: 2rem;">
+                    <td style="width: 60%;"><b>Referencia a la Norma ISO 9001:2015 8.1, 8.2, 8.2.1, 8.2.2, 8.2.3, 8.2.4, 8.5.1, 8.5.2, 8.6</b></td>
+                    <td style="width: 25%;"><b>Página: 1 de 1</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="titulo">
+        <p>INSTITUTO TECNOLÓGICO DE MATEHUALA</p>
+        <p>DIVISIÓN DE ESTUDIOS PROFESIONALES</p>
+        <p>RESIDENCIAS PROFESIONALES</p>
+        <p>SOLICITUD DE RESIDENCIAS PROFESIONALES</p>
+    </div>
+
+    <div>
+        <table class="nombres" style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td>Lugar:</td>
+                    <td>Fecha:</td>
+                </tr>
+                <tr>
+                    <td>C.</td>
+                    <td>AT'N: C.</td>
+                </tr>
+                <tr>
+                    <td>Jefa de la Div. de Estudios Profesionales</td>
+                    <td>Coord. de la Carrera de</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="DatosProyectoContainer">
+        <div class="row renglon">
+            <div class="column-3">
+                <table class="campoTable">
+                    <tbody>
+                        <tr>
+                            <td>NOMBRE DEL PROYECTO:</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column-7">
+                <table class="nombreProyecto">
+                    <tbody>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row renglon">
+            <div class="column-3">
+
+                <table class="campoTable">
+                    <tbody>
+                        <tr>
+                            <td>OPCIÓN ELEGIDA:</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column-7">
+                <div class="tableDiv">
+                    <div class="cellTitle">Banco de proyectos</div>
+                    <div class="cellData"></div>
+                    <div class="cellSeperator"></div>
+                    <div class="cellTitle">Propuesta propia</div>
+                    <div class="cellData"></div>
+                    <div class="cellSeperator"></div>
+                    <div class="cellTitle">Trabajador</div>
+                    <div class="cellData"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row renglon">
+            <div class="column-3">
+                <table class="campoTable">
+                    <tbody>
+                        <tr>
+                            <td>PERIODO PROYECTADO:</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column-7">
+                <table class="nombreProyecto">
+                    <tbody>
+                        <tr>
+                            <td style="width: 25rem;"></td>
+                            <td>Número de Residentes</td>
+                            <td style="width: 3rem;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="DatosEmpresaContainer">
+        <p><b>Datos de la empresa:</b></p>
+        <table class="DatosEmpresaTable">
+            <tbody>
+                <tr>
+                    <td style="width: 7rem;">Nombre:</td>
+                    <td colspan="5"></td>
+                </tr>
+                <tr>
+                    <td>Giro, Ramo ó Sector:</td>
+                    <td colspan="3"></td>
+                    <td style="width: 5rem;">R.F.C</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Domicilio:</td>
+                    <td colspan="5"></td>
+                </tr>
+                <tr>
+                    <td>Colonia:</td>
+                    <td></td>
+                    <td style="width: 2rem;">C.P</td>
+                    <td></td>
+                    <td>Correo:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Ciudad:</td>
+                    <td></td>
+                    <td style="width: 2rem;">Teléfono</td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>Misión de la Empresa:</td>
+                    <td colspan="5"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Nombre del Titular de la empresa:</td>
+                    <td colspan="2"></td>
+                    <td>Puesto:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Nombre del (la) Asesor (a) Externo (a):</td>
+                    <td colspan="2"></td>
+                    <td>Puesto:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Nombre de la prsona que firmará el acuerdo de trabajo. Estudiante-Escuela-Empresa</td>
+                    <td colspan="2"></td>
+                    <td>Puesto:</td>
+                    <td><br /><br /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="breakhere"></div>
+
+    <div class="DatosResidenteContainer">
+        <p><b>Datos del Residente:</b></p>
+        <table class="DatosResidenteTable">
+            <tbody>
+                <tr>
+                    <td>Nombre:</td>
+                    <td colspan="4"></td>
+                </tr>
+                <tr>
+                    <td>Carrera:</td>
+                    <td colspan="2"></td>
+                    <td>No. de control:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Domicilio:</td>
+                    <td colspan="4"></td>
+                </tr>
+                <tr>
+                    <td rowspan="2">E-mail:</td>
+                    <td rowspan="2"></td>
+                    <td rowspan="2">Para Seguridad Social acudir</td>
+                    <td>IMSS()</td>
+                    <td>
+                        <p>ISSSTE()</p>
+                        <p>OTROS()</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">No.:</td>
+                </tr>
+                <tr>
+                    <td>Carrera:</td>
+                    <td colspan="2"></td>
+                    <td>Teléfono:</td>
+                    <td>
+                        <p>Casa:</p>
+                        <p>Celular:</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="ccp">
+        <p align="left">c.c.p. Coordinación de Carrera</p>
+        <p align="left">c.c.p. Residente</p>
+        <p align="left">c.c.p. Expediente</p>
+    </div>
+
+    <div class="footer">
+        <label>AC-RP-FOR02 Toda copia en PAPEL es un “Documento No Controlado” a excepción del original.</label>
+        <label style="float: right;">Rev. 2</label>
+    </div>
+
+</body>
+</html>
