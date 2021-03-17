@@ -37,14 +37,14 @@
                         <div class="tab-pane active" id="image">
                             @Html.HiddenFor(x => x.Id)
 
-                            @*<div class="row justify-content-center">
+                            <div class="row justify-content-center">
                                 <div class="col-lg-8 col-md-12 col-sm-12 text-center">
                                     <div class="form-group">
-                                        @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "" })
-                                        <small class="form-text text-muted">¿La empresa que búscas no está en la lista? @Html.ActionLink("Da clic aquí", "Index", "Company")</small>
+                                        @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @id = "CompaniesList", @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "" })
+                                        <small class="form-text text-muted">¿La empresa que búscas no está en la lista? <a href="#" onclick="AddCompany();">Da clic aquí</a></small>
                                     </div>
                                 </div>
-                            </div>*@
+                            </div>
 
                             <div class="d-flex flex-column">
                                 <div class="col-12">
@@ -72,7 +72,7 @@
                                     <div class="bootstrap-tagsinput primary-badge" style="padding: 4px 15px;">
                                         <div class="form-group">
                                             <label class="text-success">Integrantes del equipo (opcional)</label>
-                                            @Html.TextBoxFor(x => x.Member, new { @id="teamtag", @class = "form-control", @placeholder = "Número de control" })
+                                            @Html.TextBoxFor(x => x.Member, new { @id = "teamtag", @class = "form-control", @placeholder = "Número de control" })
                                             <small class="form-text text-muted text-rose mt-0">Nota: Los integrantes deben estar registrados en esta plataforma para poder ser agregados al equipo</small>
                                         </div>
                                     </div>

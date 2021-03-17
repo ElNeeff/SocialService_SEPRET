@@ -154,6 +154,7 @@
     <Compile Include="Controllers\NatureController.cs" />
     <Compile Include="Controllers\PaymentDBController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\PDFGeneratorController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\PersonSubjectController.cs" />
     <Compile Include="Controllers\PhaseController.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="Models\Custom\FileDictumVM.cs" />
     <Compile Include="Models\Custom\PaymentDBGeneral.cs" />
     <Compile Include="Models\Custom\PaymentDBVM.cs" />
+    <Compile Include="Models\Custom\PDFGeneratorVM.cs" />
     <Compile Include="Models\Custom\ReceiptCounter.cs" />
     <Compile Include="Models\Custom\AdviserTypeVM.cs" />
     <Compile Include="Models\Custom\AmbitVM.cs" />
@@ -344,6 +346,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\img\itmh-logo.png" />
     <Content Include="Assets\img\project-bg.jpg" />
     <Content Include="Assets\img\dust_scratches.png" />
     <Content Include="Assets\img\favicon.png" />
@@ -646,6 +649,9 @@
     <Content Include="Views\FileDictum\Index.cshtml" />
     <Content Include="Views\FileType\_AddEdit.cshtml" />
     <Content Include="Views\Home\FAQ.cshtml" />
+    <Content Include="Views\PDFGenerator\AsignacionAsesor.cshtml" />
+    <Content Include="Views\PDFGenerator\SolicitudRP.cshtml" />
+    <Content Include="Views\PDFGenerator\EvaluacionRP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -180,6 +180,69 @@ namespace SEPRET.Controllers
         }
 
         [HttpPost]
+        public JsonResult ProjectDT(DataTablesParameters param)
+        {
+            using (SEPRETEntities DBC = new SEPRETEntities())
+            {
+                IEnumerable<ProjectPerson> projectPeople = DBC.ProjectPersons.Where(x => x.Active && x.Project.Active && x.Owner).ToList();
+
+                long total = projectPeople.Count();
+
+                #region Búsqueda
+                string keyword = param.search.value;
+
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    keyword = keyword.ToLower();
+
+                    projectPeople = projectPeople.Where(x => x.Project.Titulo.ToLower().Contains(keyword) ||
+                    x.Project.Company.Nombre.ToLower().Contains(keyword) ||
+                    x.TimeCreated.ToString().ToLower().Contains(keyword));
+                }
+
+                long totalFiltered = projectPeople.Count();
+                #endregion
+
+                #region Ordenamiento
+                int columnId = param.order[0].column;
+
+                Func<ProjectPerson, string> orderFunction = (x => columnId == 0 ? x.Project.Titulo : columnId == 1 ? x.Project.Company.Nombre : x.TimeCreated.ToString());
+
+                if (param.order[0].dir == "asc")
+                {
+                    projectPeople = projectPeople.OrderBy(orderFunction);
+                }
+                else
+                {
+                    projectPeople = projectPeople.OrderByDescending(orderFunction);
+                }
+                #endregion
+
+                #region Paginado
+                projectPeople.Skip(param.start).Take(param.length);
+                #endregion
+
+                #region DataTable
+                List<ProjectPersonVM> data = projectPeople.Select(x => new ProjectPersonVM
+                {
+                    Id = x.Project.Id,
+                    ProjectName = x.Project.Titulo,
+                    Company = x.Project.Company.Nombre,
+                    TimeCreatedFormatted = x.TimeCreated.ToString()
+                }).ToList();
+                #endregion
+
+                return Json(new
+                {
+                    aaData = data,
+                    param.draw,
+                    iTotalRecords = total,
+                    iTotalDisplayRecords = totalFiltered
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public JsonResult DT(DataTablesParameters param, string Filter)
         {
             using (SEPRETEntities DBC = new SEPRETEntities())

@@ -735,7 +735,6 @@
                 .catch(error => Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor'))
         }
 
-
         AddCompany = (Id = 0, ReadOnly = false) => {
             fetch('@Url.Action("AddEdit", "Company")', {
                 method: 'POST',
