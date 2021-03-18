@@ -30,7 +30,7 @@ namespace SEPRET.Controllers
                     modelo.Id = person.Id;
                     modelo.Enrollment = person.Enrollment;
                     modelo.UserFullName = string.Concat(person.Name, " ", person.MiddleName, " ", person.LastName);
-                    modelo.Photo = person.Photo is null ? "/Assets/img/_BlankPicture.png" : person.Photo;
+                    modelo.Photo = person.Photo is null ? "/SEPRET/Assets/img/_BlankPicture.png" : person.Photo;
                     modelo.Phone = person.Phone;
                     modelo.Email = person.Email;
                     modelo.CareerId = person.CareerId;
@@ -50,7 +50,7 @@ namespace SEPRET.Controllers
 
                 if (modelo.File != null && modelo.File.ContentType.Contains("image/"))
                 {
-                    string folders = string.Concat("/Assets/img/user/", Session["Id"], "/profile/");
+                    string folders = string.Concat("/SEPRET/Assets/img/user/", Session["Id"], "/profile/");
                     string ruta = Server.MapPath(folders);
                     string filename = modelo.File.FileName;
                     Destination = string.Concat(ruta, filename);

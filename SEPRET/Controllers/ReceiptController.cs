@@ -93,7 +93,7 @@ namespace SEPRET.Controllers
 
                 if (modelo.File != null && modelo.File.ContentType.Contains("image"))
                 {
-                    Folders = string.Concat("/Assets/img/receipts/", (long)Session["Id"], "/", modelo.PaymentId + "/");
+                    Folders = string.Concat("/SEPRET/Assets/img/receipts/", (long)Session["Id"], "/", modelo.PaymentId + "/");
                     Ruta = Server.MapPath(Folders);
                     NombreArchivo = Path.GetFileName(modelo.File.FileName);
                     RelativePath = Folders + NombreArchivo;
@@ -148,7 +148,7 @@ namespace SEPRET.Controllers
                     else if (receipt.PhaseId == 1)
                     {
                         //UPDATE
-                        Folders = string.Concat("/Assets/img/receipts/", modelo.Id, "/", modelo.PaymentId + "/");
+                        Folders = string.Concat("/SEPRET/Assets/img/receipts/", modelo.Id, "/", modelo.PaymentId + "/");
                         receipt.MethodId = modelo.MethodId;
                         receipt.PhaseId = 2;
                         receipt.Voucher = modelo.Voucher;
@@ -178,7 +178,7 @@ namespace SEPRET.Controllers
                 ReceiptVM modelo = new ReceiptVM();
                 List<Method> methods = DBC.Methods.Where(x => x.Active == true).ToList();
                 ViewBag.MethodList = new SelectList(methods, "Id", "Name");
-                ViewBag.RelativePath = "/Assets/img/_BlankPicture.png";
+                ViewBag.RelativePath = "/SEPRET/Assets/img/_BlankPicture.png";
 
                 if (ReceiptId > 0)
                 {
