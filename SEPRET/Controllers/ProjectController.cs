@@ -955,7 +955,7 @@ namespace SEPRET.Controllers
 
                         if (modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("pdf"))
                         {
-                            string Folders = string.Concat("/SEPRET/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
+                            string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
                             string NombreArchivo = Path.GetFileName(modelo.File.FileName);
 
                             ProjectFile projectFile = new ProjectFile
@@ -1208,7 +1208,7 @@ namespace SEPRET.Controllers
                     if (modelo.File.ContentType.Contains("pdf"))
                     {
                         Project project = DBC.Projects.FirstOrDefault(x => x.Id == modelo.Id);
-                        string Folders = string.Concat("/SEPRET/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
+                        string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
                         string NombreArchivo = Path.GetFileName(modelo.File.FileName);
 
                         ProjectFile projectFile = new ProjectFile
