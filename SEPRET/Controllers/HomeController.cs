@@ -369,7 +369,7 @@ namespace SEPRET.Controllers
 
                                 Session["Id"] = LastUserID;
                                 Session["UserFullName"] = string.Concat(person.Name, " ", person.MiddleName);
-                                Session["Photo"] = "/Assets/img/user/emptyAvatar.png";
+                                Session["Photo"] = "/SEPRET/Assets/img/user/emptyAvatar.png";
 
                                 FormsAuthentication.SetAuthCookie(person.Email, false);
 

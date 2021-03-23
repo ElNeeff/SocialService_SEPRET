@@ -47,6 +47,7 @@ namespace SEPRET.Models.Custom
         public string Presentador { get; set; }
         public string EmailPresentador { get; set; }
         public bool PDFExists { get; set; }
+        public bool Owner { get; set; }
 
         // PROJECTCAREER ATTRIBUTES
         public long Id_Career { get; set; }

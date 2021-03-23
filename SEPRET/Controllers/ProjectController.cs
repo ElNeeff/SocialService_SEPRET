@@ -1684,6 +1684,7 @@ namespace SEPRET.Controllers
                     //EmailPresentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => s.Person.Email).FirstOrDefault(),
                     Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
                     PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
+                    Owner = x.Project.ProjectPersons.Any(y => y.Id_Project == x.Project.Id && y.Id_Person == UserId && y.Active),
                     Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
                     {
                         UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),

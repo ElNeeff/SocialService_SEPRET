@@ -318,9 +318,13 @@
         font-size: smaller;
     }
 
-    .ribbon.multi::before,
+    .ribbon.multi::before {
+        border: 5px solid orangered;
+        right: 8px;
+    }
     .ribbon.multi::after {
-        border: 10px solid orangered;
+        border: 5px solid orangered;
+        bottom: 8px;
     }
 
 /* top left*/

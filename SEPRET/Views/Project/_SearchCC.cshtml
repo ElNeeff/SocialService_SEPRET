@@ -62,8 +62,8 @@
                         </p>
                         @if (item.PDFExists && rol.Contains("docente"))
                         {
-                            <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ReviewPDF(@item.Id, this);">
-                                <i class="material-icons">description</i> Revisar reporte preliminar
+                            <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="@(item.Id_ProjectPhase is 10 ? "ReviewPDF" : "ViewPDF")(@item.Id, this);">
+                                <i class="material-icons">description</i> @(item.Id_ProjectPhase is 10 ? "Comentar" : "Ver") reporte preliminar
                             </button>
                         }
                         else
@@ -413,9 +413,6 @@
                                         case "docente":
                                         case "super administrador":
                                         case "administrador":
-                                            <a href="javascript:;" class="btn btn-link btn-success" onclick="ManageMembers(@item.Id);">
-                                                <i class="material-icons">group_add</i> Integrantes @(new HtmlString(item.MiembrosPostulados > 0 ? "<span class=\"badge badge-pill badge-danger\" rel=\"tooltip\" data-placement=\"left\" title=\"Nuevos postulantes\">" + item.MiembrosPostulados + "</span>" : "" ))
-                                            </a>
                                             break;
                                         default:
                                             break;
@@ -621,16 +618,25 @@
 
                         }
 
-
-                        @if ((rol == "docente" || rol.Contains("administrador")) && item.Active && ((long)item.Id_ProjectPhase == 1 || (long)item.Id_ProjectPhase == 2 || (long)item.Id_ProjectPhase == 4 || (long)item.Id_ProjectPhase == 5))
+                        @if ((rol == "docente" || rol.Contains("administrador")) && item.Owner && item.Active)
                         {
-                            @*<a href="javascript:;" class="btn btn-primary btn-just-icon btn-fill btn-round" onclick="ManageMembers(@item.Id);" rel="tooltip" data-placement="top" title="Gestionar residentes">
-                                    <i class="material-icons">groups</i>
-                                </a>*@
+                            <a href="javascript:;" class="btn btn-link btn-success" onclick="ManageMembers(@item.Id);">
+                                <i class="material-icons">group_add</i> Integrantes @(new HtmlString(item.MiembrosPostulados > 0 ? "<span class=\"badge badge-pill badge-danger\" rel=\"tooltip\" data-placement=\"left\" title=\"Nuevos postulantes\">" + item.MiembrosPostulados + "</span>" : "" ))
+                            </a>
                             <a href="javascript:;" class="btn btn-warning btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Unpublish');" rel="tooltip" data-placement="top" title="Dar de baja">
                                 <i class="material-icons">unpublished</i>
                             </a>
                         }
+
+                        @*@if ((rol == "docente" || rol.Contains("administrador")) && item.Owner && item.Active && ((long)item.Id_ProjectPhase == 1 || (long)item.Id_ProjectPhase == 2 || (long)item.Id_ProjectPhase == 4 || (long)item.Id_ProjectPhase == 5))
+                            {
+                                <a href="javascript:;" class="btn btn-primary btn-just-icon btn-fill btn-round" onclick="ManageMembers(@item.Id);" rel="tooltip" data-placement="top" title="Gestionar residentes">
+                                    <i class="material-icons">groups</i>
+                                </a>
+                                <a href="javascript:;" class="btn btn-warning btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Unpublish');" rel="tooltip" data-placement="top" title="Dar de baja">
+                                    <i class="material-icons">unpublished</i>
+                                </a>
+                            }*@
                     </div>
                 </div>
             </div>
