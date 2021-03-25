@@ -94,7 +94,7 @@
         foreach (var item in Model)
         {
             <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
-                <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg')">
+                <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
                     @if (item.Carrera.Split(',').Count() > 1)
                     {
                         <div class="ribbon ribbon-top-left multi"><span class="multi font-weight-light">interdisciplinaria</span></div>
@@ -151,8 +151,8 @@
 
                             @if (item.PDFExists)
                             {
-                                <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ReviewPDF(@item.Id, this);">
-                                    <i class="material-icons">description</i> Revisar reporte preliminar
+                                <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="@(item.Id_ProjectPhase is 10 ? "ReviewPDF" : "ViewPDF")(@item.Id, this);">
+                                    <i class="material-icons">description</i> @(item.Id_ProjectPhase is 10 ? "Comentar" : "Ver") reporte preliminar
                                 </button>
                             }
                             @if (item.Id_ProjectPhase == 10)
@@ -164,7 +164,7 @@
                             }
                             else
                             {
-                                <p class="text-rose font-weight-bold mb-0 mt-0">
+                                <p class="text-warning font-weight-bold mb-0 mt-0">
                                     En espera de correcciones por parte del alumno
                                 </p>
                             }

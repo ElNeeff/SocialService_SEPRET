@@ -143,25 +143,6 @@
                 .catch(error => console.error(error))
         }
 
-        Save = () => {
-            let formData = new FormData(document.getElementById('Form'));
-
-            fetch('@Url.Action("Index", "Company")', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        Table.draw();
-                        $('#AddEditCompanyModal').modal('hide');
-                        Site.OkNotification('La empresa se guardó exitosamente');
-                    } else {
-                        Site.ErrorNotification();
-                    }
-                })
-                .catch(error => console.error(error))
-        }
-
         Detail = Id => {
             fetch('@Url.Action("AddEdit", "Company")', {
                 method: 'POST',
@@ -202,6 +183,9 @@
                         Site.initMaterialWizard();
                         $('.moving-tab').show();
                         $('.btn-next').removeClass('disabled');
+                    });
+                    $('#AddEditCompanyModal').on('hidden.bs.modal', function () {
+                        Table.draw();
                     });
                     if (ReadOnly) {
                         $('form :input').prop("disabled", true);
@@ -298,7 +282,7 @@
                     { className: 'text-center', targets: [2] }
                 ],
                 language: {
-                    url: '/SEPRET/Assets/json/SpanishDT.json'
+                    url: '@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/json/SpanishDT.json" : "/Assets/json/SpanishDT.json")'
                 },
                 initComplete: () => {
                     $('.sk-chase, #CompaniesDTContainer').hide();
@@ -398,7 +382,7 @@
                     { className: 'text-center', targets: [5] }
                 ],
                 language: {
-                    url: '/SEPRET/Assets/json/SpanishDT.json'
+                    url: '@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/json/SpanishDT.json" : "/Assets/json/SpanishDT.json")'
                 },
                 initComplete: () => {
                     $('.sk-chase, #ProjectsDTContainer').hide();

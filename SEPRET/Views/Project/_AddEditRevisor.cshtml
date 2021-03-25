@@ -127,9 +127,19 @@
             .catch(error => console.error(error))
     }
 
+    InitMisc = () => {
+        $('[rel="tooltip"]').tooltip();
+        $("time.timeago").timeago();
+        $('[data-toggle="popover"]').popover();
+        $("[data-toggle='popover']").on('shown.bs.popover', function () {
+            $('[rel="tooltip"]').tooltip();
+        });
+    }
+
+
     DT = Filter => {
         Id_Project = @Model;
-        Table = $('#DT').DataTable({
+        Table = $('#DT').on('draw.dt', () => InitMisc()).DataTable({
             destroy: true,
             responsive: true,
             autoWidth: true,
@@ -147,22 +157,21 @@
                 { data: 'UserFullName' },
                 {
                     render: (data, type, row) => {
-                        //var IdCarreras = JSON.parse(row['Projects']);
-                        //console.log(IdCarreras);
                         let projects = '';
                         row['Projects'].forEach(({ Id, Titulo }) => {
                             projects += '<p class=\'mb-0\'><a class=\'text-primary dropdown-item\' href=\'javascript:;\' rel=\'tooltip\' data-placement=\'right\' title=\'Clic para ver detalles\' onClick=\'Details(' + Id + ', true);\'>' + Titulo + '</a></p>';
                         });
 
                         if (row['Projects'].length == 0) {
-                            return '<small class="text-muted">Sin proyectos</small>';
+                            return `<small class="text-muted">Sin proyectos</small>`;
                         } else if (row['Projects'].length >= 1 && row['Projects'].length <= 2) {
-                            return '<a href="javascript:;" class="badge badge-success" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="' + projects + '">' + row['Projects'].length + ' en revisión</a>';
+                            return `<a href="javascript:;" class="badge badge-success" data-container="body" rel="tooltip" data-toggle="popover" data-placement="top" data-html="true" data-content="${ projects }"> ${ row['Projects'].length } en revisión</a>`;
                         } else if (row['Projects'].length >= 3 && row['Projects'].length <= 5) {
-                            return '<a href="javascript:;" class="btn btn-warning" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="' + projects + '">' + row['Projects'].length + ' en revisión</a>';
+                            return `<a href="javascript:;" class="btn btn-warning" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="${ projects }"${ row['Projects'].length } en revisión</a>`;
                         } else {
-                            return '<a href="javascript:;" class="btn btn-danger" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="' + projects + '">' + row['Projects'].length + 'en revisión</a>';
+                            return `<a href="javascript:;" class="btn btn-danger" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="${ projects }">${ row['Projects'].length }en revisión</a>`;
                         }
+
                     }
                 },
                 {
@@ -180,7 +189,7 @@
                 { className: "text-center", targets: [1, 2] }
             ],
             language: {
-                url: '/SEPRET/Assets/json/SpanishDT.json'
+                url: '@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/json/SpanishDT.json" : "/Assets/json/SpanishDT.json")'
             },
             initComplete: () => {
                 $('[data-toggle="popover"]').popover();

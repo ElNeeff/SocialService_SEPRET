@@ -6,7 +6,7 @@
     foreach (var item in Model)
     {
         <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
-            <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg') ">
+            <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")') ">
                 <div class="card-body">
                     <h6 class="card-category">@item.Empresa</h6>
                     <a class="text-info" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@item.EmailPresentador?body=Escribe%20tu%20n%C3%BAmero%20de%20control%2C%20nombre%20completo%20y%20tu%20mensaje%20al%20presentador%20del%20proyecto&subject=Interesado%20en%20el%20proyecto: @item.Titulo.Replace(" ", "%20")">@item.Presentador</a>

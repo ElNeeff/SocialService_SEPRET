@@ -6,7 +6,7 @@
     foreach (var item in Model)
     {
         <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
-            <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg')">
+            <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
                 <div class="card-body w-100">
                     @if (item.Empresa != "-")
                     {
@@ -108,35 +108,35 @@
                             {
                                 case 1:
                                     <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Rechazado por jefe departamental <br> <em> Motivo de rechazo: </em> <b>@item.LastComment</b>">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Rechazado por jefe de departamento <br> <em> Motivo de rechazo: </em> <b>@item.LastComment</b>">Etapa 1</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Públicado en banco de proyectos">Etapa 3</div>
                                     </div>
                                     break;
                                 case 2:
                                     <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe de departamento">Etapa 1</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Públicado en banco de proyectos">Etapa 3</div>
                                     </div>
                                     break;
                                 case 3:
                                     <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe de departamento">Etapa 1</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Públicado en banco de proyectos">Etapa 3</div>
                                     </div>
                                     break;
                                 case 4:
                                     <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe de departamento">Etapa 1</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-html="true" data-placement="bottom" title="Rechazado por academia <br> <em> Motivo de rechazo: </em> <b>@item.LastComment</b>">Etapa 2</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Públicado en banco de proyectos">Etapa 3</div>
                                     </div>
                                     break;
                                 case 5:
                                     <div class="progress" style="height: 15px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe departamental">Etapa 1</div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por jefe de departamento">Etapa 1</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Revisión por academia">Etapa 2</div>
                                         <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="bottom" title="Públicado en banco de proyectos">Etapa 3</div>
                                     </div>

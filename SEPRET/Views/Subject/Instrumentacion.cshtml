@@ -320,7 +320,7 @@
                     { className: 'text-center', targets: [4, 5] }
                 ],
                 language: {
-                    url: '/SEPRET/Assets/json/SpanishDT.json'
+                    url: '@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/json/SpanishDT.json" : "/Assets/json/SpanishDT.json")'
                 },
                 initComplete: () => {
                     $('select').selectpicker();

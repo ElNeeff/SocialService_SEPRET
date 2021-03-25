@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SEPRET.Models.Custom.ProjectVM>
 
 @{
-    ViewBag.Title = "Jefe departamental";
+    ViewBag.Title = "Jefe de departamento";
 }
 
 <div class="panel-wrap">
@@ -81,7 +81,7 @@
         foreach (var item in Model)
         {
             <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
-                <div class="card card-background" style="background-image: url('/Assets/img/project-bg.jpg')">
+                <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
                     @if (item.Carrera.Split(',').Count() > 1)
                     {
                         <div class="ribbon ribbon-top-left multi"><span class="multi font-weight-light">interdisciplinaria</span></div>
@@ -215,7 +215,10 @@
                 body: JSON.stringify({ Id: Id })
             })
                 .then(response => response.text())
-                .then(data => Site.Visor(data, true))
+                .then(data => {
+                    $('#Viewer').css('width', '-webkit-fill-available');
+                    Site.Visor(data, true);
+                })
                 .catch(error => console.error(error))
         }
 

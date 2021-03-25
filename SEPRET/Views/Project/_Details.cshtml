@@ -10,7 +10,6 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </h3>
-                @*<h5 class="card-description">Detalles del proyecto</h5>*@
             </div>
             <form id="Details">
                 <div class="wizard-navigation">
@@ -135,21 +134,107 @@
                             <ul class="timeline timeline-simple">
                                 @if (Model.Comments.Any())
                                 {
-                                    foreach (var comentario in Model.Comments)
+                                    if (User.IsInRole("Alumno") && Model.Id_ProjectType == 2 && Model.Comments.Any(x => x.Id_CommentType != 2 && x.Id_CommentType != 5 && x.Id_CommentType != 6 && x.Id_CommentType != 7))
+                                    {
+                                        foreach (var comentario in Model.Comments.Where(x => x.Id_CommentType != 2 && x.Id_CommentType != 5 && x.Id_CommentType != 6 && x.Id_CommentType != 7))
+                                        {
+                                            string clase = "";
+                                            switch (comentario.Id_CommentType)
+                                            {
+                                                case 1:
+                                                    clase = "primary";
+                                                    break;
+                                                case 2:
+                                                case 3:
+                                                case 6:
+                                                case 7:
+                                                    clase = "danger";
+                                                    break;
+                                                case 4:
+                                                case 5:
+                                                case 8:
+                                                    clase = "warning";
+                                                    break;
+                                                default:
+                                                    clase = "info";
+                                                    break;
+                                            }
+                                            <li class="timeline-inverted">
+                                                <div class="timeline-badge @clase" rel="tooltip" data-placement="top" title="@comentario.CommentType">
+                                                    <i class="material-icons">comment</i>
+                                                </div>
+                                                <div class="timeline-panel">
+                                                    <div class="timeline-heading">
+                                                        <span class="badge badge-pill badge-primary" rel="tooltip" data-placement="right" title="@comentario.Rol">@comentario.Autor</span>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <p>@comentario.Mensaje</p>
+                                                    </div>
+                                                    <h6>
+                                                        <small><i class="ti-time"></i><time class="timeago" datetime="@comentario.TimeCreated.ToString("o")" rel="tooltip" data-placement="top" title="@comentario.TimeCreated"></time></small>
+                                                    </h6>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    else if (!User.IsInRole("Alumno"))
+                                    {
+                                        foreach (var comentario in Model.Comments)
+                                        {
+                                            string clase = "";
+                                            switch (comentario.Id_CommentType)
+                                            {
+                                                case 1:
+                                                    clase = "primary";
+                                                    break;
+                                                case 2:
+                                                case 3:
+                                                case 6:
+                                                case 7:
+                                                    clase = "danger";
+                                                    break;
+                                                case 4:
+                                                case 5:
+                                                case 8:
+                                                    clase = "warning";
+                                                    break;
+                                                default:
+                                                    clase = "info";
+                                                    break;
+                                            }
+                                            <li class="timeline-inverted">
+                                                <div class="timeline-badge @clase" rel="tooltip" data-placement="top" title="@comentario.CommentType">
+                                                    <i class="material-icons">comment</i>
+                                                </div>
+                                                <div class="timeline-panel">
+                                                    <div class="timeline-heading">
+                                                        <span class="badge badge-pill badge-primary" rel="tooltip" data-placement="right" title="@comentario.Rol">@comentario.Autor</span>
+                                                    </div>
+                                                    <div class="timeline-body">
+                                                        <p>@comentario.Mensaje</p>
+                                                    </div>
+                                                    <h6>
+                                                        <small><i class="ti-time"></i><time class="timeago" datetime="@comentario.TimeCreated.ToString("o")" rel="tooltip" data-placement="top" title="@comentario.TimeCreated"></time></small>
+                                                    </h6>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    else
                                     {
                                         <li class="timeline-inverted">
-                                            <div class="timeline-badge @(comentario.Id_CommentType is 3 ? "danger" : comentario.Id_CommentType is 4 ? "warning" : "danger")" rel="tooltip" data-placement="top" title="@comentario.CommentType">
+                                            <div class="timeline-badge primary">
                                                 <i class="material-icons">comment</i>
                                             </div>
                                             <div class="timeline-panel">
                                                 <div class="timeline-heading">
-                                                    <span class="badge badge-pill badge-primary" rel="tooltip" data-placement="right" title="@comentario.Rol">@comentario.Autor</span>
+                                                    <span class="badge badge-pill badge-primary">Mensaje del sistema</span>
                                                 </div>
                                                 <div class="timeline-body">
-                                                    <p>@comentario.Mensaje</p>
+                                                    <p>Cuando este proyecto tenga comentarios u observaciones aquí los podrás ver.</p>
                                                 </div>
                                                 <h6>
-                                                    <small><i class="ti-time"></i><time class="timeago" datetime="@comentario.TimeCreated.ToString("o")" rel="tooltip" data-placement="top" title="@comentario.TimeCreated"></time></small>
+                                                    <small><i class="ti-time"></i><time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time></small>
                                                 </h6>
                                             </div>
                                         </li>
@@ -166,7 +251,7 @@
                                                 <span class="badge badge-pill badge-primary">Mensaje del sistema</span>
                                             </div>
                                             <div class="timeline-body">
-                                                <p>Cuando este proyecto tenga comentarios de rechazo aquí los podrás ver.</p>
+                                                <p>Cuando este proyecto tenga comentarios u observaciones aquí los podrás ver.</p>
                                             </div>
                                             <h6>
                                                 <small><i class="ti-time"></i><time class="timeago" datetime="@DateTime.Now.ToString("o")" rel="tooltip" data-placement="top" title="@DateTime.Now"></time></small>

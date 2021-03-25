@@ -157,7 +157,7 @@ namespace SEPRET.Controllers
                     Ambito = x.Project.Ambit.Nombre,
                     Tipo = x.Project.ProjectType.Nombre,
                     Id_ProjectPhase = x.Project.Id_ProjectPhase,
-                    Etapa = x.Project.ProjectPhase.Id is 5 && x.Project.Id_ProjectType is 2 && User.IsInRole("Alumno") ? "En espera de envio de anteproyecto" : x.Project.ProjectPhase.Nombre,
+                    Etapa = x.Project.ProjectPhase.Id is 5 && x.Project.Id_ProjectType is 2 && User.IsInRole("Alumno") ? "En espera de envio de reporte preliminar" : x.Project.ProjectPhase.Nombre,
                     Titulo = x.Project.Titulo,
                     ObjetivoGeneral = x.Project.ObjetivoGeneral,
                     ObjetivosEspecificos = x.Project.ObjetivosEspecificos,
@@ -239,7 +239,7 @@ namespace SEPRET.Controllers
                     Ambito = x.Project.Ambit.Nombre,
                     Tipo = x.Project.ProjectType.Nombre,
                     Id_ProjectPhase = x.Project.Id_ProjectPhase,
-                    Etapa = x.Project.ProjectPhase.Id is 5 && x.Project.Id_ProjectType is 2 && User.IsInRole("Alumno") ? "En espera de envio de anteproyecto" : x.Project.ProjectPhase.Nombre,
+                    Etapa = x.Project.ProjectPhase.Id is 5 && x.Project.Id_ProjectType is 2 && User.IsInRole("Alumno") ? "En espera de envio de reporte preliminar" : x.Project.ProjectPhase.Nombre,
                     Titulo = x.Project.Titulo,
                     ObjetivoGeneral = x.Project.ObjetivoGeneral,
                     ObjetivosEspecificos = x.Project.ObjetivosEspecificos,
@@ -393,7 +393,7 @@ namespace SEPRET.Controllers
                 #endregion
 
                 #region Paginado
-                people.Skip(param.start).Skip(param.length);
+                people = people.Skip(param.start).Take(param.length);
                 #endregion
 
                 #region DataTable
@@ -603,6 +603,9 @@ namespace SEPRET.Controllers
                     case "Pending":
                         TotalRegisters = User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active).Count() : User.IsInRole("Jefe departamental") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).Count() : User.IsInRole("Docente") ? DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && (x.Project.Id_ProjectPhase == 9 || x.Project.Id_ProjectPhase == 10)).Count() : DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
                         break;
+                    case "PendingTeacher":
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
+                        break;
                     case "Accepted":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Active).Count();
                         break;
@@ -621,7 +624,7 @@ namespace SEPRET.Controllers
                     case "Student":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId).Count();
                         break;
-                    case "StudentBank":
+                    case "Bank":
                         TotalRegisters = DBC.ProjectCareers.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 5 && x.Project.Id_ProjectType == 2 && x.Id_Career == CareerId).Count();
                         break;
                     case "BankDocente":
@@ -638,6 +641,9 @@ namespace SEPRET.Controllers
                         break;
                     case "AllCC":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3) && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
+                        break;
+                    case "AllCareer":
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
                         break;
                     case "AllTeacher":
                         long[] advisers = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active).Select(x => x.Id_Project).ToArray();
@@ -701,7 +707,7 @@ namespace SEPRET.Controllers
 
                             Comment comment = new Comment
                             {
-                                Id_CommentType = User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica") || User.IsInRole("Jefe departamental") && project.Id_ProjectType == 2 ? 2 : User.IsInRole("Coordinador de carrera") || User.IsInRole("División de estudios profesionales") ? 3 : 4,
+                                Id_CommentType = User.IsInRole("Jefe academia") ? 6 :User.IsInRole("Subdirección académica") ? 7 : User.IsInRole("Jefe departamental") ? 2 : User.IsInRole("Coordinador de carrera") ? 3 : User.IsInRole("División de estudios profesionales") ? 8 : 4,
                                 Id_Person = UserId,
                                 Id_Project = Id,
                                 Mensaje = Comment,
@@ -1589,7 +1595,10 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Pending":
-                        projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList() : User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
+                        projects = User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
+                        break;
+                    case "PendingTeacher":
+                        projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).ToList();
                         break;
                     case "AcceptedJD":
                         projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 3 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
@@ -1628,7 +1637,7 @@ namespace SEPRET.Controllers
                         projects = DBC.ProjectPersons.Where(x => x.Project.Active && (x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3)) && x.Owner).ToList();
                         break;
                     case "AllCareer":
-                        projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
+                        projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
                         break;
                     case "PendingJD":
                         projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Owner && x.Project.Id_ProjectPhase == 8 && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();

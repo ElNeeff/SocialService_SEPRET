@@ -3,7 +3,7 @@
 <div class="wizard-container modal fade" id="AddEditCompanyModal" tabindex="-1" role="dialog" aria-labelledby="AddEditCompanyModal" aria-hidden="true" style="margin-top: -50px">
     <div class="card card-wizard modal-dialog modal-lg" role="document" data-color="rose" id="wizardProfile">
         <div class="modal-content">
-            <form id="Form">
+            <form id="CompanyForm">
                 <div class="card-header text-center">
                     <h3 class="card-title">
                         Registrar nueva empresa
@@ -148,7 +148,7 @@
                 </div>
                 <div class="ml-auto">
                     <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="Siguiente">
-                    <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" onclick="Save();" name="finish" value="Finalizar" style="display: none;">
+                    <input type="button" class="btn btn-finish btn-fill btn-rose btn-wd" onclick="SaveCompany(this);" name="finish" value="Finalizar" style="display: none;">
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -174,4 +174,24 @@
     })
 
     $('select').selectpicker();
+
+    SaveCompany = button => {
+        jQuery(button).attr('disabled', true);
+        let formData = new FormData(document.getElementById('CompanyForm'));
+
+        fetch('@Url.Action("Index", "Company")', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    jQuery(button).attr('disabled', false);
+                    $('#AddEditCompanyModal').modal('hide');
+                    Site.OkNotification('La empresa se guardó exitosamente');
+                } else {
+                    Site.ErrorNotification();
+                }
+            })
+            .catch(error => console.error(error))
+    }
 </script>

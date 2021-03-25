@@ -46,7 +46,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
                         }
                     },
                     PendingGeneral = new PaymentDBGeneral
@@ -58,7 +58,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
                         }
                     },
                     AcceptedGeneral = new PaymentDBGeneral
@@ -70,7 +70,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
                         }
                     },
                     InvoicedGeneral = new PaymentDBGeneral
@@ -82,7 +82,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end).Count()
                         }
                     }
                 };
@@ -141,7 +141,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 1 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
                         }
                     },
                     PendingGeneral = new PaymentDBGeneral
@@ -153,7 +153,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 2 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
                         }
                     },
                     AcceptedGeneral = new PaymentDBGeneral
@@ -165,7 +165,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 3 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
                         }
                     },
                     InvoicedGeneral = new PaymentDBGeneral
@@ -177,7 +177,7 @@ namespace SEPRET.Controllers
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 3 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 5 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
                             DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 6 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count(),
-                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 8 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
+                            DBC.Receipts.Where(x => x.Active && x.PhaseId == 4 && x.Person.CareerId == 1 && x.TimeCreated >= start && x.TimeCreated <= end && selectedPayments.Contains(x.PaymentId)).Count()
                         }
                     }
                 };

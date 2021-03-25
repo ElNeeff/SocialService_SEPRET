@@ -171,42 +171,4 @@
 
     $('select').selectpicker();
 
-    @*AddCompany = () => {
-        fetch('@Url.Action("AddEdit", "Company")')
-            .then(response => response.text())
-            .then(data => {
-                $('#AddEditModal').modal('hide');
-                $('#ModalContainer').html(data);
-                $('#AddEditCompanyModal').modal('show');
-            })
-            .catch(error => console.error(error))
-    }*@
-
-
-    @*AddCompany = (Id = 0, ReadOnly = false) => {
-        fetch('@Url.Action("AddEdit", "Company")', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;'
-            },
-            body: JSON.stringify({Id: Id, ReadOnly: ReadOnly})
-        })
-            .then(response => response.text())
-            .then(data => {
-                $('#AddEditModal').modal('hide');
-                $('#ModalCompanyContainer').html(data);
-
-                $('.moving-tab').hide();
-                $('#AddEditCompanyModal').on('shown.bs.modal', function () {
-                    Site.initMaterialWizard();
-                    $('.moving-tab').show();
-                    $('.btn-next').removeClass('disabled');
-                });
-                if (ReadOnly) {
-                    $('form :input').prop("disabled", true);
-                }
-                $('#AddEditCompanyModal').modal('show');
-            })
-            .catch(error => console.error(error))
-    }*@
 </script>
