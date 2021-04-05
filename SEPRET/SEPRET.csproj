@@ -151,6 +151,7 @@
     <Compile Include="Controllers\InstrumentationTypeController.cs" />
     <Compile Include="Controllers\KindController.cs" />
     <Compile Include="Controllers\MethodController.cs" />
+    <Compile Include="Controllers\MyFileController.cs" />
     <Compile Include="Controllers\NatureController.cs" />
     <Compile Include="Controllers\PaymentDBController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -202,6 +203,8 @@
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Custom\FileDictumVM.cs" />
+    <Compile Include="Models\Custom\MyFileCommentVM.cs" />
+    <Compile Include="Models\Custom\MyFileVM.cs" />
     <Compile Include="Models\Custom\PaymentDBGeneral.cs" />
     <Compile Include="Models\Custom\PaymentDBVM.cs" />
     <Compile Include="Models\Custom\PDFGeneratorVM.cs" />
@@ -237,6 +240,7 @@
     <Compile Include="Models\Custom\StudentSII.cs" />
     <Compile Include="Models\Custom\SubjectVM.cs" />
     <Compile Include="Models\Custom\UnitVM.cs" />
+    <Compile Include="Models\Custom\UploadPanelVM.cs" />
     <Compile Include="Models\Custom\VoucherVM.cs" />
     <Compile Include="Models\Department.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
@@ -260,6 +264,12 @@
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Method.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MyFile.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MyFileComment.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Nature.cs">
@@ -404,6 +414,7 @@
     <Content Include="Models\SEPRETDB.edmx.diagram">
       <DependentUpon>SEPRETDB.edmx</DependentUpon>
     </Content>
+    <Content Include="Assets\FileSystem\Residencias\Francisco Robles CV.zip" />
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\Development.pubxml" />
     <None Include="Properties\PublishProfiles\Producción.pubxml" />
@@ -652,6 +663,12 @@
     <Content Include="Views\PDFGenerator\AsignacionAsesor.cshtml" />
     <Content Include="Views\PDFGenerator\SolicitudRP.cshtml" />
     <Content Include="Views\PDFGenerator\EvaluacionRP.cshtml" />
+    <Content Include="Views\MyFile\Index.cshtml" />
+    <Content Include="Views\MyFile\_Myfiles.cshtml" />
+    <Content Include="Views\MyFile\_Tracking.cshtml" />
+    <Content Include="Views\MyFile\_SearchFiles.cshtml" />
+    <Content Include="Views\MyFile\_CommentReject.cshtml" />
+    <Content Include="Views\MyFile\_UploadPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

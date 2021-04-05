@@ -4,6 +4,7 @@ using SEPRET.Models;
 using SEPRET.Models.Custom;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -61,9 +62,6 @@ namespace SEPRET.Controllers
             using (var connection = new AseConnection(connectionString))
             {
                 connection.Open();
-
-                // use the connection...
-
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT c.carrera, c.nombre_carrera, a.nombre_alumno, a.apellido_paterno, a.apellido_materno FROM carreras AS c INNER JOIN alumnos AS a ON c.carrera = a.carrera WHERE a.no_de_control = '16660017'";
@@ -71,11 +69,9 @@ namespace SEPRET.Controllers
                     using (var reader = command.ExecuteReader())
                     {
                         var list = new List<StudentSII>();
-                        // Get the results.
                         while (reader.Read())
                         {
                             careerName = reader.GetString(1);
-                            // Do something with the data...
                             list.Add(new StudentSII { CareerId = reader.GetString(0), CareerName = reader.GetString(1), Name = reader.GetString(2), MiddleName = reader.GetString(3), LastName = reader.GetString(4) });
                             allRecords = list.ToArray();
                         }
@@ -83,23 +79,32 @@ namespace SEPRET.Controllers
                     }
                 }
             }
-            //using (SEPRETEntities DBC = new SEPRETEntities())
-            //{
-            //    Career career = DBC.Careers.FirstOrDefault(x => x.Name.ToLower() == careerName.ToLower());
-            //    long id = career.Id;
+        }
 
-            //    return Json(new { allRecords, id }, JsonRequestBehavior.AllowGet);
-            //}
+        protected string RenderPartialViewToString(string viewName, object model)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                viewName = ControllerContext.RouteData.GetRequiredString("action");
+
+            if (model != null)
+                ViewData.Model = model;
+
+            using (StringWriter sw = new StringWriter())
+            {
+                ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+
+                return sw.GetStringBuilder().ToString();
+            }
         }
 
         [HttpPost]
         public JsonResult PaswordRecovery(string Enrollment)
         {
             string resetCode = Guid.NewGuid().ToString();
-            var verifyUrl = "Home/ResetPassword/" + resetCode;
-            //var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
-            //var link = string.Concat("http://matehuala.tecnm.mx:800/Home/ResetPassword/", resetCode);
-            var link = string.Concat(new UriBuilder(Request.Url.Scheme, Request.Url.Host), verifyUrl);
+            var verifyUrl = Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Home/ResetPassword/" + resetCode : "/Home/ResetPassword/" + resetCode;
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
             string Message = string.Empty;
 
             using (SEPRETEntities DBC = new SEPRETEntities())
@@ -118,7 +123,7 @@ namespace SEPRET.Controllers
                         Career = link
                     };
 
-                    var renderedHTML = FakeController.RenderViewToString("EmailPasswordRecovery", "Home", modelo);
+                    var renderedHTML = RenderPartialViewToString("EmailPasswordRecovery", modelo);
 
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp-mail.outlook.com";
@@ -148,6 +153,7 @@ namespace SEPRET.Controllers
 
             return Json(Message, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult ResetPassword(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -208,7 +214,7 @@ namespace SEPRET.Controllers
             {
                 using (SEPRETEntities DBC = new SEPRETEntities())
                 {
-                    var ValidUser = DBC.People.FirstOrDefault(x => x.Email.ToLower() == modelo.Email.ToLower() && x.Password == modelo.Password && x.Active);
+                    var ValidUser = DBC.People.FirstOrDefault(x => x.Email.Trim().ToLower() == modelo.Email.Trim().ToLower() && x.Password == modelo.Password && x.Active);
 
                     if (ValidUser != null)
                     {
@@ -288,7 +294,6 @@ namespace SEPRET.Controllers
 
                                 using (var reader = command.ExecuteReader())
                                 {
-                                    // Get the results.
                                     while (reader.Read())
                                     {
                                         careerSII = reader.GetString(0);
@@ -312,7 +317,6 @@ namespace SEPRET.Controllers
 
                                         using (var reader = command.ExecuteReader())
                                         {
-                                            // Get the results.
                                             while (reader.Read())
                                             {
                                                 careerSII = reader.GetString(0);

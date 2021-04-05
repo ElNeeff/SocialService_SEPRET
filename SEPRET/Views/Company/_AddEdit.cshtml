@@ -103,8 +103,8 @@
 
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating">Teléfono</label>
-                                        @Html.TextBoxFor(x => x.Telefono, new { @required = "", @type = "text", @class = "form-control" })
+                                        <label class="bmd-label-floating">Teléfono (a 10 dígitos)</label>
+                                        @Html.TextBoxFor(x => x.Telefono, new { @required = "", @type = "text", @class = "form-control", @length = "10", @minlength = "10", @maxlength = "10", @size = "10" })
                                     </div>
                                 </div>
                             </div>
@@ -183,13 +183,14 @@
             method: 'POST',
             body: formData
         })
-            .then(response => {
-                if (response.ok) {
+            .then(response => response.json())
+            .then(({ message, success }) => {
+                if (success) {
                     jQuery(button).attr('disabled', false);
                     $('#AddEditCompanyModal').modal('hide');
-                    Site.OkNotification('La empresa se guardó exitosamente');
+                    Site.OkNotification(message);
                 } else {
-                    Site.ErrorNotification();
+                    Site.ErrorNotification(message);
                 }
             })
             .catch(error => console.error(error))

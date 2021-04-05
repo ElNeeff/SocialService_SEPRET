@@ -1,0 +1,290 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.MyFileVM>
+
+@{
+    ViewBag.Title = "Documentos de residencias";
+}
+
+<div class="panel-wrap">
+    <div class="panel d-flex flex-row-reverse">
+        <button class="btn btn-primary btn-fab btn-fab btn-round btn-danger float-right toggleSidePanel">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div id="Viewer" style="overflow-y: scroll;">
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="col-xl-9 col-sm-12">
+                    <div class="card-icon">
+                        <i class="material-icons">drive_folder_upload</i>
+                    </div>
+                    <h4 class="card-title">Documentos de residencias</h4>
+                </div>
+
+                <div class="col-xl-3 col-sm-12">
+
+                    <div class="form-group bmd-form-group mt-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">search</i></div>
+                            </div>
+                            <label class="bmd-label-floating prepend-label-margin">Buscar un documento...</label>
+                            <input type="text" class="form-control" id="Search">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
+                            <li class="nav-item">
+                                <a id="Pending" class="nav-link active filter" data-toggle="tab" role="tablist" onclick="FileList('Pending');" style="cursor: pointer;">
+                                    Pendientes de autorización
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="All" class="nav-link filter" data-toggle="tab" role="tablist" onclick="FileList('All');" style="cursor: pointer;">
+                                    Todos los documentos
+                                </a>
+                            </li>
+                            <li class="nav-item justify-content-end">
+                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="UploadPanel();" style="cursor: pointer;">
+                                    Subir formatos de residencias profesionales
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+<nav id="PagesContainer">
+    <ul class="pagination justify-content-end" id="Pages"></ul>
+</nav>
+
+<div class="row" id="Container">
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 d-flex align-items-stretch" id="@item.Id">
+                <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
+                    @{
+                        string Color = item.Person.Career.Contains("CIVIL") ? "red" : item.Person.Career.Contains("EMPRESARIAL") ? "blue" : item.Person.Career.Contains("INDUSTRIAL") ? "orange" : item.Person.Career.Contains("SISTEMAS") ? "green" : "pink";
+                        string Career = item.Person.Career.Contains("CIVIL") ? "Civil" : item.Person.Career.Contains("EMPRESARIAL") ? "Gestión" : item.Person.Career.Contains("INDUSTRIAL") ? "Industrial" : item.Person.Career.Contains("SISTEMAS") ? "Sistemas" : "Contador";
+                        <div class="ribbon ribbon-top-left @Color"><span class="@Color">@Career</span></div>
+                    }
+                    <div class="card-body w-100">
+                        <h6 class="card-category" style="color: #00bcd4 !important;">@item.DictumName</h6>
+                        <h3 class="card-title mb-0 text-warning">@item.TypeName</h3>
+                        <small class="text-muted">Última modificación: <time class="timeago" datetime="@(item.TimeUpdated?.ToString("o"))" rel="tooltip" data-placement="right" title="@item.TimeUpdated"></time></small>
+                        <div class="card-description mt-0">
+                            <a class="text-success font-weight-bold" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@item.Person.Email?cc=@item.DivisionEmail&subject=Carta: @item.TypeName">@item.Person.UserFullName (@item.Person.Enrollment)</a>
+                            <br />
+                            <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ViewPDF(@item.Id, this);">
+                                <i class="material-icons">description</i> Ver documento
+                            </button>
+
+                            @switch ((int)item.Id_FileDictum)
+                            {
+                                case 1:
+                                    <br />
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 100%" rel="tooltip" data-placement="bottom" data-html="true" title="<em>Motivo:</em><br><b>@item.Comments.LastOrDefault().Comment</b>">@item.DictumName</div>
+                                    </div>
+                                    <a href="javascript:;" class="btn btn-warning btn-link" onclick="ViewPDF(@item.Id, this);">
+                                        <i class="material-icons">note_add</i> Enviar documento corregido
+                                    </a>
+                                    break;
+                                case 2:
+                                    <br />
+                                    <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Aceptar">
+                                        <i class="material-icons">assignment_turned_in</i>
+                                    </a>
+                                    <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="bottom" title="Rechazar">
+                                        <i class="material-icons">assignment_return</i>
+                                    </a>
+                                    break;
+                                case 3:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 100%" rel="tooltip" data-placement="bottom" title="@item.DictumName">@item.DictumName</div>
+                                    </div>
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <i class="material-icons">notifications</i>
+            </div>
+            <h4 class="info-title">¡Genial!</h4>
+            <p>No tienes pendientes por aquí.</p>
+        </div>
+    }
+</div>
+
+<div id="ModalContainer" style="margin-top: -50px">
+
+</div>
+
+
+<div class="modal fade" id="CommentModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/kendo-pdf.js"></script>
+    <script>
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
+    </script>
+    <script src="~/Scripts/kendo.all.min.js"></script>
+
+    <script>
+        $(() => {
+            Paginate('Pending');
+            $('#Search').keyup(function () {
+                var filter = $('a.filter.nav-link.active').attr('id');
+                var keyword = $(this).val();
+                FileList(filter, keyword);
+            });
+            $("time.timeago").timeago();
+            $('[rel="tooltip"]').tooltip();
+            Site.initSidePanel();
+        });
+
+        UploadPanel = async () => {
+            $('#PagesContainer').hide();
+            $('#Container').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+            );
+            const response = await fetch('@Url.Action("UploadPanel", "MyFile")');
+            const data = await response.text();
+            $('#Container').html(data);
+        }
+
+        ViewPDF = (Id, button) => {
+            fetch('@Url.Action("ViewPDF", "MyFile")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Id: Id })
+            })
+                .then(response => response.json())
+                .then(({ base64 }) => {
+                    if (!base64) {
+                        Site.ErrorNotification('Ocurrió un error al leer el archivo PDF en el servidor');
+                    } else {
+                        Site.OpenVisor(base64);
+                        $('.panel-wrap').addClass('activeVisor');
+                    }
+                })
+                .catch(error => console.error(error))
+        }
+
+        Paginate = async () => {
+            const response = await fetch("@Url.Action("Paginate", "MyFile")");
+            const data = await response.text();
+            $('#Pages').html(data)
+        }
+
+        Dictum = (Id, Action, Button) => {
+            jQuery(Button).attr('disabled', true);
+            var Comment = $('#Comment').val();
+
+            fetch('@Url.Action("Dictum", "MyFile")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id, Dictum: Action, Comment: Comment})
+            })
+                .then(respones => respones.json())
+                .then(success => {
+                    if (success) {
+                        $('#CommentModal').modal('hide');
+                        $('#' + Id + ', div.tooltip').hide('slow', () => { $('#' + Id + ', div.tooltip').remove(); });
+                        Site.OkNotification('La acción se procesó correctamente');
+                    } else {
+                        Site.ErrorNotification();
+                    }
+                })
+        }
+
+        Comment = (Id, Dictum) => {
+            fetch('@Url.Action("Comment", "Project")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;'
+                },
+                body: JSON.stringify({Id: Id, Dictum: Dictum})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('.modal-content').html(data);
+                    $('#CommentModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        }
+
+        FileList = (Filter, Keyword, Skip) => {
+            $('#PagesContainer').hide();
+            $('#Container').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+            );
+            Paginate(Filter);
+            fetch('@Url.Action("Tracking", "MyFile")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Filter: Filter, Keyword: Keyword, Skip: Skip })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#PagesContainer').show();
+                    $('#Container').html(data)
+                })
+                .catch(error => console.error(error))
+        }
+    </script>
+}

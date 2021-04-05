@@ -40,7 +40,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-lg-8 col-md-12 col-sm-12 text-center">
                                     <div class="form-group">
-                                        @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @id = "CompaniesList", @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "" })
+                                        @Html.DropDownListFor(x => x.Id_Company, ViewBag.CompanyList as SelectList, new { @id = "CompaniesList", @class = "selectpicker col-12", @data_size = "7", @data_style = "btn btn-outline-primary btn-round", @title = "Selecciona una empresa", @required = "", @data_live_search = "true" })
                                         <small class="form-text text-muted">¿La empresa que búscas no está en la lista? <a href="#" onclick="AddCompany();">Da clic aquí</a></small>
                                     </div>
                                 </div>

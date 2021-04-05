@@ -56,59 +56,100 @@ namespace SEPRET.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(CompanyVM modelo)
+        public JsonResult Index(CompanyVM modelo)
         {
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
                 long UserId = (long)Session["Id"];
+                string message = "La empresa se guardó correctamente";
+                bool success = false;
 
-                if (modelo.Id > 0)
+                if (User.IsInRole("Gestión Tecnológica Y Vinculación"))
                 {
-                    Company Company = DBC.Companies.FirstOrDefault(x => x.Id == modelo.Id);
+                    if (modelo.Id > 0)
+                    {
+                        Company Company = DBC.Companies.FirstOrDefault(x => x.Id == modelo.Id);
 
-                    Company.Id_Sector = modelo.Id_Sector;
-                    Company.Nombre = modelo.Nombre;
-                    Company.RFC = modelo.RFC;
-                    Company.Lema = modelo.Lema;
-                    Company.Mision = modelo.Mision;
-                    Company.Valores = modelo.Valores;
-                    Company.Calle = modelo.Calle;
-                    Company.Colonia = modelo.Colonia;
-                    Company.CP = modelo.CP;
-                    Company.Ciudad = modelo.Ciudad;
-                    Company.Estado = modelo.Estado;
-                    Company.Telefono = modelo.Telefono;
-                    Company.TimeUpdated = DateTime.Now;
+                        Company.Id_Sector = modelo.Id_Sector;
+                        Company.Nombre = modelo.Nombre;
+                        Company.RFC = modelo.RFC;
+                        Company.Lema = modelo.Lema;
+                        Company.Mision = modelo.Mision;
+                        Company.Valores = modelo.Valores;
+                        Company.Calle = modelo.Calle;
+                        Company.Colonia = modelo.Colonia;
+                        Company.CP = modelo.CP;
+                        Company.Ciudad = modelo.Ciudad;
+                        Company.Estado = modelo.Estado;
+                        Company.Telefono = new String(modelo.Telefono.Where(Char.IsDigit).ToArray());
+                        Company.TimeUpdated = DateTime.Now;
 
-                    DBC.SaveChanges();
+                        DBC.SaveChanges();
+                    }
+                    else
+                    {
+                        Company Company = new Company
+                        {
+                            Id_Person = UserId,
+                            Id_Dictum = 3,
+                            Id_Sector = modelo.Id_Sector,
+                            Nombre = modelo.Nombre,
+                            RFC = modelo.RFC,
+                            Lema = modelo.Lema,
+                            Mision = modelo.Mision,
+                            Valores = modelo.Valores,
+                            Calle = modelo.Calle,
+                            Colonia = modelo.Colonia,
+                            CP = modelo.CP,
+                            Ciudad = modelo.Ciudad,
+                            Estado = modelo.Estado,
+                            Telefono = new String(modelo.Telefono.Where(Char.IsDigit).ToArray()),
+                            Active = true,
+                            TimeCreated = DateTime.Now
+                        };
+
+                        DBC.Companies.Add(Company);
+                        DBC.SaveChanges();
+                    }
+                    success = true;
                 }
                 else
                 {
-                    Company Company = new Company
-                    {
-                        Id_Person = UserId,
-                        Id_Dictum = 3,
-                        Id_Sector = modelo.Id_Sector,
-                        Nombre = modelo.Nombre,
-                        RFC = modelo.RFC,
-                        Lema = modelo.Lema,
-                        Mision = modelo.Mision,
-                        Valores = modelo.Valores,
-                        Calle = modelo.Calle,
-                        Colonia = modelo.Colonia,
-                        CP = modelo.CP,
-                        Ciudad = modelo.Ciudad,
-                        Estado = modelo.Estado,
-                        Telefono = modelo.Telefono,
-                        Active = true,
-                        TimeCreated = DateTime.Now
-                    };
+                    Company companyExists = DBC.Companies.FirstOrDefault(x => x.RFC.ToLower() == modelo.RFC.ToLower().Trim() && x.Active);
 
-                    DBC.Companies.Add(Company);
-                    DBC.SaveChanges();
+                    if (companyExists == null)
+                    {
+                        Company Company = new Company
+                        {
+                            Id_Person = UserId,
+                            Id_Dictum = 2,
+                            Id_Sector = modelo.Id_Sector,
+                            Nombre = modelo.Nombre,
+                            RFC = modelo.RFC,
+                            Lema = modelo.Lema,
+                            Mision = modelo.Mision,
+                            Valores = modelo.Valores,
+                            Calle = modelo.Calle,
+                            Colonia = modelo.Colonia,
+                            CP = modelo.CP,
+                            Ciudad = modelo.Ciudad,
+                            Estado = modelo.Estado,
+                            Telefono = new String(modelo.Telefono.Where(Char.IsDigit).ToArray()),
+                            Active = true,
+                            TimeCreated = DateTime.Now
+                        };
+
+                        DBC.Companies.Add(Company);
+                        DBC.SaveChanges();
+                        success = true;
+                    }
+                    else
+                    {
+                        message = "La empresa que intentas registrar ya existe";
+                    }
                 }
 
-                return View();
+                return Json(new { message, success }, JsonRequestBehavior.AllowGet);
             }
         }
 

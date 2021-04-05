@@ -1,0 +1,86 @@
+﻿@model SEPRET.Models.Custom.UploadPanelVM
+
+<div class="col-sm-12 col-md-12 col-lg-8 col-xl-7 mx-auto">
+    <form id="formFile">
+        <div class="form-group form-file-upload form-file-simple">
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.File, new { @type = "file", @class = "inputFileHidden", @accept = "zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed", @required = "" })
+                <input type="text" class="form-control inputFileVisible" placeholder="Clic aquí para subir los formatos de residencias profesionales en ZIP">
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-round btn-primary btn-sm" onclick="UploadFormats(this);">
+                    Enviar
+                </button>
+
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-12">
+    <h3 class="text-center text-warning">Historial de formatos de residencias subidos</h3>
+
+    @if (Model.MyFileVMs.Any())
+    {
+        <ul class="timeline">
+            @{int counter = 0;}
+            @foreach (var item in Model.MyFileVMs)
+            {
+                ++counter;
+                <li @(counter%2 is 0 ? "class=timeline-inverted" : string.Empty)>
+                    <div class="timeline-badge primary">
+                        <i class="material-icons">cloud_upload</i>
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading @(counter%2 is 0 ? string.Empty : "text-right")">
+                            <span class="badge badge-pill badge-success" rel="tooltip" data-toggle="tooltip" data-placement="top" title="@item.Person.PermissionName">@item.Person.UserFullName</span>
+                        </div>
+                        <div class="timeline-body @(counter%2 is 0 ? string.Empty : "text-right")">
+                            <a href="@Url.Action("DownloadFormats", "MyFile", new { Id = item.Id })" rel="tooltip" data-placement="@(counter%2 is 0 ? "left" : "right")" title="Descargar archivo">
+                                @item.Nombre
+                            </a>
+                            <hr />
+                            <div class="d-flex justify-content-between @(counter%2 is 0 ? string.Empty : "flex-row-reverse")">
+                                <small class="text-muted">Subido: <time class="timeago" datetime="@(item.TimeCreated.ToString("o"))" rel="tooltip" data-placement="@(counter%2 is 0 ? "left" : "right")" title="@item.TimeCreated"></time></small>
+                                <span class="badge badge-pill pt-2 @(item.Active ? "badge-success" : "badge-default")">@(item.Active ? "En uso" : "Inactivo")</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <i class="material-icons">notifications</i>
+            </div>
+            <h4 class="info-title">¡Vaya!</h4>
+            <p>Parece que aún no se han subido formatos de residencias profesionales. <br />Puedes hacerlo dando clic arriba en el apartado para subir documentos.</p>
+        </div>
+    }
+
+</div>
+
+<script>
+    Site.initFileInput();
+    $("time.timeago").timeago();
+    $('[rel="tooltip"]').tooltip();
+
+    UploadFormats = async button => {
+        const sendButton = jQuery(button);
+        const formData = new FormData(document.getElementById('formFile'));
+        const post = {
+            method: 'POST',
+            body: formData
+        }
+        const response = await fetch('@Url.Action("UploadFormats", "MyFile")', post);
+        const { message, success } = await response.json();
+        if (success) {
+            Site.OkNotification(message);
+            UploadPanel();
+        } else {
+            Site.ErrorNotification(message);
+        }
+    }
+</script>

@@ -178,7 +178,7 @@ namespace SEPRET.Controllers
                 ReceiptVM modelo = new ReceiptVM();
                 List<Method> methods = DBC.Methods.Where(x => x.Active == true).ToList();
                 ViewBag.MethodList = new SelectList(methods, "Id", "Name");
-                ViewBag.RelativePath = "/Assets/img/_BlankPicture.png";
+                ViewBag.RelativePath = Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/_BlankPicture.png" : "/Assets/img/_BlankPicture.png";
 
                 if (ReceiptId > 0)
                 {

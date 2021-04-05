@@ -31,17 +31,17 @@
                         <div class="col-md-12 col-sm-12">
                             <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" role="tablist" onclick="UserDT('Active');" style="cursor: pointer;">
+                                    <a class="nav-link active filter" data-toggle="tab" role="tablist" onclick="UserDT('Active');" style="cursor: pointer;">
                                         Activos
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="UserDT('Inactive');" style="cursor: pointer;">
+                                    <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="UserDT('Inactive');" style="cursor: pointer;">
                                         Inactivos
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" role="tablist" onclick="UserDT('Student');" style="cursor: pointer;">
+                                    <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="UserDT('Student');" style="cursor: pointer;">
                                         Alumnos
                                     </a>
                                 </li>
@@ -202,7 +202,7 @@
         }
 
         InitMisc = () => {
-            $('[rel="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip();
             $("time.timeago").timeago();
         }
 

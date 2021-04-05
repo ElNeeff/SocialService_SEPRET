@@ -46,17 +46,17 @@
                     <div class="row">
                         <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" role="tablist" onclick="ProjectList('PendingJD');" style="cursor: pointer;">
+                                <a class="nav-link active filter" data-toggle="tab" role="tablist" onclick="ProjectList('PendingJD');" style="cursor: pointer;">
                                     En revisión / asignar revisor
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectList('PendingAdviserJD');" style="cursor: pointer;">
+                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('PendingAdviserJD');" style="cursor: pointer;">
                                     Asignar asesor
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" role="tablist" onclick="ProjectList('AllCC');" style="cursor: pointer;">
+                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('AllCC');" style="cursor: pointer;">
                                     Todos los proyectos
                                 </a>
                             </li>
@@ -80,7 +80,7 @@
     {
         foreach (var item in Model)
         {
-            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
+            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 d-flex" id="@item.Id">
                 <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
                     @if (item.Carrera.Split(',').Count() > 1)
                     {
@@ -111,7 +111,7 @@
                                 <h6 class="card-category" style="color: #00bcd4 !important;">@item.Etapa</h6>
                                 break;
                         }
-                        <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                        <h3 class="card-title mb-0 text-warning" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="right" title="Clic para ver detalles">@item.Titulo</h3>
                         <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
                         <div class="card-description mt-0">
 

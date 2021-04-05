@@ -47,7 +47,7 @@ namespace SEPRET.Controllers
                         CommentRevisor = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4).Mensaje,
                         Active = x.Project.Active,
                         TimeCreated = x.Project.TimeCreated,
-                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id && y.Active).Select(y => y.Career.Name).ToList()),
                         PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                         Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
                         {
@@ -96,7 +96,7 @@ namespace SEPRET.Controllers
                 byte[] bytes = System.IO.File.ReadAllBytes(file);
                 string base64 = string.Concat("data:application/pdf;base64,", Convert.ToBase64String(bytes));
 
-                bool success = string.IsNullOrEmpty(base64) ? false : true;
+                bool success = !string.IsNullOrEmpty(base64);
 
                 var response = new
                 {
@@ -168,7 +168,7 @@ namespace SEPRET.Controllers
                     //Presentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => string.Concat(s.Person.Name, " ", s.Person.MiddleName, " ", s.Person.LastName)).FirstOrDefault(),
                     //EmailPresentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => s.Person.Email).FirstOrDefault(),
                     Active = x.Active,
-                    Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                    Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id && y.Active).Select(y => y.Career.Name).ToList()),
                     PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                     //Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Owner != true && y.Id_Dictum == 3).Select(y => new PersonVM
                     //{
@@ -210,19 +210,21 @@ namespace SEPRET.Controllers
                 long UserId = (long)Session["Id"];
                 long CareerId = (long)Session["CareerId"];
 
-                IEnumerable<ProjectCareer> projects = Enumerable.Empty<ProjectCareer>();
+                IEnumerable<ProjectPerson> projects = Enumerable.Empty<ProjectPerson>();
                 string Role = System.Web.Security.Roles.GetRolesForUser().Single();
 
                 switch (Role)
                 {
                     case "División de estudios profesionales":
-                        projects = DBC.ProjectCareers.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 7).Take(12).ToList();
+                        projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 7 && x.Owner).Take(12).ToList();
                         break;
                     case "Coordinador de carrera":
-                        projects = DBC.ProjectCareers.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 7 && x.Id_Career == CareerId).Take(12).ToList();
+                        long[] career = DBC.ProjectCareers.Where(x => x.Project.Active && x.Id_Career == CareerId).Select(x => x.Id_Project).ToArray();
+                        projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 7 && x.Owner && career.Contains(x.Id_Project)).Take(12).ToList();
                         break;
                     case "Jefe departamental":
-                        projects = DBC.ProjectCareers.Where(x => x.Project.Active && x.Id_Project == x.Project.Id && x.Id_Career == CareerId && x.Project.Id_ProjectPhase == 8 && x.Project.ProjectPersons.Where(r => r.Owner).Select(t => t.Owner).FirstOrDefault()).Take(12).ToList();
+                        long[] careerProjects = DBC.ProjectCareers.Where(x => x.Project.Active && x.Id_Career == CareerId).Select(x => x.Id_Project).ToArray();
+                        projects = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 8 && x.Owner && careerProjects.Contains(x.Id_Project)).Take(12).ToList();
                         break;
                     default:
                         break;
@@ -247,17 +249,9 @@ namespace SEPRET.Controllers
                     Actividades = x.Project.Actividades,
                     Comentarios = x.Project.Comentarios,
                     TimeCreated = x.Project.TimeCreated,
-                    //Presentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => string.Concat(s.Person.Name, " ", s.Person.MiddleName, " ", s.Person.LastName)).FirstOrDefault(),
-                    //EmailPresentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => s.Person.Email).FirstOrDefault(),
                     Active = x.Active,
-                    Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                    Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id && y.Active).Select(y => y.Career.Name).ToList()),
                     PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
-                    //Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Owner != true && y.Id_Dictum == 3).Select(y => new PersonVM
-                    //{
-                    //    UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
-                    //    Enrollment = y.Person.Enrollment,
-                    //    Email = y.Person.Email
-                    //}).ToList(),
                     Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
                     {
                         UserFullName = string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName),
@@ -265,7 +259,6 @@ namespace SEPRET.Controllers
                         Email = y.Person.Email,
                         ProjectOwner = y.Owner
                     }).ToList(),
-                    //Miembros = string.Join(", ", x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Owner != true && y.Id_Dictum == 3).Select(y => string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName, " (", y.Person.Enrollment, ")")).ToList()),
                     LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Id).Select(y => y.Mensaje).LastOrDefault()
                 }).ToList();
 
@@ -865,7 +858,7 @@ namespace SEPRET.Controllers
                     if (project.Active)
                     {
                         project.Id_ProjectType = 1;
-                        project.Id_Company = 1; // Modificar una vez que el alumno pueda seleccionar la empresa
+                        project.Id_Company = modelo.Id_Company;
                         project.Id_Nature = modelo.Id_Nature;
                         project.Id_Ambit = modelo.Id_Ambit;
                         project.Id_Kind = modelo.Id_Kind;
@@ -908,7 +901,7 @@ namespace SEPRET.Controllers
                         Project newProject = new Project
                         {
                             Id_ProjectType = 1,
-                            Id_Company = 1,// Modificar una vez que el alumno pueda seleccionar la empresa
+                            Id_Company = modelo.Id_Company,
                             Id_Nature = modelo.Id_Nature,
                             Id_Ambit = modelo.Id_Ambit,
                             Id_Kind = modelo.Id_Kind,
@@ -1344,7 +1337,7 @@ namespace SEPRET.Controllers
                         CommentCC = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3).Mensaje,
                         Active = x.Project.Active,
                         TimeCreated = x.Project.TimeCreated,
-                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id && y.Active).Select(y => y.Career.Name).ToList()),
                         PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                         Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
                         {
@@ -1408,7 +1401,7 @@ namespace SEPRET.Controllers
                         CommentCC = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 3).Mensaje,
                         Active = x.Project.Active,
                         TimeCreated = x.Project.TimeCreated,
-                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                        Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id && y.Active).Select(y => y.Career.Name).ToList()),
                         PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                         Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
                         {
@@ -1658,6 +1651,11 @@ namespace SEPRET.Controllers
                     Keyword = Keyword.ToLower();
 
                     projects = projects.Where(x => x.Project.Titulo.ToLower().Contains(Keyword) ||
+                    x.Project.ProjectPhase.Nombre.ToLower().Contains(Keyword) ||
+                    x.Project.ProjectType.Nombre.ToLower().Contains(Keyword) ||
+                    string.Concat(x.Person.Name, " ", x.Person.MiddleName, " ", x.Person.LastName).ToLower().Contains(Keyword) ||
+                    x.Person.Enrollment.ToLower().Contains(Keyword) ||
+                    x.Person.Career.Name.ToLower().Contains(Keyword) ||
                     x.TimeCreated.ToString().ToLower().Contains(Keyword)
                     );
                 }
@@ -1689,9 +1687,7 @@ namespace SEPRET.Controllers
                     CommentRevisor = x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4) is null ? "Aún no se publican comentarios" : x.Project.Comments.LastOrDefault(y => y.Id_Project == x.Project.Id && y.Id_CommentType == 4).Mensaje,
                     Active = x.Project.Active,
                     TimeCreated = x.Project.TimeCreated,
-                    //Presentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => string.Concat(s.Person.Name, " ", s.Person.MiddleName, " ", s.Person.LastName)).FirstOrDefault(),
-                    //EmailPresentador = x.Project.ProjectPersons.Where(g => g.Id_Project == x.Project.Id).Select(s => s.Person.Email).FirstOrDefault(),
-                    Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Career.Name).ToList()),
+                    Carrera = string.Join(", ", x.Project.ProjectCareers.Where(y => y.Id_Project == x.Project.Id && y.Active).Select(y => y.Career.Name).ToList()),
                     PDFExists = x.Project.ProjectFiles.Any(y => y.Id_Project == x.Project.Id && y.Id_FileType == 1 && y.Active),
                     Owner = x.Project.ProjectPersons.Any(y => y.Id_Project == x.Project.Id && y.Id_Person == UserId && y.Active),
                     Miembros = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Active && y.Id_Dictum == 3).Select(y => new PersonVM
@@ -1714,8 +1710,6 @@ namespace SEPRET.Controllers
                         Email = y.Person.Email
                     }).ToList(),
                     MiembrosPostulados = x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Id_Dictum == 2).Count(),
-                    //Revisores = x.Project.Advisers.Where(y => y.Id_Project == x.Id && y.Id_AdviserType == 1 && y.Active == true) is null ? "Sin revisor asignado" : string.Join(", ", x.Project.Advisers.Where(y => y.Id_Project == x.Id && y.Id_AdviserType == 1 && y.Active == true).Select(y => string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName)).ToList()),
-                    //Miembros = string.Join(", ", x.Project.ProjectPersons.Where(y => y.Id_Project == x.Project.Id && y.Owner != true && y.Id_Dictum == 3).Select(y => string.Concat(y.Person.Name, " ", y.Person.MiddleName, " ", y.Person.LastName, " (", y.Person.Enrollment, ")")).ToList()),
                     LastComment = x.Project.Comments.Where(y => y.Id_Project == x.Project.Id).Select(y => y.Mensaje).LastOrDefault()
                 }).ToList();
                 #endregion

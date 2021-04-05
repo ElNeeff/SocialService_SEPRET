@@ -1,4 +1,15 @@
-﻿
+﻿.bmd-label-floating {
+    color: #1976d2 !important;
+}
+
+div[role="alert"] {
+    z-index: 99999 !important;
+}
+
+.inputFileVisible::-webkit-input-placeholder {
+    color: #4caf50 !important;
+}
+
 .prepend-label-margin {
     margin-left: 55px !important;
 }

@@ -12,24 +12,29 @@ namespace SEPRET.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FileDictum
+    public partial class MyFile
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FileDictum()
+        public MyFile()
         {
-            this.MyFiles = new HashSet<MyFile>();
-            this.ProjectFiles = new HashSet<ProjectFile>();
+            this.MyFileComments = new HashSet<MyFileComment>();
         }
     
         public long Id { get; set; }
+        public long Id_Person { get; set; }
+        public long Id_FileType { get; set; }
+        public long Id_FileDictum { get; set; }
         public string Nombre { get; set; }
+        public string Tipo { get; set; }
+        public string Ruta { get; set; }
         public bool Active { get; set; }
         public System.DateTime TimeCreated { get; set; }
         public Nullable<System.DateTime> TimeUpdated { get; set; }
     
+        public virtual Person Person { get; set; }
+        public virtual FileDictum FileDictum { get; set; }
+        public virtual FileType FileType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MyFile> MyFiles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProjectFile> ProjectFiles { get; set; }
+        public virtual ICollection<MyFileComment> MyFileComments { get; set; }
     }
 }

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.MyFileVM>
+
+
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 d-flex align-items-stretch" id="@item.Id">
+            <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
+                @{
+                    string Color = item.Person.Career.Contains("CIVIL") ? "red" : item.Person.Career.Contains("EMPRESARIAL") ? "blue" : item.Person.Career.Contains("INDUSTRIAL") ? "orange" : item.Person.Career.Contains("SISTEMAS") ? "green" : "pink";
+                    string Career = item.Person.Career.Contains("CIVIL") ? "Civil" : item.Person.Career.Contains("EMPRESARIAL") ? "Gestión" : item.Person.Career.Contains("INDUSTRIAL") ? "Industrial" : item.Person.Career.Contains("SISTEMAS") ? "Sistemas" : "Contador";
+                    <div class="ribbon ribbon-top-left @Color"><span class="@Color">@Career</span></div>
+                }
+            <div class="card-body w-100">
+                <h6 class="card-category" style="color: @(item.Id_FileDictum is 1 ? "#ff9800" : "#00bcd4")!important;">@item.DictumName</h6>
+                @if (item.Id_FileDictum == 1)
+                {
+                    <p class="text-danger font-weight-bold">@item.Comments.LastOrDefault().Comment</p>
+                }
+                <h3 class="card-title mb-0 text-warning">@item.TypeName</h3>
+                <small class="text-muted">Última modificación: <time class="timeago" datetime="@(item.TimeUpdated?.ToString("o"))" rel="tooltip" data-placement="right" title="@item.TimeUpdated"></time></small>
+                <div class="card-description mt-0">
+                    <a class="text-success font-weight-bold" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@item.Person.Email?cc=@(User.IsInRole("División de estudios profesionales") ? item.CoordinadorEmail : item.DivisionEmail)&subject=Carta: @item.TypeName">@item.Person.UserFullName (@item.Person.Enrollment)</a>
+                    <br />
+                    <button class="btn btn-social btn-link btn-twitter mb-2 mt-0" onclick="ViewPDF(@item.Id, this);">
+                        <i class="material-icons">description</i> Ver documento
+                    </button>
+
+                    @switch ((int)item.Id_FileDictum)
+                    {
+                        case 1:
+                            <br />
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 100%" rel="tooltip" data-placement="bottom" data-html="true" title="<em>Motivo:</em><br><b>@item.Comments.LastOrDefault().Comment</b>">@item.DictumName</div>
+                            </div>
+                            break;
+                        case 2:
+                            <br />
+                            <a href="javascript:;" class="btn btn-success btn-just-icon btn-fill btn-round" onclick="Dictum(@item.Id, 'Accept', this);" rel="tooltip" data-placement="bottom" title="Aceptar">
+                                <i class="material-icons">assignment_turned_in</i>
+                            </a>
+                            <a href="javascript:;" class="btn btn-danger btn-just-icon btn-fill btn-round" onclick="Comment(@item.Id, 'Reject');" data-toggle="modal" data-target="#CommentModal" rel="tooltip" data-placement="bottom" title="Rechazar">
+                                <i class="material-icons">assignment_return</i>
+                            </a>
+                            break;
+                        case 3:
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 100%" rel="tooltip" data-placement="bottom" title="@item.DictumName">@item.DictumName</div>
+                            </div>
+                            break;
+                        default:
+                            break;
+                    }
+                </div>
+            </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="info text-center">
+        <div class="icon icon-primary">
+            <i class="material-icons">notifications</i>
+        </div>
+        <h4 class="info-title">¡Vaya!</h4>
+        <p>Parece que no existe ningún documento con tu criterio de búsqueda.</p>
+    </div>
+}
+
+<script>
+    $("time.timeago").timeago();
+    $('[rel="tooltip"]').tooltip();
+</script>

@@ -1,0 +1,124 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.MyFileVM>
+
+<div class="row">
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 d-flex align-items-stretch" id="@item.Id">
+                <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
+                    <div class="card-body w-100">
+                        <h6 class="card-category" style="color: @(item.Id_FileDictum is 1 ? "#ff9800" : "#00bcd4")!important;">@item.DictumName</h6>
+                        @if (item.Id_FileDictum == 1)
+                        {
+                            <p class="text-danger font-weight-bold">@item.Comments.LastOrDefault().Comment</p>
+                        }
+                        <a class="text-info" rel="tooltip" data-placement="right" title="Clic para enviar email" href="mailto:@item.CoordinadorEmail?cc=@item.DivisionEmail&subject=Carta: @item.TypeName">Enviar correo al coordinador de carrera</a>
+                        <h3 class="card-title mb-0 text-warning">@item.TypeName</h3>
+                        <small class="text-muted">Última modificación: <time class="timeago" datetime="@(item.TimeUpdated?.ToString("o"))" rel="tooltip" data-placement="right" title="@item.TimeUpdated"></time></small>
+                        <div class="card-description mt-0">
+                            <button class="btn btn-social btn-link btn-success mb-2 mt-0" onclick="ViewFile(@item.Id_FileType, '@item.TypeName');">
+                                <i class="material-icons">description</i> Ver documento
+                            </button>
+
+                            @switch ((int)item.Id_FileDictum)
+                            {
+                                case 1:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 100%">@item.DictumName</div>
+                                    </div>
+                                    <a href="javascript:;" class="btn btn-warning btn-link" onclick="ViewFile(@item.Id_FileType, '@item.TypeName');">
+                                        <i class="material-icons">note_add</i> Enviar documento corregido
+                                    </a>
+                                    break;
+                                case 2:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 100%" rel="tooltip" data-placement="bottom" title="@item.DictumName">En revisión</div>
+                                    </div>
+                                    break;
+                                case 3:
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-success progress-bar-animated font-weight-bold" role="progressbar" style="width: 100%" rel="tooltip" data-placement="bottom" title="@item.DictumName">@item.DictumName</div>
+                                    </div>
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="info text-center">
+            <div class="icon icon-primary">
+                <i class="material-icons">notifications</i>
+            </div>
+            <h4 class="info-title">¡Vaya!</h4>
+            <p>Parece que aún no has enviado ningún documento, selecciona en navegación el documento que deseas enviar.</p>
+        </div>
+    }
+</div>
+
+<script>
+    $("time.timeago").timeago();
+    $('[rel="tooltip"]').tooltip();
+
+    ViewFile = (Id_FileType, Nombre) => {
+        $('#Viewer').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+        );
+        const post = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;'
+            },
+            body: JSON.stringify({ TypeId: Id_FileType })
+        }
+
+        fetch('@Url.Action("ViewPDF", "MyFile")', post)
+            .then(response => response.json())
+            .then(({ MyFileId, Id_FileType, base64, Id_FileDictum }) => {
+                $('#Viewer').empty();
+                if (Id_FileDictum == 1) {
+                    $('#Viewer').html(`
+                        <div class="d-flex flex-direction-row justify-content-center">
+                            <form id="formFile" class="justfiy-content-end col-5" style="width: 28rem;">
+                                <div class="form-group form-file-upload form-file-simple">
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.FirstOrDefault().File, new { @type = "file", @class = "inputFileHidden", @accept = "application/pdf", @required = "" })
+                                        <input type="text" class="form-control inputFileVisible" placeholder="Clic aquí para seleccionar ${ Nombre } en formato PDF">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-round btn-primary btn-sm" onclick="uploadFile(${ Id_FileType }, this);">
+                                                Enviar
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>`);
+                    Site.initFileInput();
+                }
+                $('#Viewer').kendoPDFViewer({
+                    pdfjsProcessing: {
+                        file: base64
+                    },
+                    width: '100%',
+                    height: '100%'
+                }).data('kendoPDFViewer');
+                $('.doc-filter').removeClass('active');
+                $('#nav-' + Id_FileType).addClass('active');
+
+            })
+            .catch(error => console.error(error))
+    }
+</script>

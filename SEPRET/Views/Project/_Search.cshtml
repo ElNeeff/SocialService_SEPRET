@@ -5,7 +5,7 @@
 {
     foreach (var item in Model)
     {
-        <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 col-12 d-flex" id="@item.Id">
+        <div class="col-md-6 col-sm-12 col-lg-6 col-xl-4 d-flex" id="@item.Id">
             <div class="card card-background" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/project-bg.jpg" : "/Assets/img/project-bg.jpg")')">
                 <div class="card-body w-100">
                     @if (item.Empresa != "-")
@@ -15,7 +15,7 @@
 
                     <h6 class="card-category" style="color: @(item.Id_ProjectPhase is 1 ? "#ff9800" : "#00bcd4") !important;">@item.Etapa</h6>
 
-                    <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="top" title="Clic para ver detalles">@item.Titulo</h3>
+                    <h3 class="card-title mb-0" onclick="AddEdit(@item.Id, true);" style="cursor: pointer;" rel="tooltip" data-placement="right" title="Clic para ver detalles">@item.Titulo</h3>
                     <small class="text-muted">Públicado: <time class="timeago" datetime="@item.TimeCreated.ToString("o")" rel="tooltip" data-placement="right" title="@item.TimeCreated"></time></small>
                     <div class="card-description mt-0">
 

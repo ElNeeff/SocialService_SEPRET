@@ -145,6 +145,24 @@ namespace SEPRET.Controllers
             }
         }
 
+        protected string RenderPartialViewToString(string viewName, object model)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                viewName = ControllerContext.RouteData.GetRequiredString("action");
+
+            if (model != null)
+                ViewData.Model = model;
+
+            using (StringWriter sw = new StringWriter())
+            {
+                ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
 
         [HttpPost]
         public JsonResult SendMail(long ReceiptId, string Type, bool RequierePDF)
@@ -171,11 +189,11 @@ namespace SEPRET.Controllers
                     case "Accepted":
                     case "Invoiced":
                         subject = "Pago aceptado";
-                        renderedHTML = FakeController.RenderViewToString("EmailReceiptAccepted", "Dashboard", modelo);
+                        renderedHTML = RenderPartialViewToString("EmailReceiptAccepted", modelo);
                         break;
                     case "Rejected":
                         subject = "Pago rechazado";
-                        renderedHTML = FakeController.RenderViewToString("EmailReceiptRejected", "Dashboard", modelo);
+                        renderedHTML = RenderPartialViewToString("EmailReceiptRejected", modelo);
                         break;
                     default:
                         break;

@@ -48,6 +48,8 @@ namespace SEPRET.Models
         public virtual DbSet<FileDictum> FileDictums { get; set; }
         public virtual DbSet<FileType> FileTypes { get; set; }
         public virtual DbSet<Kind> Kinds { get; set; }
+        public virtual DbSet<MyFile> MyFiles { get; set; }
+        public virtual DbSet<MyFileComment> MyFileComments { get; set; }
         public virtual DbSet<Nature> Natures { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectCareer> ProjectCareers { get; set; }

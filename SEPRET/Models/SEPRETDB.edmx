@@ -283,6 +283,32 @@
           <Property Name="TimeCreated" Type="datetime" Nullable="false" />
           <Property Name="TimeUpdated" Type="datetime" />
         </EntityType>
+        <EntityType Name="MyFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Person" Type="bigint" Nullable="false" />
+          <Property Name="Id_FileType" Type="bigint" Nullable="false" />
+          <Property Name="Id_FileDictum" Type="bigint" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Tipo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Ruta" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MyFileComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_File" Type="bigint" Nullable="false" />
+          <Property Name="Comment" Type="text" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="TimeUpdated" Type="datetime" />
+        </EntityType>
         <EntityType Name="Nature">
           <Key>
             <PropertyRef Name="Id" />
@@ -648,6 +674,54 @@
             </Principal>
             <Dependent Role="Instrumentation">
               <PropertyRef Name="Id_Unit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyFile__Id_FileD__0A688BB1">
+          <End Role="FileDictum" Type="Self.FileDictum" Multiplicity="1" />
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileDictum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFile">
+              <PropertyRef Name="Id_FileDictum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyFile__Id_FileT__09746778">
+          <End Role="FileType" Type="Self.FileType" Multiplicity="1" />
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFile">
+              <PropertyRef Name="Id_FileType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyFile__Id_Perso__0880433F">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFile">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyFileCom__Id_Fi__1C873BEC">
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="1" />
+          <End Role="MyFileComment" Type="Self.MyFileComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyFile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFileComment">
+              <PropertyRef Name="Id_File" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1047,6 +1121,8 @@
           <EntitySet Name="FileDictum" EntityType="Self.FileDictum" Schema="Residence" store:Type="Tables" />
           <EntitySet Name="FileType" EntityType="Self.FileType" Schema="Residence" store:Type="Tables" />
           <EntitySet Name="Kind" EntityType="Self.Kind" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="MyFile" EntityType="Self.MyFile" Schema="Residence" store:Type="Tables" />
+          <EntitySet Name="MyFileComment" EntityType="Self.MyFileComment" Schema="Residence" store:Type="Tables" />
           <EntitySet Name="Nature" EntityType="Self.Nature" Schema="Residence" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="Residence" store:Type="Tables" />
           <EntitySet Name="ProjectCareer" EntityType="Self.ProjectCareer" Schema="Residence" store:Type="Tables" />
@@ -1118,6 +1194,22 @@
           <AssociationSet Name="FK__Instrumen__Id_Un__756D6ECB" Association="Self.FK__Instrumen__Id_Un__756D6ECB">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="Instrumentation" EntitySet="Instrumentation" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyFile__Id_FileD__0A688BB1" Association="Self.FK__MyFile__Id_FileD__0A688BB1">
+            <End Role="FileDictum" EntitySet="FileDictum" />
+            <End Role="MyFile" EntitySet="MyFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyFile__Id_FileT__09746778" Association="Self.FK__MyFile__Id_FileT__09746778">
+            <End Role="FileType" EntitySet="FileType" />
+            <End Role="MyFile" EntitySet="MyFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyFile__Id_Perso__0880433F" Association="Self.FK__MyFile__Id_Perso__0880433F">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="MyFile" EntitySet="MyFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyFileCom__Id_Fi__1C873BEC" Association="Self.FK__MyFileCom__Id_Fi__1C873BEC">
+            <End Role="MyFile" EntitySet="MyFile" />
+            <End Role="MyFileComment" EntitySet="MyFileComment" />
           </AssociationSet>
           <AssociationSet Name="FK__Person__CareerId__3F466844" Association="Self.FK__Person__CareerId__3F466844">
             <End Role="Career" EntitySet="Career" />
@@ -1409,6 +1501,7 @@
           <NavigationProperty Name="Advisers" Relationship="Self.FK__Adviser__Id_Pers__395884C4" FromRole="Person" ToRole="Adviser" />
           <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__Id_Pers__4E53A1AA" FromRole="Person" ToRole="Comment" />
           <NavigationProperty Name="Companies" Relationship="Self.FK__Company__Id_Pers__7A672E12" FromRole="Person" ToRole="Company" />
+          <NavigationProperty Name="MyFiles" Relationship="Self.FK__MyFile__Id_Perso__0880433F" FromRole="Person" ToRole="MyFile" />
           <NavigationProperty Name="PersonPermissions" Relationship="Self.FK__PersonPer__Perso__49C3F6B7" FromRole="Person" ToRole="PersonPermission" />
           <NavigationProperty Name="PersonSubjects" Relationship="Self.FK__PersonSub__Id_Pe__625A9A57" FromRole="Person" ToRole="PersonSubject" />
           <NavigationProperty Name="ProjectPersons" Relationship="Self.FK__ProjectPe__Id_Pe__40058253" FromRole="Person" ToRole="ProjectPerson" />
@@ -1553,6 +1646,7 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MyFiles" Relationship="Self.FK__MyFile__Id_FileD__0A688BB1" FromRole="FileDictum" ToRole="MyFile" />
           <NavigationProperty Name="ProjectFiles" Relationship="Self.FK__ProjectFi__Id_Fi__2FCF1A8A" FromRole="FileDictum" ToRole="ProjectFile" />
         </EntityType>
         <EntityType Name="FileType">
@@ -1564,6 +1658,7 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MyFiles" Relationship="Self.FK__MyFile__Id_FileT__09746778" FromRole="FileType" ToRole="MyFile" />
           <NavigationProperty Name="ProjectFiles" Relationship="Self.FK__ProjectFi__Id_Fi__2EDAF651" FromRole="FileType" ToRole="ProjectFile" />
         </EntityType>
         <EntityType Name="Kind">
@@ -1576,6 +1671,37 @@
           <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Projects" Relationship="Self.FK__Project__Id_Kind__208CD6FA" FromRole="Kind" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="MyFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Person" Type="Int64" Nullable="false" />
+          <Property Name="Id_FileType" Type="Int64" Nullable="false" />
+          <Property Name="Id_FileDictum" Type="Int64" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ruta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__MyFile__Id_Perso__0880433F" FromRole="MyFile" ToRole="Person" />
+          <NavigationProperty Name="FileDictum" Relationship="Self.FK__MyFile__Id_FileD__0A688BB1" FromRole="MyFile" ToRole="FileDictum" />
+          <NavigationProperty Name="FileType" Relationship="Self.FK__MyFile__Id_FileT__09746778" FromRole="MyFile" ToRole="FileType" />
+          <NavigationProperty Name="MyFileComments" Relationship="Self.FK__MyFileCom__Id_Fi__1C873BEC" FromRole="MyFile" ToRole="MyFileComment" />
+        </EntityType>
+        <EntityType Name="MyFileComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_File" Type="Int64" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MyFile" Relationship="Self.FK__MyFileCom__Id_Fi__1C873BEC" FromRole="MyFileComment" ToRole="MyFile" />
         </EntityType>
         <EntityType Name="Nature">
           <Key>
@@ -1997,6 +2123,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__MyFile__Id_Perso__0880433F">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFile">
+              <PropertyRef Name="Id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__PersonPer__Perso__49C3F6B7">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="PersonPermission" Type="Self.PersonPermission" Multiplicity="*" />
@@ -2165,6 +2303,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__MyFile__Id_FileD__0A688BB1">
+          <End Role="FileDictum" Type="Self.FileDictum" Multiplicity="1" />
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileDictum">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFile">
+              <PropertyRef Name="Id_FileDictum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__ProjectFi__Id_Fi__2FCF1A8A">
           <End Role="FileDictum" Type="Self.FileDictum" Multiplicity="1" />
           <End Role="ProjectFile" Type="Self.ProjectFile" Multiplicity="*" />
@@ -2174,6 +2324,18 @@
             </Principal>
             <Dependent Role="ProjectFile">
               <PropertyRef Name="Id_FileDictum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyFile__Id_FileT__09746778">
+          <End Role="FileType" Type="Self.FileType" Multiplicity="1" />
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFile">
+              <PropertyRef Name="Id_FileType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2198,6 +2360,18 @@
             </Principal>
             <Dependent Role="Project">
               <PropertyRef Name="Id_Kind" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyFileCom__Id_Fi__1C873BEC">
+          <End Role="MyFile" Type="Self.MyFile" Multiplicity="1" />
+          <End Role="MyFileComment" Type="Self.MyFileComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyFile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyFileComment">
+              <PropertyRef Name="Id_File" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2381,6 +2555,8 @@
           <EntitySet Name="FileDictums" EntityType="Self.FileDictum" />
           <EntitySet Name="FileTypes" EntityType="Self.FileType" />
           <EntitySet Name="Kinds" EntityType="Self.Kind" />
+          <EntitySet Name="MyFiles" EntityType="Self.MyFile" />
+          <EntitySet Name="MyFileComments" EntityType="Self.MyFileComment" />
           <EntitySet Name="Natures" EntityType="Self.Nature" />
           <EntitySet Name="Projects" EntityType="Self.Project" />
           <EntitySet Name="ProjectCareers" EntityType="Self.ProjectCareer" />
@@ -2457,6 +2633,10 @@
             <End Role="Person" EntitySet="People" />
             <End Role="Company" EntitySet="Companies" />
           </AssociationSet>
+          <AssociationSet Name="FK__MyFile__Id_Perso__0880433F" Association="Self.FK__MyFile__Id_Perso__0880433F">
+            <End Role="Person" EntitySet="People" />
+            <End Role="MyFile" EntitySet="MyFiles" />
+          </AssociationSet>
           <AssociationSet Name="FK__PersonPer__Perso__49C3F6B7" Association="Self.FK__PersonPer__Perso__49C3F6B7">
             <End Role="Person" EntitySet="People" />
             <End Role="PersonPermission" EntitySet="PersonPermissions" />
@@ -2513,9 +2693,17 @@
             <End Role="Dictum" EntitySet="Dicta" />
             <End Role="ProjectPerson" EntitySet="ProjectPersons" />
           </AssociationSet>
+          <AssociationSet Name="FK__MyFile__Id_FileD__0A688BB1" Association="Self.FK__MyFile__Id_FileD__0A688BB1">
+            <End Role="FileDictum" EntitySet="FileDictums" />
+            <End Role="MyFile" EntitySet="MyFiles" />
+          </AssociationSet>
           <AssociationSet Name="FK__ProjectFi__Id_Fi__2FCF1A8A" Association="Self.FK__ProjectFi__Id_Fi__2FCF1A8A">
             <End Role="FileDictum" EntitySet="FileDictums" />
             <End Role="ProjectFile" EntitySet="ProjectFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyFile__Id_FileT__09746778" Association="Self.FK__MyFile__Id_FileT__09746778">
+            <End Role="FileType" EntitySet="FileTypes" />
+            <End Role="MyFile" EntitySet="MyFiles" />
           </AssociationSet>
           <AssociationSet Name="FK__ProjectFi__Id_Fi__2EDAF651" Association="Self.FK__ProjectFi__Id_Fi__2EDAF651">
             <End Role="FileType" EntitySet="FileTypes" />
@@ -2524,6 +2712,10 @@
           <AssociationSet Name="FK__Project__Id_Kind__208CD6FA" Association="Self.FK__Project__Id_Kind__208CD6FA">
             <End Role="Kind" EntitySet="Kinds" />
             <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyFileCom__Id_Fi__1C873BEC" Association="Self.FK__MyFileCom__Id_Fi__1C873BEC">
+            <End Role="MyFile" EntitySet="MyFiles" />
+            <End Role="MyFileComment" EntitySet="MyFileComments" />
           </AssociationSet>
           <AssociationSet Name="FK__Project__Id_Natu__1EA48E88" Association="Self.FK__Project__Id_Natu__1EA48E88">
             <End Role="Nature" EntitySet="Natures" />
@@ -2879,6 +3071,34 @@
               <MappingFragment StoreEntitySet="Kind">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MyFiles">
+            <EntityTypeMapping TypeName="SEPRETModel.MyFile">
+              <MappingFragment StoreEntitySet="MyFile">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_Person" ColumnName="Id_Person" />
+                <ScalarProperty Name="Id_FileType" ColumnName="Id_FileType" />
+                <ScalarProperty Name="Id_FileDictum" ColumnName="Id_FileDictum" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Ruta" ColumnName="Ruta" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MyFileComments">
+            <EntityTypeMapping TypeName="SEPRETModel.MyFileComment">
+              <MappingFragment StoreEntitySet="MyFileComment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Id_File" ColumnName="Id_File" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
                 <ScalarProperty Name="TimeUpdated" ColumnName="TimeUpdated" />

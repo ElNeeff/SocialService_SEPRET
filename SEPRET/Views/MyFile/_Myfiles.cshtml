@@ -1,0 +1,153 @@
+﻿@model SEPRET.Models.Custom.MyFileVM
+
+<div class="row" style="margin-top: -1rem; margin-bottom: -1.5rem;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-warning card-header-icon row">
+                <div class="col-12">
+                    <div class="card-icon">
+                        <i class="material-icons">drive_folder_upload</i>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Mis documentos</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="toolbar" style="margin-top: -1.5rem;margin-bottom: -1rem;">
+                    <div class="row d-flex justify-content-around">
+                        <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
+                            @if (Model.FileTypes.Any())
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link disabled text-rose" data-toggle="tab" role="tablist">
+                                        Ir a:
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" id="nav-0" class="nav-link active doc-filter" data-toggle="tab" role="tablist" onclick="Tracking();">
+                                        Mis documentos
+                                    </a>
+                                </li>
+                                foreach (var type in Model.FileTypes)
+                                {
+                                    <li class="nav-item">
+                                        <a href="#" id="nav-@type.Id"class="nav-link doc-filter" data-toggle="tab" onclick="getFile(@type.Id, '@type.Nombre');">
+                                            @type.Nombre
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link active show" href="#">
+                                        No hay archivos activos
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    uploadFile = (Id, button) => {
+        const sendButton = jQuery(button);
+        sendButton.attr('disabled', true).html('Procesando...');
+        const formData = new FormData(document.getElementById('formFile'));
+        formData.append('Id_FileType', Id);
+        const post = {
+            method: 'POST',
+            body: formData
+        }
+
+        fetch('@Url.Action("UploadFile", "MyFile")', post)
+            .then(response => response.json())
+            .then(({ FileId, TypeId, message, success }) => {
+                sendButton.attr('disabled', false).html('Enviar');
+                if (success) {
+                    Site.OkNotification(message);
+                    getFile(TypeId, '');
+                } else {
+                    Site.ErrorNotification(message);
+                }
+            })
+            .catch(error => console.error(error))
+    }
+
+    getFile = (TypeId, Nombre) => {
+        $('#Viewer').html(`
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>`
+        );
+        const post = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;'
+            },
+            body: JSON.stringify({ TypeId: TypeId })
+        }
+
+        fetch('@Url.Action("ViewPDF", "MyFile")', post)
+            .then(response => response.json())
+            .then(({ Id, base64, Id_FileDictum }) => {
+                if (!base64) {
+                    $('#Viewer').html(`
+                        <div class="d-flex flex-direction-row justify-content-center">
+                            <form id="formFile" class="justfiy-content-end col-5">
+                                <div class="form-group form-file-upload form-file-simple">
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.File, new { @type = "file", @class = "inputFileHidden", @accept = "application/pdf", @required = "" })
+                                        <input type="text" class="form-control inputFileVisible" placeholder="Clic aquí para seleccionar ${ Nombre } en formato PDF">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-round btn-primary btn-sm" onclick="uploadFile(${ TypeId }, this);">
+                                                Enviar
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>`);
+                    Site.initFileInput();
+                } else {
+                    $('#Viewer').empty();
+                    if (Id_FileDictum == 1) {
+                        $('#Viewer').html(`
+                            <div class="d-flex flex-direction-row justify-content-center">
+                                <form id="formFile" class="justfiy-content-end col-5">
+                                    <div class="form-group form-file-upload form-file-simple">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.File, new { @type = "file", @class = "inputFileHidden", @accept = "application/pdf", @required = "" })
+                                            <input type="text" class="form-control inputFileVisible" placeholder="Clic aquí para seleccionar ${ Nombre } en formato PDF">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-round btn-primary btn-sm" onclick="uploadFile(${ TypeId }, this);">
+                                                    Enviar
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>`);
+                        Site.initFileInput();
+                    }
+                    $('#Viewer').kendoPDFViewer({
+                        pdfjsProcessing: {
+                            file: base64
+                        },
+                        width: '100%',
+                        height: '100%'
+                    }).data('kendoPDFViewer');
+                }
+            })
+            .catch(error => console.error(error))
+    }
+</script>

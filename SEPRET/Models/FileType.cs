@@ -17,6 +17,7 @@ namespace SEPRET.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FileType()
         {
+            this.MyFiles = new HashSet<MyFile>();
             this.ProjectFiles = new HashSet<ProjectFile>();
         }
     
@@ -26,6 +27,8 @@ namespace SEPRET.Models
         public System.DateTime TimeCreated { get; set; }
         public Nullable<System.DateTime> TimeUpdated { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MyFile> MyFiles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectFile> ProjectFiles { get; set; }
     }
