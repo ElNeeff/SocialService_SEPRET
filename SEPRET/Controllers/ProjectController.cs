@@ -1059,19 +1059,19 @@ namespace SEPRET.Controllers
             {
                 ProjectVM modelo = new ProjectVM();
 
-                List<Company> companies = DBC.Companies.Where(x => x.Active == true && x.Id_Dictum == 3).ToList();
+                List<Company> companies = DBC.Companies.Where(x => x.Active && (x.Id_Dictum == 3 || x.Id_Dictum == 2)).ToList();
                 ViewBag.CompanyList = new SelectList(companies, "Id", "Nombre");
 
-                List<Nature> natures = DBC.Natures.Where(x => x.Active == true).ToList();
+                List<Nature> natures = DBC.Natures.Where(x => x.Active).ToList();
                 ViewBag.NatureList = new SelectList(natures, "Id", "Nombre");
 
-                List<Ambit> ambits = DBC.Ambits.Where(x => x.Active == true).ToList();
+                List<Ambit> ambits = DBC.Ambits.Where(x => x.Active).ToList();
                 ViewBag.AmbitList = new SelectList(ambits, "Id", "Nombre");
 
-                List<Kind> kinds = DBC.Kinds.Where(x => x.Active == true).ToList();
+                List<Kind> kinds = DBC.Kinds.Where(x => x.Active).ToList();
                 ViewBag.KindList = new SelectList(kinds, "Id", "Nombre");
 
-                List<Career> careers = DBC.Careers.Where(x => x.Active == true).ToList();
+                List<Career> careers = DBC.Careers.Where(x => x.Active).ToList();
                 ViewBag.CareerList = new SelectList(careers, "Id", "Name");
 
 
@@ -1107,19 +1107,19 @@ namespace SEPRET.Controllers
             {
                 ProjectVM modelo = new ProjectVM();
 
-                List<Company> companies = DBC.Companies.Where(x => x.Active == true && x.Id_Dictum == 3).ToList();
+                List<Company> companies = DBC.Companies.Where(x => x.Active && (x.Id_Dictum == 3 || x.Id_Dictum == 2)).ToList();
                 ViewBag.CompanyList = new SelectList(companies, "Id", "Nombre");
 
-                List<Nature> natures = DBC.Natures.Where(x => x.Active == true).ToList();
+                List<Nature> natures = DBC.Natures.Where(x => x.Active).ToList();
                 ViewBag.NatureList = new SelectList(natures, "Id", "Nombre");
 
-                List<Ambit> ambits = DBC.Ambits.Where(x => x.Active == true).ToList();
+                List<Ambit> ambits = DBC.Ambits.Where(x => x.Active).ToList();
                 ViewBag.AmbitList = new SelectList(ambits, "Id", "Nombre");
 
-                List<Kind> kinds = DBC.Kinds.Where(x => x.Active == true).ToList();
+                List<Kind> kinds = DBC.Kinds.Where(x => x.Active).ToList();
                 ViewBag.KindList = new SelectList(kinds, "Id", "Nombre");
 
-                List<Career> careers = DBC.Careers.Where(x => x.Active == true).ToList();
+                List<Career> careers = DBC.Careers.Where(x => x.Active).ToList();
                 ViewBag.CareerList = new SelectList(careers, "Id", "Name");
 
 

@@ -505,6 +505,10 @@
             if (show) {
                 $('.panel-wrap').addClass('activeVisor');
             }
+        },
+
+        ShowVisor: function () {
+            $('.panel-wrap').addClass('activeVisor');
         }
     }
 }

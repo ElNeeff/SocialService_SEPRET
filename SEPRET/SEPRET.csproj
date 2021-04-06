@@ -414,7 +414,6 @@
     <Content Include="Models\SEPRETDB.edmx.diagram">
       <DependentUpon>SEPRETDB.edmx</DependentUpon>
     </Content>
-    <Content Include="Assets\FileSystem\Residencias\Francisco Robles CV.zip" />
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\Development.pubxml" />
     <None Include="Properties\PublishProfiles\Producción.pubxml" />
