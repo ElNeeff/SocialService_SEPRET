@@ -90,7 +90,7 @@
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 d-flex align-items-stretch mb-0" id="@item.Id">
                         <div class="card card-product" data-count="0">
                             <div onclick="Zoom('@item.Image', '@item.Voucher');" class="card-header card-header-image" data-header-animation="true" style="cursor:pointer;">
-                                <img class="img" src="@item.Image" onerror="this.onerror=null; this.src='@Href("~/Assets/img/receipts/Image404.jpg")'">
+                                <img class="img" src="@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? string.Concat("/SEPRET/", item.Image) : item.Image)" onerror="this.onerror=null; this.src='@Href("~/Assets/img/receipts/Image404.jpg")'">
                             </div>
                             <div class="card-body">
                                 <div class="card-actions text-center mt-2">
@@ -181,6 +181,19 @@
                         </div>
                     </div>
                 }
+            }
+            else
+            {
+                <div class="info text-center">
+                    <div class="icon icon-primary">
+                        <i class="material-icons">notification_important</i>
+                    </div>
+                    <h4 class="info-title">¡Vaya!</h4>
+                    <p>Parece que aún no has realizado ningún pago, selecciona <b>REALIZAR UN PAGO</b> en la barra de navegación para comenzar.</p>
+                </div>
+                <script>
+                    document.getElementById('Pages').style.display = 'none';
+                </script>
             }
         </div>
 

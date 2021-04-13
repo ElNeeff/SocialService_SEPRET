@@ -223,7 +223,7 @@ namespace SEPRET.Controllers
                         Session["CareerId"] = ValidUser.CareerId;
                         Session["DepartmentId"] = ValidUser.Career.Department.Id;
                         Session["UserFullName"] = string.Concat(ValidUser.Name, " ", ValidUser.MiddleName);
-                        Session["Photo"] = string.IsNullOrEmpty(ValidUser.Photo) ? Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/user/emptyAvatar.png" : "/Assets/img/user/emptyAvatar.png" : ValidUser.Photo;
+                        Session["Photo"] = string.IsNullOrEmpty(ValidUser.Photo) ? Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/user/emptyAvatar.png" : "/Assets/img/user/emptyAvatar.png" : Request.Url.AbsolutePath.Contains("SEPRET") ? string.Concat("/SEPRET/", ValidUser.Photo) : ValidUser.Photo;
 
                         FormsAuthentication.SetAuthCookie(ValidUser.Email, false);
 

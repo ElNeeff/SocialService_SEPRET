@@ -643,7 +643,7 @@
     <Content Include="Views\Recidence\Index.cshtml" />
     <Content Include="Views\Sector\Index.cshtml" />
     <Content Include="Views\Sector\_AddEdit.cshtml" />
-    <Content Include="Views\Shared\_Paginacion.cshtml" />
+    <Content Include="Views\Project\_Paginacion.cshtml" />
     <Content Include="Views\Shared\_PublicLayout.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Subject\Index.cshtml" />

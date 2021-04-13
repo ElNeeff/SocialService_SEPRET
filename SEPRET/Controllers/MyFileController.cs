@@ -208,9 +208,9 @@ namespace SEPRET.Controllers
                 {
                     if (modelo.File.ContentType.Contains("application/x-zip-compressed") || modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("rar"))
                     {
-                        string Folders = "/Assets/FileSystem/Residencias/";
+                        string Folders = "~/Assets/FileSystem/Residencias/";
                         string NombreArchivo = Path.GetFileName(modelo.File.FileName);
-                        string Ruta = Server.MapPath(Folders);
+                        string Ruta = Server.MapPath(string.Concat("~", Folders));
                         string Destination = Ruta + NombreArchivo;
                         string RelativePath = Folders + NombreArchivo;
                         Directory.CreateDirectory(Ruta);
@@ -273,7 +273,7 @@ namespace SEPRET.Controllers
                     {
                         string Folders = string.Concat("/Assets/pdf/anteproyectos/", (string)Session["Enrollment"], "/");
                         string NombreArchivo = Path.GetFileName(modelo.File.FileName);
-                        string Ruta = Server.MapPath(Folders);
+                        string Ruta = Server.MapPath(string.Concat("~", Folders));
                         string Destination = Ruta + NombreArchivo;
                         string RelativePath = Folders + NombreArchivo;
                         Directory.CreateDirectory(Ruta);

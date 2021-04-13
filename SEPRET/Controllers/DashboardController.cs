@@ -300,7 +300,7 @@ namespace SEPRET.Controllers
                 if (modelo.Id > 0 && modelo.File.ContentType.Contains("application/pdf"))
                 {
                     string Folders = string.Concat("/Assets/img/receipts/", modelo.PersonId, "/", modelo.PaymentId + "/");
-                    var Ruta = Server.MapPath(Folders);
+                    var Ruta = Server.MapPath(string.Concat("~", Folders));
                     var NombreArchivo = Path.GetFileName(modelo.File.FileName);
                     Destination = string.Concat(Ruta, NombreArchivo);
                     RelativePath = string.Concat(Folders, NombreArchivo);

@@ -9,7 +9,7 @@
         <form id="ProfileForm">
             <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                 <div class="fileinput-new img-raised card-avatar">
-                    <img src="@Model.Photo" style="height: 130px;">
+                    <img src="@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? string.Concat("/SEPRET/", Model.Photo) : Model.Photo)" style="height: 130px;">
                 </div>
                 <div class="fileinput-preview fileinput-exists img-raised card-avatar"></div>
                 <div>

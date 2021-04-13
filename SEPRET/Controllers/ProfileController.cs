@@ -51,7 +51,7 @@ namespace SEPRET.Controllers
                 if (modelo.File != null && modelo.File.ContentType.Contains("image/"))
                 {
                     string folders = string.Concat("/Assets/img/user/", Session["Id"], "/profile/");
-                    string ruta = Server.MapPath(folders);
+                    string ruta = Server.MapPath(string.Concat("~", folders));
                     string filename = modelo.File.FileName;
                     Destination = string.Concat(ruta, filename);
                     RelativePath = string.Concat(folders, filename);
@@ -67,7 +67,7 @@ namespace SEPRET.Controllers
                 person.CareerId = modelo.CareerId;
                 person.TimeUpdated = DateTime.Now;
 
-                Session["Photo"] = person.Photo;
+                Session["Photo"] = Request.Url.AbsolutePath.Contains("SEPRET") ? string.Concat("/SEPRET/", person.Photo) : person.Photo;
 
                 DBC.SaveChanges();
 

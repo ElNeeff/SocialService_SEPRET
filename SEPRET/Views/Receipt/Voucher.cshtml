@@ -78,12 +78,12 @@
 <body>
     <div>
         <div>
-            <img class="float-left" src="@Server.MapPath("/Assets/img/voucher/TECNM.png")" width="250" />
+            <img class="float-left" src="@Server.MapPath("~/Assets/img/voucher/TECNM.png")" width="250" />
             <span style="font-size: small; margin-left: 1%; margin-top: 6%; text-align: center;">
                 <b>INSTITUTO TECNOLOGICO DE MATEHUALA</b><br>
                 Fecha de generación: @DateTime.Now.ToString("F", new System.Globalization.CultureInfo("es-MX"))
             </span>
-            <img class="float-right" src="@Server.MapPath("/Assets/img/voucher/logo-tec.png")" width="120" />
+            <img class="float-right" src="@Server.MapPath("~/Assets/img/voucher/logo-tec.png")" width="120" />
         </div>
 
         <table style="margin-top: 10%; border-collapse: collapse; width: 100%">
@@ -107,13 +107,13 @@
                         Alumno: <b>@Model.PersonName</b><br>
                         Carrera: <b>@Model.Career</b><br>
                         <p style="color: red; font-size:medium;">
-                            <img class="float-left" style="margin-right: 2%;" src="@Server.MapPath("/Assets/img/voucher/banamex.jpg")" width="45" />
+                            <img class="float-left" style="margin-right: 2%;" src="@Server.MapPath("~/Assets/img/voucher/banamex.jpg")" width="45" />
                             Banco: <b>BANAMEX</b> <br>
                             No.Cuenta: <b>006426189</b> <br>
                             Clabe Interbancaria: <b>002709006400261894</b>
                         </p>
                         <p style="color: red; font-size:medium;">
-                            <img class="float-left" style="margin-right: 2%;" src="@Server.MapPath("/Assets/img/voucher/bbva.png")" width="45" />
+                            <img class="float-left" style="margin-right: 2%;" src="@Server.MapPath("~/Assets/img/voucher/bbva.png")" width="45" />
                             Banco: <b>BBVA Bancomer</b> <br>
                             No.Cuenta: <b>0116382096</b> <br>
                             Sucursal: <b>0830</b> <br>

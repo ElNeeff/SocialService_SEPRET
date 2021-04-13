@@ -92,6 +92,7 @@
                         {
                             <h6 class="card-category">@item.Empresa</h6>
                         }
+
                         @if (item.Carrera.Split(',').Count() > 1)
                         {
                             <h6 class="k-text-success">@item.Carrera</h6>
@@ -225,9 +226,9 @@
             <h4 class="info-title">¡Genial!</h4>
             <p>No tienes pendientes</p>
         </div>
-        <script>
+        @*<script>
             document.getElementById('Pages').style.display = 'none';
-        </script>
+        </script>*@
     }
 </div>
 
@@ -262,6 +263,10 @@
             $("time.timeago").timeago();
             $('[rel="tooltip"]').tooltip();
             Site.initSidePanel();
+            $('.filter').click(function () {
+                var filter = $(this).attr('id');
+                Paginate(filter);
+            });
         });
 
         ViewPDF = (Id, button) => {

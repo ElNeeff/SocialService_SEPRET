@@ -91,7 +91,7 @@ namespace SEPRET.Controllers
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
                 ProjectFile projectFile = DBC.ProjectFiles.OrderByDescending(x => x.Id).FirstOrDefault(x => x.Id_Project == Id && x.Id_FileType == 1 && x.Active);
-                var file = Server.MapPath(projectFile.Ruta);
+                var file = Server.MapPath(string.Concat("~", projectFile.Ruta));
 
                 byte[] bytes = System.IO.File.ReadAllBytes(file);
                 string base64 = string.Concat("data:application/pdf;base64,", Convert.ToBase64String(bytes));
@@ -232,7 +232,7 @@ namespace SEPRET.Controllers
 
                 long total = projects.Count();
 
-                List<ProjectVM> projectList = projects.Select(x => new ProjectVM
+                List<ProjectVM> projectList = projects.OrderByDescending(x => x.TimeCreated).Select(x => new ProjectVM
                 {
                     Id = x.Project.Id,
                     Id_ProjectType = x.Project.Id_ProjectType,
@@ -659,7 +659,7 @@ namespace SEPRET.Controllers
                 }
                 #endregion
 
-                return PartialView("~/Views/Shared/_Paginacion.cshtml", TotalRegisters);
+                return PartialView("~/Views/Project/_Paginacion.cshtml", TotalRegisters);
             }
         }
 
@@ -700,7 +700,7 @@ namespace SEPRET.Controllers
 
                             Comment comment = new Comment
                             {
-                                Id_CommentType = User.IsInRole("Jefe academia") ? 6 :User.IsInRole("Subdirección académica") ? 7 : User.IsInRole("Jefe departamental") ? 2 : User.IsInRole("Coordinador de carrera") ? 3 : User.IsInRole("División de estudios profesionales") ? 8 : 4,
+                                Id_CommentType = User.IsInRole("Jefe academia") ? 6 : User.IsInRole("Subdirección académica") ? 7 : User.IsInRole("Jefe departamental") ? 2 : User.IsInRole("Coordinador de carrera") ? 3 : User.IsInRole("División de estudios profesionales") ? 8 : 4,
                                 Id_Person = UserId,
                                 Id_Project = Id,
                                 Mensaje = Comment,
@@ -892,7 +892,7 @@ namespace SEPRET.Controllers
                 }
                 else
                 {
-                    ProjectPerson project = DBC.ProjectPersons.Where(x => x.Id_Person == UserId).OrderByDescending(x => x.Project.Id).FirstOrDefault();
+                    ProjectPerson project = DBC.ProjectPersons.Where(x => x.Id_Person == UserId && x.Project.Active).OrderByDescending(x => x.Project.Id).FirstOrDefault();
 
                     bool canCreate = project is null || (!project.Project.Active);
 
@@ -974,7 +974,7 @@ namespace SEPRET.Controllers
                             long lastFileId = projectFile.Id;
 
                             Folders = string.Concat(Folders, lastFileId, "/");
-                            string Ruta = Server.MapPath(Folders);
+                            string Ruta = Server.MapPath(string.Concat("~", Folders));
                             string Destination = Ruta + NombreArchivo;
                             string RelativePath = Folders + NombreArchivo;
                             Directory.CreateDirectory(Ruta);
@@ -1005,15 +1005,18 @@ namespace SEPRET.Controllers
                                     };
                                     DBC.ProjectPersons.Add(newMember);
 
-                                    ProjectCareer projectCareer = new ProjectCareer
+                                    if (CareerId != person.CareerId)
                                     {
-                                        Id_Career = person.CareerId,
-                                        Id_Project = lastProjectId,
-                                        Active = true,
-                                        TimeCreated = DateTime.Now
-                                    };
+                                        ProjectCareer projectCareer = new ProjectCareer
+                                        {
+                                            Id_Career = person.CareerId,
+                                            Id_Project = lastProjectId,
+                                            Active = true,
+                                            TimeCreated = DateTime.Now
+                                        };
 
-                                    DBC.ProjectCareers.Add(projectCareer);
+                                        DBC.ProjectCareers.Add(projectCareer);
+                                    }
                                 }
                             }
                         }
@@ -1227,7 +1230,7 @@ namespace SEPRET.Controllers
                         long lastFileId = projectFile.Id;
 
                         Folders = string.Concat(Folders, lastFileId, "/");
-                        string Ruta = Server.MapPath(Folders);
+                        string Ruta = Server.MapPath(string.Concat("~", Folders));
                         string Destination = Ruta + NombreArchivo;
                         string RelativePath = Folders + NombreArchivo;
                         Directory.CreateDirectory(Ruta);
@@ -1666,7 +1669,7 @@ namespace SEPRET.Controllers
                 projects = projects.Skip(skip).Take(12);
 
                 #region Lista
-                List<ProjectVM> projectList = projects.Select(x => new ProjectVM
+                List<ProjectVM> projectList = projects.OrderByDescending(x => x.TimeCreated).Select(x => new ProjectVM
                 {
                     Id = x.Project.Id,
                     Id_ProjectType = x.Project.Id_ProjectType,

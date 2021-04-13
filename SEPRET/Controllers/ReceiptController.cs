@@ -94,7 +94,7 @@ namespace SEPRET.Controllers
                 if (modelo.File != null && modelo.File.ContentType.Contains("image"))
                 {
                     Folders = string.Concat("/Assets/img/receipts/", (long)Session["Id"], "/", modelo.PaymentId + "/");
-                    Ruta = Server.MapPath(Folders);
+                    Ruta = Server.MapPath(string.Concat("~", Folders));
                     NombreArchivo = Path.GetFileName(modelo.File.FileName);
                     RelativePath = Folders + NombreArchivo;
                     Destination = Ruta + NombreArchivo;

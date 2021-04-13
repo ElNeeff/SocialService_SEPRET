@@ -49,7 +49,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="material-datatables" style="display: none;">
+
+                <div class="sk-chase" style="display: none;">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>
+
+                <div id="DTContainer" class="material-datatables" style="display: none;">
                     <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="col-sm-12">
                             <table id="UserDT" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" width="100%">
@@ -207,7 +217,8 @@
         }
 
         UserDT = Filter => {
-            $('.material-datatables').hide();
+            $('#DTContainer').hide();
+            $('.sk-chase').show();
             Table = $('#UserDT').on('draw.dt', () => InitMisc()).DataTable({
                 'bDestroy': true,
                 responsive: true,
@@ -253,10 +264,11 @@
                     'url': '@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/json/SpanishDT.json" : "/Assets/json/SpanishDT.json")'
                 },
                 initComplete: () => {
+                    $('.sk-chase').hide();
                     $('select').selectpicker();
                     Site.StyleDropdownDT();
                     $('[data-toggle="tooltip"]').tooltip();
-                    $('.material-datatables').show();
+                    $('#DTContainer').show();
                 }
             });
         }
