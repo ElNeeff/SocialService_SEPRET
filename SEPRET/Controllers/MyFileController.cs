@@ -97,7 +97,7 @@ namespace SEPRET.Controllers
                 long CareerId = (long)Session["CareerId"];
                 long TotalRegisters = User.IsInRole("Alumno") ? DBC.MyFiles.Where(x => x.Id_Person == UserId && x.Active).Count() : User.IsInRole("Coordinador de carrera") && Filter == "All" ? DBC.MyFiles.Where(x => x.Active && x.Person.CareerId == CareerId).Count() : User.IsInRole("Coordinador de carrera") ? DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2 && x.Person.CareerId == CareerId).Count() : User.IsInRole("División de estudios profesionales") && Filter == "All" ? DBC.MyFiles.Where(x => x.Active).Count() : DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2).Count();
 
-                return PartialView("~/Views/Shared/_Paginacion.cshtml", TotalRegisters);
+                return PartialView("~/Views/MyFile/_Paginacion.cshtml", TotalRegisters);
             }
         }
 

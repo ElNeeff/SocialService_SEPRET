@@ -1,0 +1,49 @@
+﻿@model long?
+
+
+<li class="page-item" id="PrevPage">
+    <a class="page-link" href="javascript:;" tabindex="-1">Anterior</a>
+</li>
+
+@if (Model > 0)
+{
+    long? y = (Model + 12 - 1) / 12;
+
+    <li class="page-item" id="ActualPage" rel="0"><a class="page-link" href="javascript:;">1</a></li>
+    <li class="page-item disabled"><a class="page-link" href="javascript:;">de</a></li>
+    <li class="page-item" rel="@y"><a class="page-link" href="javascript:;">@y</a></li>
+
+    <script>
+        $('#NextPage').click(function () {
+            var i = parseInt($('#ActualPage').attr('rel'));
+            var y = i + 2;
+            if (y <= @y) {
+                var filter = $('a.filter.nav-link.active').attr('id');
+                FileList(filter, '', ++i);
+                $('#ActualPage').attr('rel', i);
+                $('#ActualPage').empty().append('<a class="page-link" href="javascript:;">' + y + '</a>');
+            }
+        });
+
+        $('#PrevPage').click(function () {
+            var i = $('#ActualPage').attr('rel');
+            if (i >= 1) {
+                $('#ActualPage').empty().append('<a class="page-link" href="javascript:;">' + i + '</a>');
+                var filter = $('a.filter.nav-link.active').attr('id');
+                FileList(filter, '', --i);
+                $('#ActualPage').attr('rel', i);
+            }
+        });
+    </script>
+}
+else
+{
+    <li class="page-item" id="ActualPage" rel="0"><a class="page-link" href="javascript:;">0</a></li>
+    <li class="page-item disabled"><a class="page-link" href="javascript:;">de</a></li>
+    <li class="page-item" rel="0"><a class="page-link" href="javascript:;">0</a></li>
+    <script>$('#Pages').hide();</script>
+}
+
+<li class="page-item">
+    <a class="page-link" id="NextPage" href="javascript:;">Siguiente</a>
+</li>

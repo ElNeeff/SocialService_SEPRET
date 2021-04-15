@@ -594,34 +594,34 @@ namespace SEPRET.Controllers
                 switch (Filter)
                 {
                     case "Pending":
-                        TotalRegisters = User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active).Count() : User.IsInRole("Jefe departamental") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active).Count() : User.IsInRole("Docente") ? DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && (x.Project.Id_ProjectPhase == 9 || x.Project.Id_ProjectPhase == 10)).Count() : DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
+                        TotalRegisters = User.IsInRole("Jefe academia") || User.IsInRole("Subdirección académica") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Active && x.Owner).Count() : User.IsInRole("Jefe departamental") ? DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase < 5 && x.Project.Id_ProjectType == 2 && x.Project.Active && x.Owner).Count() : User.IsInRole("Docente") ? DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && (x.Project.Id_ProjectPhase == 9 || x.Project.Id_ProjectPhase == 10)).Count() : DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
                         break;
                     case "PendingTeacher":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase < 5 && x.Id_Person == UserId && x.Owner).Count();
                         break;
                     case "Accepted":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Active).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 3 && x.Project.Active && x.Owner).Count();
                         break;
                     case "AcceptedA":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 5 && x.Project.Id_ProjectType == 2 && x.Project.Active && x.Owner).Count();
                         break;
                     case "Rejected":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 1 && x.Project.Active).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 1 && x.Project.Active && x.Owner).Count();
                         break;
                     case "Deleted":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active == false).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active == false && x.Owner).Count();
                         break;
                     case "Finished":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 4 && x.Project.Active).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 4 && x.Project.Active && x.Owner).Count();
                         break;
                     case "Student":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Owner).Count();
                         break;
                     case "Bank":
                         TotalRegisters = DBC.ProjectCareers.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 5 && x.Project.Id_ProjectType == 2 && x.Id_Career == CareerId).Count();
                         break;
                     case "BankDocente":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Project.Id_ProjectType == 2).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Id_Person == UserId && x.Project.Id_ProjectType == 2 && x.Owner).Count();
                         break;
                     case "PendingCC":
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Owner && x.Project.Id_ProjectPhase == 7 && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
@@ -994,16 +994,19 @@ namespace SEPRET.Controllers
 
                                 if (person != null)
                                 {
-                                    ProjectPerson newMember = new ProjectPerson
+                                    if (person.Id != UserId)
                                     {
-                                        Id_Project = lastProjectId,
-                                        Id_Person = person.Id,
-                                        Id_Dictum = 3,
-                                        Owner = false,
-                                        Active = true,
-                                        TimeCreated = DateTime.Now
-                                    };
-                                    DBC.ProjectPersons.Add(newMember);
+                                        ProjectPerson newMember = new ProjectPerson
+                                        {
+                                            Id_Project = lastProjectId,
+                                            Id_Person = person.Id,
+                                            Id_Dictum = 3,
+                                            Owner = false,
+                                            Active = true,
+                                            TimeCreated = DateTime.Now
+                                        };
+                                        DBC.ProjectPersons.Add(newMember);
+                                    }
 
                                     if (CareerId != person.CareerId)
                                     {

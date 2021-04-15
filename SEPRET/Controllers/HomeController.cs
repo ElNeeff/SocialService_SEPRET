@@ -53,33 +53,33 @@ namespace SEPRET.Controllers
         }
         
 
-        public JsonResult sybase()
-        {
-            var connectionString = "Data Source=192.168.7.213;Port=5000;Database=bdtec;Uid=sa;";
-            StudentSII[] allRecords = null;
-            string careerName = "";
+        //public JsonResult sybase()
+        //{
+        //    var connectionString = "Data Source=192.168.7.213;Port=5000;Database=bdtec;Uid=sa;";
+        //    StudentSII[] allRecords = null;
+        //    string careerName = "";
 
-            using (var connection = new AseConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT c.carrera, c.nombre_carrera, a.nombre_alumno, a.apellido_paterno, a.apellido_materno FROM carreras AS c INNER JOIN alumnos AS a ON c.carrera = a.carrera WHERE a.no_de_control = '16660017'";
+        //    using (var connection = new AseConnection(connectionString))
+        //    {
+        //        connection.Open();
+        //        using (var command = connection.CreateCommand())
+        //        {
+        //            command.CommandText = "SELECT c.carrera, c.nombre_carrera, a.nombre_alumno, a.apellido_paterno, a.apellido_materno FROM carreras AS c INNER JOIN alumnos AS a ON c.carrera = a.carrera WHERE a.no_de_control = '16660017'";
 
-                    using (var reader = command.ExecuteReader())
-                    {
-                        var list = new List<StudentSII>();
-                        while (reader.Read())
-                        {
-                            careerName = reader.GetString(1);
-                            list.Add(new StudentSII { CareerId = reader.GetString(0), CareerName = reader.GetString(1), Name = reader.GetString(2), MiddleName = reader.GetString(3), LastName = reader.GetString(4) });
-                            allRecords = list.ToArray();
-                        }
-                        return Json(allRecords, JsonRequestBehavior.AllowGet);
-                    }
-                }
-            }
-        }
+        //            using (var reader = command.ExecuteReader())
+        //            {
+        //                var list = new List<StudentSII>();
+        //                while (reader.Read())
+        //                {
+        //                    careerName = reader.GetString(1);
+        //                    list.Add(new StudentSII { CareerId = reader.GetString(0), CareerName = reader.GetString(1), Name = reader.GetString(2), MiddleName = reader.GetString(3), LastName = reader.GetString(4) });
+        //                    allRecords = list.ToArray();
+        //                }
+        //                return Json(allRecords, JsonRequestBehavior.AllowGet);
+        //            }
+        //        }
+        //    }
+        //}
 
         protected string RenderPartialViewToString(string viewName, object model)
         {
@@ -290,7 +290,7 @@ namespace SEPRET.Controllers
                             connection.Open();
                             using (var command = connection.CreateCommand())
                             {
-                                command.CommandText = string.Concat("SELECT c.carrera, c.nombre_carrera, a.nombre_alumno, a.apellido_paterno, a.apellido_materno FROM carreras AS c INNER JOIN alumnos AS a ON c.carrera = a.carrera WHERE a.no_de_control =", "'", modelo.Enrollment, "'");
+                                command.CommandText = string.Concat("SELECT c.carrera, c.nombre_carrera, a.nombre_alumno, a.apellido_paterno, a.apellido_materno FROM carreras AS c INNER JOIN alumnos AS a ON c.carrera = a.carrera WHERE a.no_de_control =", "'", modelo.Enrollment.Trim(), "'");
 
                                 using (var reader = command.ExecuteReader())
                                 {
@@ -313,7 +313,7 @@ namespace SEPRET.Controllers
                                     dbc.Open();
                                     using (var command = dbc.CreateCommand())
                                     {
-                                        command.CommandText = string.Concat("SELECT c.carrera, c.nombre_carrera, a.nombre_alumno, a.apellido_paterno, a.apellido_materno FROM carreras AS c INNER JOIN alumnos AS a ON c.carrera = a.carrera WHERE a.no_de_control =", "'", modelo.Enrollment, "'");
+                                        command.CommandText = string.Concat("SELECT c.carrera, c.nombre_carrera, a.nombre_alumno, a.apellido_paterno, a.apellido_materno FROM carreras AS c INNER JOIN alumnos AS a ON c.carrera = a.carrera WHERE a.no_de_control =", "'", modelo.Enrollment.Trim(), "'");
 
                                         using (var reader = command.ExecuteReader())
                                         {
@@ -345,7 +345,7 @@ namespace SEPRET.Controllers
                                 Person person = new Person
                                 {
                                     CareerId = careerId,
-                                    Enrollment = modelo.Enrollment,
+                                    Enrollment = modelo.Enrollment.Trim(),
                                     Name = name.ToTitleCase(),
                                     MiddleName = middlename.ToTitleCase(),
                                     LastName = lastname.ToTitleCase(),

@@ -53,7 +53,7 @@
                     <div class="row">
                         <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link filter active" data-toggle="tab" role="tablist" onclick="ProjectList('@(User.IsInRole("Docente") ? "PendingTeacher" : "Pending")');" style="cursor: pointer;">
+                                <a id="@(User.IsInRole("Docente") ? "PendingTeacher" : "Pending")" class="nav-link filter active" data-toggle="tab" role="tablist" onclick="ProjectList('@(User.IsInRole("Docente") ? "PendingTeacher" : "Pending")');" style="cursor: pointer;">
                                     En proceso de evaluación
                                 </a>
                             </li>
@@ -78,12 +78,12 @@
                                     </a>
                                 </li>*@
                             <li class="nav-item">
-                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('AcceptedA');" style="cursor: pointer;">
+                                <a id="AcceptedA" class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('AcceptedA');" style="cursor: pointer;">
                                     Públicados en banco de proyectos
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('@(User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") ? "AllCareer" : User.IsInRole("Subdirección académica") ? "AllDivision" : "AllCC")');" style="cursor: pointer;">
+                                <a id="@(User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") ? "AllCareer" : User.IsInRole("Subdirección académica") ? "AllDivision" : "AllCC")" class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('@(User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") ? "AllCareer" : User.IsInRole("Subdirección académica") ? "AllDivision" : "AllCC")');" style="cursor: pointer;">
                                     Todos los proyectos
                                 </a>
                             </li>

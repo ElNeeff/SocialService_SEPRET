@@ -668,6 +668,7 @@
     <Content Include="Views\MyFile\_SearchFiles.cshtml" />
     <Content Include="Views\MyFile\_CommentReject.cshtml" />
     <Content Include="Views\MyFile\_UploadPanel.cshtml" />
+    <Content Include="Views\MyFile\_Paginacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

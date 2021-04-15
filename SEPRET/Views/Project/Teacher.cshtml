@@ -59,17 +59,17 @@
                     <div class="row">
                         <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active filter" data-toggle="tab" role="tablist" onclick="ProjectList('Pending');" style="cursor: pointer;">
+                                <a id="Pending" class="nav-link active filter" data-toggle="tab" role="tablist" onclick="ProjectList('Pending');" style="cursor: pointer;">
                                     En revisión
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('PendingAdviser');" style="cursor: pointer;">
+                                <a id="PendingAdviser" class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('PendingAdviser');" style="cursor: pointer;">
                                     En asesoría
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('AllTeacher');" style="cursor: pointer;">
+                                <a id="AllTeacher" class="nav-link filter" data-toggle="tab" role="tablist" onclick="ProjectList('AllTeacher');" style="cursor: pointer;">
                                     Todos los proyectos
                                 </a>
                             </li>
@@ -227,6 +227,10 @@
             $("time.timeago").timeago();
             $('[rel="tooltip"]').tooltip();
             Site.initSidePanel();
+            $('.filter').click(function () {
+                var filter = $(this).attr('id');
+                Paginate(filter);
+            });
         });
 
         Details = Id => {
