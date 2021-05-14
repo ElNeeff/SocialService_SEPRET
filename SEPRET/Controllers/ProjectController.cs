@@ -302,7 +302,6 @@ namespace SEPRET.Controllers
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
                 Project project = DBC.Projects.FirstOrDefault(x => x.Id == Id_Project);
-
                 Adviser adviser = project.Id_ProjectPhase >= 11 ? DBC.Advisers.FirstOrDefault(x => x.Id_Project == Id_Project && x.Id_Person == Id_Person && x.Id_AdviserType == 2) : DBC.Advisers.FirstOrDefault(x => x.Id_Project == Id_Project && x.Id_Person == Id_Person && x.Id_AdviserType == 1);
 
                 if (adviser != null)
@@ -323,12 +322,24 @@ namespace SEPRET.Controllers
                     DBC.Advisers.Add(adviser);
                 }
 
-                project.Id_ProjectPhase = project.Id_ProjectPhase is 8 || project.Id_ProjectPhase is 10 ? 10 : 12;
-                project.TimeUpdated = DateTime.Now;
-
                 DBC.SaveChanges();
 
-                return Json(true, JsonRequestBehavior.AllowGet);
+                bool isSet = DBC.Advisers.Any(x => x.Active && x.Id_Project == Id_Project);
+
+                if (isSet)
+                {
+                    project.Id_ProjectPhase = project.Id_ProjectPhase is 8 || project.Id_ProjectPhase is 10 ? 10 : 12;
+                    project.TimeUpdated = DateTime.Now;
+                }
+                else
+                {
+                    project.Id_ProjectPhase = project.Id_ProjectPhase is 10 ? 8 : 10;
+                    project.TimeUpdated = DateTime.Now;
+                }
+                DBC.SaveChanges();
+
+
+                return Json(isSet, JsonRequestBehavior.AllowGet);
             }
         }
 

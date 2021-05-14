@@ -214,7 +214,8 @@ namespace SEPRET.Controllers
             {
                 using (SEPRETEntities DBC = new SEPRETEntities())
                 {
-                    var ValidUser = DBC.People.FirstOrDefault(x => x.Email.Trim().ToLower() == modelo.Email.Trim().ToLower() && x.Password == modelo.Password && x.Active);
+                    string email = modelo.Email.Trim().ToLower();
+                    var ValidUser = DBC.People.FirstOrDefault(x => x.Email.Trim().ToLower() == email && x.Password == modelo.Password && x.Active);
 
                     if (ValidUser != null)
                     {

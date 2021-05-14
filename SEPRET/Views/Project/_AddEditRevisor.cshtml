@@ -81,14 +81,14 @@
         })
             .then(response => response.json())
             .then(success => {
+                Table.draw();
                 if (success) {
-                    Table.draw();
-                    $('#Modal').on('hidden.bs.modal', function (e) {
-                        $('#' + @Model + ', div.tooltip').hide('slow', () => { $('#' + @Model + ', div.tooltip').remove(); });
-                    })
+                    $('#Modal').on('hidden.bs.modal', e => {
+                        //$('#' + @Model + ', div.tooltip').hide('slow', () => { $('#' + @Model + ', div.tooltip').remove(); });
+                    });
                     Site.OkNotification('La acción se procesó correctamente');
                 } else {
-                    Site.ErrorNotification();
+                    Site.ErrorNotification('Debes seleccionar al menos un docente');
                 }
             })
             .catch(error => console.error(error))
