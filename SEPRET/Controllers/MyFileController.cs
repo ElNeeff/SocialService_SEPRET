@@ -189,7 +189,7 @@ namespace SEPRET.Controllers
             using (SEPRETEntities DBC = new SEPRETEntities())
             {
                 MyFile myFile = Id is 0 ? DBC.MyFiles.Where(x => x.Active && x.FileType.Nombre.ToLower().Contains("formatos de residencias profesionales")).ToList().LastOrDefault() : DBC.MyFiles.FirstOrDefault(x => x.Id == Id);
-                var filePath = Server.MapPath(myFile.Ruta);
+                var filePath = Server.MapPath(string.Concat("~", myFile.Ruta));
 
                 return File(filePath, "application/force-download", Path.GetFileName(filePath));
             }
@@ -208,7 +208,7 @@ namespace SEPRET.Controllers
                 {
                     if (modelo.File.ContentType.Contains("application/x-zip-compressed") || modelo.File.FileName.Substring(modelo.File.FileName.Length - 3).ToLower().Contains("rar"))
                     {
-                        string Folders = "~/Assets/FileSystem/Residencias/";
+                        string Folders = "/Assets/FileSystem/Residencias/";
                         string NombreArchivo = Path.GetFileName(modelo.File.FileName);
                         string Ruta = Server.MapPath(string.Concat("~", Folders));
                         string Destination = Ruta + NombreArchivo;
@@ -344,7 +344,7 @@ namespace SEPRET.Controllers
 
                 if (myFile != null)
                 {
-                    var file = Server.MapPath(myFile.Ruta);
+                    var file = Server.MapPath(string.Concat("~", myFile.Ruta));
 
                     byte[] bytes = System.IO.File.ReadAllBytes(file);
                     base64 = string.Concat("data:application/pdf;base64,", Convert.ToBase64String(bytes));
