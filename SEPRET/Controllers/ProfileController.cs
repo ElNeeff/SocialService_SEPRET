@@ -33,6 +33,7 @@ namespace SEPRET.Controllers
                     modelo.Photo = person.Photo is null ? "/Assets/img/_BlankPicture.png" : person.Photo;
                     modelo.Phone = person.Phone;
                     modelo.Email = person.Email;
+                    modelo.Password = person.Password;
                     modelo.CareerId = person.CareerId;
                 }
 
@@ -64,6 +65,7 @@ namespace SEPRET.Controllers
                 person.Photo = string.IsNullOrEmpty(person.Photo) && RelativePath is null ? "/Assets/img/user/emptyAvatar.png" :  RelativePath is null ? person.Photo : RelativePath;
                 person.Phone = modelo.Phone;
                 person.Email = modelo.Email;
+                person.Password= modelo.Password;
                 person.CareerId = modelo.CareerId;
                 person.TimeUpdated = DateTime.Now;
 

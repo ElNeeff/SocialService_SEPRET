@@ -226,9 +226,9 @@
             <h4 class="info-title">¡Genial!</h4>
             <p>No tienes pendientes</p>
         </div>
-        @*<script>
+        <script>
             document.getElementById('Pages').style.display = 'none';
-        </script>*@
+        </script>
     }
 </div>
 
@@ -380,7 +380,6 @@
                     <div class="sk-chase-dot"></div>
                 </div>`
             );
-            Paginate(Filter);
             fetch('@Url.Action("ProjectList", "Project")', {
                 method: 'POST',
                 headers: {

@@ -663,6 +663,7 @@ namespace SEPRET.Controllers
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Owner && x.Project.Id_ProjectPhase == 7).Count();
                         break;
                     case "AllDivision":
+                        //TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && (x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3)) && x.Owner).Count();
                         TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && (x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3)) && x.Owner).Count();
                         break;
                     default:

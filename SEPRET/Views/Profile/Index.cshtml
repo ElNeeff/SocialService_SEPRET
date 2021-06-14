@@ -47,6 +47,13 @@
                     </div>
                 </div>
 
+                <div class="col-md-9 col-sm-12 mx-auto">
+                    <div class="form-group bmd-form-group text-left" required>
+                        <label class="bmd-label-floating text-left">Cambiar contraseña:</label>
+                        @Html.TextBoxFor(x => x.Password, new { @class = "form-control" })
+                    </div>
+                </div>
+
                 <button class="btn btn-primary btn-round">Guardar</button>
             </div>
         </form>
