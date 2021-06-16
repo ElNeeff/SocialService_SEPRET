@@ -1,79 +1,15 @@
-﻿@{
-    Layout = null;
-}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>Was it a dream?</title>
-    <link rel="icon"
-          type="image/png"
-          href="https://p7.hiclipart.com/preview/190/236/992/world-of-warcraft-illidari-illidan-stormrage-azeroth-game-world-of-warcraft-thumbnail.jpg" />
-
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Megrim|Fauna+One|Playfair+Display:700" />
-
-    <link rel="stylesheet" href="https://matehuala.tecnm.mx/SEPRET/Assets/js/style.css" />
-    <style>
-        a {
-            background-color: unset !important;
-        }
-        #escape a {
-            background-color: #30ff00 !important;
-        }
-    </style>
-</head>
-<body oncontextmenu="return false;">
-    <div class="glitch-image"></div>
-    <canvas id="canvas"></canvas>
-    <div class="container">
-        <div id="glitch">
-            <div class="text"></div>
-        </div>
-        <div class="overlay">
-            <div class="content">
-                <div class="error">404</div>
-                <div class="info">Parece que te has perdido...</div>
+﻿
+<div class="wrapper wrapper-full-page">
+    <div class="page-header error-page header-filter" style="background-image: url('@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? "/SEPRET/Assets/img/404.jpg" : "/Assets/img/404.jpg")')">
+        <!--   you can change the color of the filter page using: data-color="blue | green | orange | red | purple" -->
+        <div class="content-center">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="title">404</h1>
+                    <h2>Página no encontrada :(</h2>
+                    <h4>Ooooups! Parece que te perdiste.</h4>
+                </div>
             </div>
         </div>
-        <div class="typed-text">
-            <p class="type-text"
-               title="\| Parte del viaje es su final... \| Este proyecto es desarrollado por Francisco Robles..."></p>
-            <p id="escape">
-            </p>
-        </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script>
-        $(function () {
-            $(".type-text").each(function () {
-                var items = $(this).attr("title") + ";" + $(this).text();
-                $(this)
-                    .empty()
-                    .attr("title", "")
-                    .teletype({
-                        text: $.map(items.split(";"), $.trim),
-                        typeDelay: 20,
-                        backDelay: 20,
-                        cursor: "|",
-                        delay: 3000,
-                        preserve: true,
-                        prefix: "",
-                        humanise: true,
-                        loop: 1,
-                    });
-            });
-        });
-        $(document).ready(function () {
-            console.log('Bienvenido al club... Es tu primer dia?');
-            setTimeout(function () {
-                $("#escape").append(
-                    '<a href="@Url.Action("Index", "Home")">Salir de aquí</a>'
-                );
-            }, 13000);
-        });</script>
-    <script src="https://matehuala.tecnm.mx/SEPRET/Assets/js/script.js"></script>
-</body>
-</html>
+</div>

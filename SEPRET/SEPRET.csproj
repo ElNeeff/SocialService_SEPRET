@@ -360,7 +360,7 @@
     <Content Include="Assets\img\project-bg.jpg" />
     <Content Include="Assets\img\dust_scratches.png" />
     <Content Include="Assets\img\favicon.png" />
-    <Content Include="Assets\img\login.jpg" />
+    <Content Include="Assets\img\404.jpg" />
     <Content Include="Assets\img\login.png" />
     <Content Include="Assets\img\office.jpg" />
     <Content Include="Assets\img\pattern.png" />

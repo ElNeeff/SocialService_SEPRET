@@ -1684,7 +1684,7 @@ namespace SEPRET.Controllers
                 projects = projects.Skip(skip).Take(12);
 
                 #region Lista
-                List<ProjectVM> projectList = projects.OrderByDescending(x => x.TimeCreated).Select(x => new ProjectVM
+                List<ProjectVM> projectList = projects.OrderByDescending(x => x.Project.Id).Select(x => new ProjectVM
                 {
                     Id = x.Project.Id,
                     Id_ProjectType = x.Project.Id_ProjectType,
