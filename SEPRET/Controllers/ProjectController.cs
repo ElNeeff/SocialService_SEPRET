@@ -644,10 +644,10 @@ namespace SEPRET.Controllers
                         TotalRegisters = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active && x.Project.Id_ProjectPhase >= 12 && x.Project.Id_ProjectPhase < 16 && x.Id_AdviserType == 2).Count();
                         break;
                     case "AllCC":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3) && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && (x.Project.Id_ProjectPhase >= 5 || (x.Project.Id_ProjectType == 1 && x.Project.Id_ProjectPhase >= 3)) && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
                         break;
                     case "AllCareer":
-                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
+                        TotalRegisters = DBC.ProjectPersons.Where(x => x.Project.Active && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).Count();
                         break;
                     case "AllTeacher":
                         long[] advisers = DBC.Advisers.Where(x => x.Id_Person == UserId && x.Active && x.Project.Active).Select(x => x.Id_Project).ToArray();
@@ -1621,7 +1621,7 @@ namespace SEPRET.Controllers
                         projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 4 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 4 && x.Project.Id_ProjectType == 2 && x.Project.Active).ToList();
                         break;
                     case "AcceptedA":
-                        projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 5 && x.Project.Id_ProjectType == 2 && x.Project.Active && x.Owner).ToList();
+                        projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active && x.Project.Id_ProjectPhase == 5 && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Id_ProjectPhase == 5 && x.Project.Id_ProjectType == 2 && x.Project.Active && x.Owner && x.Project.ProjectCareers.Where(r => r.Id_Career == CareerId).Select(t => t.Id_Career).FirstOrDefault() == CareerId).ToList();
                         break;
                     case "Unpublished":
                         projects = User.IsInRole("Docente") ? DBC.ProjectPersons.Where(x => x.Project.Active == false && x.Id_Person == UserId).ToList() : DBC.ProjectPersons.Where(x => x.Project.Active == false && x.Project.Id_ProjectType == 2).ToList();

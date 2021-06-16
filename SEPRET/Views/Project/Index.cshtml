@@ -703,7 +703,7 @@
 
     <script>
         $(() => {
-            Paginate('@(User.IsInRole("Docente") ? "PendingTeacher" : User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") ? "AllCareer" : "Pending")');
+            Paginate('@(User.IsInRole("Docente") ? "PendingTeacher" : User.IsInRole("Jefe departamental") || User.IsInRole("Jefe academia") ? "Pending" : "Pending")');
             $('#Search').keyup(function () {
                 var filter = $('a.filter.nav-link.active').attr('id');
                 var keyword = $(this).val();
@@ -946,7 +946,9 @@
                     <div class="sk-chase-dot"></div>
                 </div>`
             );
-            Paginate(Filter);
+            if (Skip === undefined) {
+                Paginate(Filter);
+            }
             fetch('@Url.Action("ProjectList", "Project")', {
                 method: 'POST',
                 headers: {
