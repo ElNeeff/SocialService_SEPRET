@@ -29,6 +29,15 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
+
+                    <li class="nav-item @(ViewBag.currentView == "INTRANET" ? "active" : string.Empty)">
+                        <a href="http://intranet.matehuala.tecnm.mx/" class="nav-link text-black">
+                            <i class="material-icons"> public </i>
+                            INTRANET
+                        </a>
+                    </li>
+
+
                     <li class="nav-item @(ViewBag.currentView == "Index" ? "active" : string.Empty)">
                         <a href="@Url.Action("Index", "Home")" class="nav-link text-black">
                             <i class="material-icons">home</i>
@@ -43,7 +52,7 @@
                         </a>
                     </li>
 
-
+                    
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
