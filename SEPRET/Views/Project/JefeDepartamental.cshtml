@@ -204,6 +204,10 @@
             $("time.timeago").timeago();
             $('[rel="tooltip"]').tooltip();
             Site.initSidePanel();
+            $('.filter').click(function () {
+                var filter = $(this).attr('id');
+                Paginate(filter);
+            });
         });
 
         Details = Id => {
@@ -351,7 +355,6 @@
                     <div class="sk-chase-dot"></div>
                 </div>`
             );
-            Paginate(Filter);
             fetch('@Url.Action("ProjectList", "Project")', {
                 method: 'POST',
                 headers: {

@@ -45,21 +45,35 @@
                     <!--        Here you can write extra buttons/actions for the toolbar              -->
                     <div class="row">
                         <ul class="nav nav-pills nav-pills-rose mb-3 d-flex justify-content-between" role="tablist">
-                            <li class="nav-item">
-                                <a id="Pending" class="nav-link active filter" data-toggle="tab" role="tablist" onclick="FileList('Pending');" style="cursor: pointer;">
-                                    Pendientes de autorización
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a id="All" class="nav-link filter" data-toggle="tab" role="tablist" onclick="FileList('All');" style="cursor: pointer;">
-                                    Todos los documentos
-                                </a>
-                            </li>
-                            <li class="nav-item justify-content-end">
-                                <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="UploadPanel();" style="cursor: pointer;">
-                                    Subir formatos de residencias profesionales
-                                </a>
-                            </li>
+                            @if (User.IsInRole("Coordinador de carrera") || User.IsInRole("División de estudios profesionales"))
+                            {
+
+
+                                <li class="nav-item">
+                                    <a id="Pending" class="nav-link active filter" data-toggle="tab" role="tablist" onclick="FileList('Pending');" style="cursor: pointer;">
+                                        Pendientes de autorización
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="All" class="nav-link filter" data-toggle="tab" role="tablist" onclick="FileList('All');" style="cursor: pointer;">
+                                        Todos los documentos
+                                    </a>
+                                </li>
+                                <li class="nav-item justify-content-end">
+                                    <a class="nav-link filter" data-toggle="tab" role="tablist" onclick="UploadPanel();" style="cursor: pointer;">
+                                        Subir formatos de residencias profesionales
+                                    </a>
+                                </li>
+
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a id="All" class="nav-link active filter" data-toggle="tab" role="tablist" onclick="FileList('All');" style="cursor: pointer;">
+                                        Todos los documentos
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>

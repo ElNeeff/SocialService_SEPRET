@@ -17,7 +17,7 @@ namespace SEPRET.Controllers
             {
                 long UserId = (long)Session["Id"];
                 long CareerId = (long)Session["CareerId"];
-                IEnumerable<MyFile> data = User.IsInRole("División de estudios profesionales") ? DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2).Take(12).ToList() : DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2 && x.Person.CareerId == CareerId).Take(12).ToList();
+                IEnumerable<MyFile> data = User.IsInRole("División de estudios profesionales") ? DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2).Take(12).ToList() : User.IsInRole("Coordinador de carrera") ? DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2 && x.Person.CareerId == CareerId).Take(12).ToList() : DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 3 && x.Person.CareerId == CareerId).Take(12).ToList();
 
                 List<MyFileVM> myFiles = data.Select(x => new MyFileVM
                 {
@@ -108,7 +108,7 @@ namespace SEPRET.Controllers
             {
                 long UserId = (long)Session["Id"];
                 long CareerId = (long)Session["CareerId"];
-                IEnumerable<MyFile> data = User.IsInRole("Alumno") ? DBC.MyFiles.Where(x => x.Id_Person == UserId && x.Active).ToList() : User.IsInRole("Coordinador de carrera") && Filter == "All" ? DBC.MyFiles.Where(x => x.Active && x.Person.CareerId == CareerId).ToList() : User.IsInRole("Coordinador de carrera") ? DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2 && x.Person.CareerId == CareerId).ToList() : User.IsInRole("División de estudios profesionales") && Filter == "All" ? DBC.MyFiles.Where(x => x.Active).ToList() : DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2).ToList();
+                IEnumerable<MyFile> data = User.IsInRole("Alumno") ? DBC.MyFiles.Where(x => x.Id_Person == UserId && x.Active).ToList() : User.IsInRole("Coordinador de carrera") && Filter == "All" ? DBC.MyFiles.Where(x => x.Active && x.Person.CareerId == CareerId).ToList() : User.IsInRole("Coordinador de carrera") ? DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2 && x.Person.CareerId == CareerId).ToList() : User.IsInRole("Jefe departamental") ? DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 3 && x.Person.CareerId == CareerId).ToList() : User.IsInRole("División de estudios profesionales") && Filter == "All" ? DBC.MyFiles.Where(x => x.Active).ToList() : DBC.MyFiles.Where(x => x.Active && x.Id_FileDictum == 2).ToList();
 
                 #region Búsqueda
                 if (!string.IsNullOrEmpty(Keyword))

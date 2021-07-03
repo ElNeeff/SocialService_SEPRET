@@ -29,13 +29,22 @@
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title">Proyectos alumno</h4>
                         <div class="justify-content-end">
-                        <a class="btn btn-round btn-sm btn-primary mt-3" href="@Url.Action("DownloadFormats", "MyFile")">
-                            <i class="material-icons">file_download</i> Descargar formatos
-                        </a>
-                        <button class="btn btn-round btn-sm btn-warning mt-3" onclick="ShowFilesVisor(this);">
-                            <i class="material-icons">folder_shared</i> Ver y enviar documentos
-                        </button>
+                            <a class="btn btn-round btn-sm btn-primary mt-3" href="@Url.Action("DownloadFormats", "MyFile")">
+                                <i class="material-icons">file_download</i> Descargar formatos
+                            </a>
 
+                            @if (ViewBag.ProjectList != null)
+                            {
+                                foreach (var item in ViewBag.ProjectList)
+                                {
+                                    if (item.Id_ProjectPhase >= 12)
+                                    {
+                                        <button class="btn btn-round btn-sm btn-warning mt-3" onclick="ShowFilesVisor(this);">
+                                            <i class="material-icons">folder_shared</i> Ver y enviar documentos
+                                        </button>
+                                    }
+                                }
+                            }
                         </div>
                     </div>
                 </div>
@@ -282,6 +291,9 @@
                                             <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 6</div>
                                             <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 7</div>
                                         </div>
+                                        <button class="btn btn-round btn-sm btn-warning mt-3" onclick="ShowFilesVisor(this);">
+                                            <i class="material-icons">folder_shared</i> Ver y enviar documentos
+                                        </button>
                                         break;
                                     default:
                                         break;
@@ -396,6 +408,9 @@
                                             <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="@item.Etapa">Etapa 5</div>
                                             <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 25%" rel="tooltip" data-placement="left" title="Informe técnico">Etapa 6</div>
                                         </div>
+                                        <button class="btn btn-round btn-sm btn-warning mt-3" onclick="ShowFilesVisor(this);">
+                                            <i class="material-icons">folder_shared</i> Ver y enviar documentos
+                                        </button>
                                         break;
                                     default:
                                         break;
