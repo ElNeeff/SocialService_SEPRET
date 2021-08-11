@@ -141,6 +141,7 @@
     <Compile Include="Controllers\CareerController.cs" />
     <Compile Include="Controllers\CommentTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\CreditController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DictumController.cs" />
@@ -202,6 +203,23 @@
     <Compile Include="Models\Company.cs">
       <DependentUpon>SEPRETDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Credit.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CreditPhase.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CreditReason.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CreditReceipt.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CreditRejection.cs">
+      <DependentUpon>SEPRETDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\CreditRecieptVM.cs" />
+    <Compile Include="Models\Custom\CreditVM.cs" />
     <Compile Include="Models\Custom\FileDictumVM.cs" />
     <Compile Include="Models\Custom\MyFileCommentVM.cs" />
     <Compile Include="Models\Custom\MyFileVM.cs" />
@@ -371,6 +389,7 @@
     <Content Include="Assets\img\sidebar-bg.png" />
     <Content Include="Assets\img\sidebar.jpg" />
     <Content Include="Assets\img\TACM.png" />
+    <Content Include="Assets\img\upload_file.png" />
     <Content Include="Assets\img\user\emptyAvatar.png" />
     <Content Include="Assets\img\voucher\banamex.jpg" />
     <Content Include="Assets\img\voucher\bbva.png" />
@@ -669,6 +688,10 @@
     <Content Include="Views\MyFile\_CommentReject.cshtml" />
     <Content Include="Views\MyFile\_UploadPanel.cshtml" />
     <Content Include="Views\MyFile\_Paginacion.cshtml" />
+    <Content Include="Views\Credit\Index.cshtml" />
+    <Content Include="Views\Credit\_CreditList.cshtml" />
+    <Content Include="Views\Credit\_CreditRecieptList.cshtml" />
+    <Content Include="Views\Credit\_AddEditCreditReceipt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

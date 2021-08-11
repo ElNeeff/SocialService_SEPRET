@@ -12,23 +12,29 @@ namespace SEPRET.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Reason
+    public partial class CreditReceipt
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Reason()
+        public CreditReceipt()
         {
-            this.Rejections = new HashSet<Rejection>();
+            this.Rejections = new HashSet<CreditRejection>();
         }
     
         public long Id { get; set; }
-        public string Description { get; set; }
-        public bool Preset { get; set; }
+        public long PersonId { get; set; }
+        public long CreditId { get; set; }
+        public long PhaseId { get; set; }
+        public string URL_PDF { get; set; }
+        public string Approbate { get; set; }
+        public Nullable<long> ApprobateBy { get; set; }
         public bool Active { get; set; }
-        public long CreatedBy { get; set; }
         public System.DateTime TimeCreated { get; set; }
         public Nullable<System.DateTime> TimeUpdated { get; set; }
     
+        public virtual Credit Credit { get; set; }
+        public virtual CreditPhase Phase { get; set; }
+        public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Rejection> Rejections { get; set; }
+        public virtual ICollection<CreditRejection> Rejections { get; set; }
     }
 }

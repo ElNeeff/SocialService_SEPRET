@@ -1,0 +1,329 @@
+﻿@model IEnumerable<SEPRET.Models.Custom.CreditRecieptVM>
+@{
+    ViewBag.Title = "Creditos";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-rose alert-with-icon mt-3 col-7 mx-auto" data-notify="container">
+            <i class="material-icons" data-notify="icon">notifications</i>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <i class="material-icons">close</i>
+            </button>
+            <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+            <span data-notify="message">
+                Si tu carrera es incorrecta, por favor actualizala dando @Html.ActionLink("click aquí", "Index", "Profile", null, new { @class = "text-black", @style = "text-decoration: underline;" }). Después vuelve a generar tu credito.
+            </span>
+        </div>
+
+        <div class="card">
+            <div class="card-header card-header-primary card-header-icon row">
+                <div class="col-xl-9 col-sm-12">
+                    <div class="card-icon">
+                        <i class="material-icons">receipt</i>
+                    </div>
+                    <h4 class="card-title">Lista de creditos disponibles.</h4>
+                </div>
+
+                <div class="col-xl-3 col-sm-12">
+
+                    <div class="form-group bmd-form-group mt-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="material-icons">search</i></div>
+                            </div>
+                            <label class="bmd-label-floating prepend-label-margin">Buscar un credito...</label>
+                            <input type="text" class="form-control" id="SearchCredit">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="toolbar">
+                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-pills nav-pills-rose mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link disabled text-rose" data-toggle="tab" role="tablist">
+                                        Ir a:
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+
+                                    <a id="MyCredit" class="filter nav-link active" data-toggle="tab" role="tablist" style="cursor: pointer;" onclick="PartialViewCreditRecieptList('NoCredit')">
+                                        Creditos Subidos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="CreditList" class="filter nav-link" data-toggle="tab" role="tablist" onclick="PartialViewTypeCreditList('NoCredit')" style="cursor: pointer;">
+                                        Subir un credito
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content-->
+        </div>
+
+
+        <div class="alert alert-primary alert-with-icon" data-notify="container">
+            <i class="material-icons" data-notify="icon">notifications</i>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <i class="material-icons">close</i>
+            </button>
+            <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+            <span data-notify="message">
+                Debes escanear el credito y subirlo en formato PDF.
+            </span>
+        </div>
+
+
+        <div class="row text-center" id="creditscontainer">
+            @if (Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 d-flex align-items-stretch mb-0" id="@item.Id">
+                        <div class="card card-product" data-count="0">
+
+                            <div class="card-body">
+                                <div class="text-center mt-2">
+
+                                    @if (item.Active)
+                                    {
+                                        switch (item.PhaseId)
+                                        {
+                                            case 1:
+                                                <button onclick="AcceptReceipt(@item.Id);" type="button" class="btn btn-info btn-link" rel="tooltip" data-placement="left" title="Credito en revisión, recibirás un correo electrónico cuando sea atendido">
+                                                    <i class="material-icons text-large">pending_actions</i>
+                                                </button>
+                                                <div class="progress mt-3" style="height: 15px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-info progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="left" title="En revisión">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="left" title="Aceptado">Etapa 2</div>
+                                                    @*<div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="left" title="Facturado">Etapa 3</div>*@
+                                                </div>
+                                                break;
+                                            case 2:
+                                                <button class="btn btn-success btn-link" rel="tooltip" data-placement="left" title="Credito concluido éxitosamente.">
+                                                    <i class="material-icons text-large">assignment_turned_in</i>
+                                                </button>
+                                                <div class="progress mt-3" style="height: 15px;">
+                                                    <div class="progress-bar progress-bar-success progress-bar-success font-weight-bold" role="progressbar" style="width: 50%" aria-valuemax="5" rel="tooltip" data-placement="left" title="En revisión">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-success progress-bar-success font-weight-bold" role="progressbar" style="width: 50%" aria-valuemax="95" rel="tooltip" data-placement="left" title="Aceptado">Etapa 2</div>
+                                                    @*<div class="progress-bar progress-bar-success progress-bar-success font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuemax="100" rel="tooltip" data-placement="left" title="Facturado">Etapa 3</div>*@
+                                                </div>
+                                                break;
+                                            case 3:
+                                                <button onclick="AddEditCreditReceipt(@item.CreditId, @item.Id);" type="button" class="btn btn-info btn-link" rel="tooltip" data-placement="left" data-html="true" title="Editar información del credito para reenvio">
+                                                    <i class="material-icons text-large">assignment_return</i>
+                                                </button>
+                                                <div class="progress mt-3" style="height: 15px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-danger progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="left" title="El pago fué rechazado">Etapa 1</div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="left" title="Aceptado">Etapa 2</div>
+                                                    @*<div class="progress-bar progress-bar-striped progress-bar-gray progress-bar-animated font-weight-bold" role="progressbar" style="width: 33.33%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" rel="tooltip" data-placement="left" title="Facturado">Etapa 3</div>*@
+                                                </div>
+                                                break;
+                                            default:
+                                                <h1>@item.PhaseId</h1>
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-info btn-link" disabled rel="tooltip" data-placement="left" title="Deshacer eliminar">
+                                            <i class="material-icons text-large">restore_from_trash</i>
+                                        </button>
+                                    }
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="card-title mt-5">
+                                        @item.PersonName
+                                    </h4>
+                                    <div class="card-description">
+                                        <p class="mb-0">@item.Enrollment</p>
+                                        <p class="mb-0">@item.Email</p>
+                                        <p>@item.Career</p>
+                                        <p class="text-center mb-0">Tipo de Credito: @item.Credit</p>
+                                        <p>Recibido el: <b>@item.TimeCreated</b></p>
+                                        @*@if (!string.IsNullOrEmpty(item.RejectDescription) && item.PhaseId == 1)
+                                        {<small class="text-muted text-warning">Motivo de rechazo:</small><p class="text-danger font-weight-bold">@item.RejectDescription</p>}*@
+                                        <div class="card-footer card-header-image" style="text-align: center; cursor: pointer; margin-left:25%">
+                                            <a class="btn" onclick="ViewPDF('@item.URL_PDF')"><i class="material-icons">visibility</i> Visualizar Documento</a>
+                                            @*<img class="img" src="@(HttpContext.Current.Request.Url.AbsolutePath.Contains("SEPRET") ? string.Concat("/SEPRET", item.Image) : item.Image)" onerror="this.onerror=null; this.src='@Href("~/Assets/img/receipts/Image404.jpg")'">*@
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @*<div class="card-footer">
+                                    <div class="price">
+                                        <h4>@item.PriceFormatted</h4>
+                                    </div>
+                                    <div class="stats">
+                                        <p class="card-category"><i class="material-icons">receipt</i> @item.MethodName: @item.Voucher</p>
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="info text-center">
+                    <div class="icon icon-primary">
+                        <i class="material-icons">notification_important</i>
+                    </div>
+                    <h4 class="info-title">¡Oops!</h4>
+                    <p>No se econtraron resultados con tu criterio de búsqueda.</p>
+                </div>
+            }
+        </div>
+
+                </div>
+</div>
+
+<div id="ModalContainerCr" style="margin-top: -50px">
+
+</div>
+
+
+
+@section scripts{
+    <script>
+        $(() => {
+            $('#SearchCredit').keyup(function () {
+                var filter = $('a.filter.nav-link.active').attr('id');
+                var keyword = $(this).val();
+                if (filter == 'CreditList') {
+                    
+                    PartialViewTypeCreditList(keyword);
+                } else {
+                    PartialViewCreditRecieptList(keyword);
+                }
+            });
+
+            
+        })
+
+        //Cargar la PartialView de los tipos de creditos
+        PartialViewTypeCreditList = (keyword) => {
+
+            fetch("@Url.Action("CreditList","Credit")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Keyword: keyword })//La keyword es usada en las busquedas
+            })
+                .then(response => response.text())
+                .then(data => {
+                    //Se carga en el container de las cards la informacion de la partial view
+                    $("#creditscontainer").html(data);
+                })
+                .catch(error => console.error(error))
+
+            //$.ajax({
+            //    type: "POST",
+            //    url: "Credit/CreditList",
+            //    data: {Keyword:keyword},
+            //    success: function (response) {
+            //        $("#creditscontainer").html(response);
+            //   }
+            //});
+        };
+        //Cargar la PartialView de los Creditos del Alumno
+        PartialViewCreditRecieptList = (keyword) => {
+
+            fetch("@Url.Action("CreditRecieptList", "Credit")", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ Keyword: keyword })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $("#creditscontainer").html(data);
+                })
+                .catch(error => console.error(error))
+
+
+            //$.ajax({
+            //    type: "POST",
+            //    url: "Credit/CreditRecieptList",
+            //    data: { Keyword: keyword },
+            //    success: function (response) {
+            //        $("#creditscontainer").html(response);
+            //    }
+            //});
+        };
+
+        ViewPDF = (url) => {
+            //hidden = open(url, 'NewWindow', 'top=50,left=0,width=800,height=600,status=no,resizable=yes,scrollbars=yes');
+            window.open(url);
+            
+        };
+
+        AddEditCreditReceipt = (creditid, creditreceiptid) => {
+            fetch("@Url.Action("AddEditCreditReceipt", "Credit")", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({ CreditID: creditid, CreditReceiptID: creditreceiptid})
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $("#ModalContainerCr").html(data);
+                    $('#AddEditCreditReceiptModal').on('shown.bs.modal', function () {
+                        Site.initMaterialWizard();
+                    });
+                    $('#AddEditCreditReceiptModal').modal('show');
+                })
+                .catch(error => console.error(error))
+        };
+
+        SaveCreditReceipt = () => {
+            let ReceiptForm = document.getElementById('CreditReceiptForm');
+            let ReceiptData = new FormData(ReceiptForm);
+
+            fetch("@Url.Action("Index", "Credit")", {
+                method: 'POST',
+                body: ReceiptData
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    if (data == "El credito fue reenviado con exito." || data == "El credito fue registrado de forma exitosa.") {
+
+                        notificationType = 'success';
+                        $('#AddEditCreditReceiptModal').modal('hide');
+                        $('#CreditList').removeClass('active show');
+                        $('#MyCredit').addClass('active');
+                        PartialViewCreditRecieptList('NoCredit');
+
+                    }
+                    else if (data == "El archivo no es un PDF, asegurate de haberlo subido correctamente." || data == "Debes de subir un archivo.")
+                    {
+                        notificationType = 'warning';
+                    }
+
+
+
+                    md.showNotification('bottom', 'right', notificationType, data);
+                    
+                });
+
+        }
+
+
+    </script>
+}
+
+    

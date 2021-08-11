@@ -36,6 +36,9 @@
                             </div>
                         </div>
 
+                        <!--CON ESTA LINEA S DA EEL MENSAJE DE ERROR EN CASOS DE DATOS INCORRECTOS
+                        EL MANESAJE QUE MUESTRA ES ENVIADO DESDE EL CONTROLADOR DE HOME EN EL METODO SignIn QUE RECIBE COMO PARAMETRO EL MODELO DE SignInMV, en ese metodo es donde se hace la vaalidacion 
+                            del usuario-->
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                     </div>

@@ -95,6 +95,16 @@
         <AssociationConnector Association="SEPRETModel.FK__PersonSub__Id_Su__634EBE90" ManuallyRouted="false" />
         <AssociationConnector Association="SEPRETModel.FK__Scope__Id_Unit__70A8B9AE" ManuallyRouted="false" />
         <AssociationConnector Association="SEPRETModel.FK__Unit__Id_Subject__681373AD" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SEPRETModel.Credit" Width="1.5" PointX="0.75" PointY="34.875" />
+        <EntityTypeShape EntityType="SEPRETModel.CreditPhase" Width="1.5" PointX="0.75" PointY="37.75" />
+        <EntityTypeShape EntityType="SEPRETModel.CreditReason" Width="1.5" PointX="6" PointY="42.25" />
+        <EntityTypeShape EntityType="SEPRETModel.CreditReceipt" Width="1.5" PointX="3" PointY="23.5" />
+        <EntityTypeShape EntityType="SEPRETModel.CreditRejection" Width="1.5" PointX="8.25" PointY="24" />
+        <AssociationConnector Association="SEPRETModel.FK__Receipt__CreditI__28ED12D1" />
+        <AssociationConnector Association="SEPRETModel.FK__Receipt__PhaseId__2AD55B43" />
+        <AssociationConnector Association="SEPRETModel.FK__Rejection__Reaso__2F9A1060" />
+        <AssociationConnector Association="SEPRETModel.FK__Receipt__PersonI__29E1370A" />
+        <AssociationConnector Association="SEPRETModel.FK__Rejection__Recei__308E3499" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

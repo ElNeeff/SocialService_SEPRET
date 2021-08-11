@@ -285,5 +285,38 @@ namespace SEPRET.Controllers
                 return PartialView("~/Views/Receipt/_SearchPayment.cshtml", list);
             }
         }
+
+        [HttpPost]
+        public ActionResult CreditList(string Filter, string Keyword)
+        {
+            using (SEPRETEntities DBC = new SEPRETEntities())
+            {
+                IEnumerable<Payment> payments = DBC.Payments.Where(x => x.Active == true).OrderByDescending(x => x.Highlight);
+
+                #region Búsqueda
+                if (!string.IsNullOrEmpty(Keyword))
+                {
+                    Keyword = Keyword.ToLower();
+
+                    payments = payments.Where(x => x.Name.ToLower().Contains(Keyword) ||
+                    x.Price.ToString().Contains(Keyword) ||
+                    x.Account.ToLower().Contains(Keyword)
+                    );
+                }
+                #endregion
+
+                #region Lista
+                List<PaymentVM> list = payments.OrderByDescending(x => x.Highlight).Select(x => new PaymentVM
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    PriceFormatted = x.Price.ToString("C"),
+                    Account = x.Account
+                }).ToList();
+                #endregion
+
+                return PartialView("~/Views/Receipt/_SearchPayment.cshtml", list);
+            }
+        }
     }
 }
